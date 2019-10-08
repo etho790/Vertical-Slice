@@ -1,6 +1,6 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "RockHopperCharacter.h"
+#include "VSRockCharacter.h"
 #include "RockHopperProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -11,11 +11,13 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
+#include "Runtime/Engine/public/TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 //////////////////////////////////////////////////////////////////////////
-// ARockHopperCharacter
+// AVSRockCharacter
 
 ARockHopperCharacter::ARockHopperCharacter()
 {
@@ -82,6 +84,20 @@ ARockHopperCharacter::ARockHopperCharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+
+	JumpHeight = 600.0f;
+	WalkSpeed = 600.0f;
+	RunSpeed = 1200.0f;
+
+	CanDash = true;
+	DashDist = 5000.0f;
+	DashCD = 1.0f;
+	DashStop = 0.1f;
+
+	GlideFallSpeed = 0.05f;
+	NormalGravity = 1.0f;
+	canGlide = false;
 }
 
 void ARockHopperCharacter::BeginPlay()
@@ -114,14 +130,23 @@ void ARockHopperCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	check(PlayerInputComponent);
 
 	// Bind jump events
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARockHopperCharacter::NormalJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ARockHopperCharacter::StopGlide);
+
+
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ARockHopperCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ARockHopperCharacter::Walk);
+	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ARockHopperCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ARockHopperCharacter::Jump);
+	PlayerInputComponent->BindAction("SpecialMove", IE_Pressed, this, &ARockHopperCharacter::Jump);
+
+	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ARockHopperCharacter::Dash);
 
 	// Enable touchscreen input
-	EnableTouchscreenMovement(PlayerInputComponent);
+	//EnableTouchscreenMovement(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &ARockHopperCharacter::OnResetVR);
 
@@ -138,7 +163,7 @@ void ARockHopperCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ARockHopperCharacter::LookUpAtRate);
 }
 
-void ARockHopperCharacter::OnFire()
+void ARockHopperCharacter::DoSpecialAbility()
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
@@ -150,7 +175,7 @@ void ARockHopperCharacter::OnFire()
 			{
 				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
 				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				World->SpawnActor<ARockHopperProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				World->SpawnActor<AVSRockProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
 			}
 			else
 			{
@@ -163,7 +188,55 @@ void ARockHopperCharacter::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				World->SpawnActor<ARockHopperProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				World->SpawnActor<AVSRockProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			}
+		}
+	}
+
+	// try and play the sound if specified
+	if (FireSound != NULL)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+
+	// try and play a firing animation if specified
+	if (FireAnimation != NULL)
+	{
+		// Get the animation object for the arms mesh
+		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+		if (AnimInstance != NULL)
+		{
+			AnimInstance->Montage_Play(FireAnimation, 1.f);
+		}
+	}
+}
+
+void ARockHopperCharacter::OnFire()
+{
+	// try and fire a projectile
+	if (ProjectileClass != NULL)
+	{
+		UWorld* const World = GetWorld();
+		if (World != NULL)
+		{
+			if (bUsingMotionControllers)
+			{
+				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
+				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
+				World->SpawnActor<AVSRockProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+			}
+			else
+			{
+				const FRotator SpawnRotation = GetControlRotation();
+				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+				const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+
+				//Set Spawn Collision Handling Override
+				FActorSpawnParameters ActorSpawnParams;
+				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+				// spawn the projectile at the muzzle
+				World->SpawnActor<AVSRockProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			}
 		}
 	}
@@ -191,35 +264,35 @@ void ARockHopperCharacter::OnResetVR()
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
-void ARockHopperCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	if (TouchItem.bIsPressed == true)
-	{
-		return;
-	}
-	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
-	{
-		OnFire();
-	}
-	TouchItem.bIsPressed = true;
-	TouchItem.FingerIndex = FingerIndex;
-	TouchItem.Location = Location;
-	TouchItem.bMoved = false;
-}
-
-void ARockHopperCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	if (TouchItem.bIsPressed == false)
-	{
-		return;
-	}
-	TouchItem.bIsPressed = false;
-}
+//void AVSRockCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
+//{
+//	if (TouchItem.bIsPressed == true)
+//	{
+//		return;
+//	}
+//	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
+//	{
+//		OnFire();
+//	}
+//	TouchItem.bIsPressed = true;
+//	TouchItem.FingerIndex = FingerIndex;
+//	TouchItem.Location = Location;
+//	TouchItem.bMoved = false;
+//}
+//
+//void AVSRockCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
+//{
+//	if (TouchItem.bIsPressed == false)
+//	{
+//		return;
+//	}
+//	TouchItem.bIsPressed = false;
+//}
 
 //Commenting this section out to be consistent with FPS BP template.
 //This allows the user to turn without using the right virtual joystick
 
-//void ARockHopperCharacter::TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location)
+//void AVSRockCharacter::TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location)
 //{
 //	if ((TouchItem.bIsPressed == true) && (TouchItem.FingerIndex == FingerIndex))
 //	{
@@ -284,17 +357,100 @@ void ARockHopperCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-bool ARockHopperCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputComponent)
-{
-	if (FPlatformMisc::SupportsTouchInput() || GetDefault<UInputSettings>()->bUseMouseForTouch)
-	{
-		PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ARockHopperCharacter::BeginTouch);
-		PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &ARockHopperCharacter::EndTouch);
+//bool AVSRockCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputComponent)
+//{
+//	if (FPlatformMisc::SupportsTouchInput() || GetDefault<UInputSettings>()->bUseMouseForTouch)
+//	{
+//		PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AVSRockCharacter::BeginTouch);
+//		PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AVSRockCharacter::EndTouch);
+//
+//		//Commenting this out to be more consistent with FPS BP template.
+//		//PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AVSRockCharacter::TouchUpdate);
+//		return true;
+//	}
+//
+//	return false;
+//}
 
-		//Commenting this out to be more consistent with FPS BP template.
-		//PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &ARockHopperCharacter::TouchUpdate);
-		return true;
+void ARockHopperCharacter::DoubleJump()
+{
+	canGlide = true;
+	if (DoubleJumpCounter <= 1)
+	{
+		ACharacter::LaunchCharacter(FVector(0, 0, JumpHeight), false, true);
+		DoubleJumpCounter++;
+		GetCharacterMovement()->GravityScale = NormalGravity;
 	}
-	
-	return false;
+
+}
+
+void ARockHopperCharacter::NormalJump()
+{
+	if (DoubleJumpCounter <= 0)
+	{
+		ACharacter::LaunchCharacter(FVector(0, 0, JumpHeight), false, true);
+		DoubleJumpCounter++;
+	}
+	ARockHopperCharacter::Glide();
+
+}
+
+void ARockHopperCharacter::Glide()
+{
+	if (GetCharacterMovement()->IsFalling() == true)
+	{
+		GetCharacterMovement()->GravityScale = GlideFallSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->GravityScale = NormalGravity;
+	}
+}
+
+void ARockHopperCharacter::StopGlide()
+{
+	GetCharacterMovement()->GravityScale = NormalGravity;
+	canGlide = false;
+}
+
+void ARockHopperCharacter::Walk()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void ARockHopperCharacter::Dash()
+{
+	if (CanDash)
+	{
+		GetCharacterMovement()->BrakingFrictionFactor = 0.0f;
+		LaunchCharacter(FVector(FirstPersonCameraComponent->GetForwardVector().X, FirstPersonCameraComponent->GetForwardVector().Y,
+			0).GetSafeNormal() * DashDist, true, true);
+		CanDash = false;
+		GetWorldTimerManager().SetTimer(UnusedHandle, this, &ARockHopperCharacter::StopDashing, DashStop, false);
+	}
+}
+
+void ARockHopperCharacter::StopDashing()
+{
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->BrakingFriction = 2.0f;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ARockHopperCharacter::ResetDash, DashCD, false);
+
+}
+
+void ARockHopperCharacter::ResetDash()
+{
+	CanDash = true;
+}
+
+void ARockHopperCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+}
+
+
+
+void ARockHopperCharacter::Landed(const FHitResult & Hit)
+{
+	DoubleJumpCounter = 0;
 }
