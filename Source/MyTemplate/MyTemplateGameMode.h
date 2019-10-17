@@ -11,8 +11,8 @@ class AMyTemplateGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-public:
-	AMyTemplateGameMode();
+
+	
 };
 
 
