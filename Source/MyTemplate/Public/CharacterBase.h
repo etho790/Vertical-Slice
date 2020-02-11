@@ -6,7 +6,8 @@
 #include "TimerManager.h"
 #include "GameFramework/Character.h"
 
-
+#include "Animation/AnimInstance.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -121,6 +122,9 @@ public:
 		bool VerticalCollision;
 
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+		class UAnimMontage* IdleToSlide;
+
 	//COLLISION FUNCTION
 	UFUNCTION()
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
@@ -132,6 +136,10 @@ public:
 
 
 	void StaminaBar();
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector Meshlocation;
 
 protected:
 	// Called when the game starts or when spawned
@@ -153,6 +161,17 @@ public:
 	void MoveRight(float axis);
 	
 	void HorizontalVelocity();
+
+	FTimerHandle Timer;			//FTimerHandle has to be local for the timer to work but cant reset it
+
+
+	void Slide();
+	void DontSlide();
+
+
+	void MySlideDoOnce();
+	void ResetMySlideDoOnce();
+	
 private:
 	
 };

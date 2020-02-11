@@ -70,6 +70,9 @@ ACharacterBase::ACharacterBase()
 	Front->SetRelativeLocation(FVector(60.0f, 10, 30.f));
 	Front->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.f));
 
+
+
+
 	Stamina = 1.0f;
 
 	EndOfGame = false;
@@ -107,7 +110,11 @@ void ACharacterBase::BeginPlay()
 	VaultChecker->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlap);
 	VaultChecker->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEnd);
 
-	
+	Meshlocation = GetMesh()->GetRelativeTransform().GetLocation();
+
+
+
+
 
 }
 
@@ -152,6 +159,10 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAxis("Moveforward", this, &ACharacterBase::Moveforward);
 		PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
 		
+
+
+		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
+		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
 	}
 
@@ -204,7 +215,7 @@ void ACharacterBase::ResetTimer()
 
 void ACharacterBase::StaminaBar()
 {
-	FTimerHandle Timer;			//FTimerHandle has to be local for the timer to work but cant reset it
+	FTimerHandle Timer;			//because its being called every tick, refix it, its reset
 
 	GetWorld()->GetTimerManager().SetTimer(Timer, this, &ACharacterBase::ResetTimer, 1 ,false);
 	if (Stamina < 0)
@@ -216,4 +227,54 @@ void ACharacterBase::StaminaBar()
 	
 
 	
+}
+
+//WORK ON SLIDE!!!!!!!!!!!!!!!!
+
+void ACharacterBase::Slide()
+{
+	LeftShiftPressed = true;
+
+	float VelocityVector = GetVelocity().Size();
+	
+	if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
+	{
+
+		
+		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
+		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
+		LaunchCharacter(LaunchVelocity, true, false);
+		if (CollisionsForSliding == true)
+		{
+			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
+			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X-70.0f, Meshlocation.Y, Meshlocation.Z + 85.0f), false, 0, ETeleportType::TeleportPhysics);
+			MySlideDoOnce();
+		}
+		else if (CollisionsForSliding == false)
+		{
+			MySlideDoOnce();
+		}
+
+		
+	}
+	
+
+}
+
+void ACharacterBase::DontSlide()
+{
+	LeftShiftPressed = false;
+}
+
+void ACharacterBase::MySlideDoOnce()
+{
+	
+	PlayAnimMontage(IdleToSlide, 0.8f, NAME_None);
+	
+}
+
+void ACharacterBase::ResetMySlideDoOnce()
+{
+
+
 }
