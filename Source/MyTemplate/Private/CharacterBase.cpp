@@ -233,6 +233,7 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
+	/*
 	LeftShiftPressed = true;
 
 	float VelocityVector = GetVelocity().Size();
@@ -257,7 +258,7 @@ void ACharacterBase::Slide()
 
 		
 	}
-	
+	*/
 
 }
 
