@@ -19,7 +19,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-
+#include "DrawDebugHelpers.h"
 
 #include "CharacterBase.generated.h"
 
@@ -141,6 +141,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector Meshlocation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ColliderCheckerMod;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -162,16 +166,19 @@ public:
 	
 	void HorizontalVelocity();
 
-	FTimerHandle Timer;			//FTimerHandle has to be local for the timer to work but cant reset it
+	FTimerHandle SlideTimer;			//FTimerHandle has to be local for the timer to work but cant reset it
 
 
 	void Slide();
 	void DontSlide();
+	void Vertical_Collision();
 
 
-	void MySlideDoOnce();
-	void ResetMySlideDoOnce();
+	void SlideColliderDoOnce();
+	void ResetSlideColliderDoOnce();
 	
+	void SlideCollider();
+
 private:
 	
 };
