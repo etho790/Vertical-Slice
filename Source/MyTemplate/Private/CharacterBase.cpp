@@ -233,7 +233,7 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
-	
+	/*
 	LeftShiftPressed = true;
 	ColliderCheckerMod = 150;
 	float VelocityVector = GetVelocity().Size();
@@ -270,7 +270,7 @@ void ACharacterBase::Slide()
 
 		
 	}
-	
+	*/
 
 }
 
@@ -319,7 +319,7 @@ void ACharacterBase::ResetSlideColliderDoOnce()
 
 void ACharacterBase::SlideCollider()
 {
-
+	/*
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);	
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
@@ -382,11 +382,11 @@ void ACharacterBase::SlideCollider()
 		else if (Out2.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
 
-			/*
+			
 			if ()
 			{
 			}
-			*/
+			
 		}
 
 
@@ -398,5 +398,5 @@ void ACharacterBase::SlideCollider()
 
 
 	}
-
+	*/
 }
