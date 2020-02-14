@@ -74,7 +74,7 @@ ACharacterBase::ACharacterBase()
 
 
 	Stamina = 1.0f;
-
+	SlideDooNce = true;
 	EndOfGame = false;
 }
 
@@ -233,7 +233,7 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
-	/*
+	
 	LeftShiftPressed = true;
 	ColliderCheckerMod = 150;
 	float VelocityVector = GetVelocity().Size();
@@ -242,14 +242,10 @@ void ACharacterBase::Slide()
 	{
 
 		
-		FVector ForwardVelocity = Dash->GetForwardVector() * 1500;
+		FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 		LaunchCharacter(LaunchVelocity, true, false);
-		if (CollisionsForSliding == true)
-		{
-			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
-			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X-70.0f, Meshlocation.Y, Meshlocation.Z + 85.0f), false, 0, ETeleportType::TeleportPhysics);
-		
+						
 			PlayAnimMontage(IdleToSlide, 0.8f, NAME_None);
 
 			SlideCollider();
@@ -257,28 +253,20 @@ void ACharacterBase::Slide()
 			//delay
 			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.8f, false);
 
-		}
-		else if (CollisionsForSliding == false)
-		{
-			PlayAnimMontage(IdleToSlide, 0.8f, NAME_None);
-
-			SlideCollider();
-
-			//delay
-			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.8f, false);
-		}
-
-		
 	}
-	*/
+	
 
 }
 
 void ACharacterBase::ResetTimer()
 {
 	GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
+	
+	//SUBJECT TO CHANGE!!!!!
 	GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 	//UE_LOG(LogTemp, Warning, TEXT("Your message"));
+
+	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);
 }
 
@@ -292,6 +280,9 @@ void ACharacterBase::Vertical_Collision()
 	if (VerticalCollision == false)
 	{
 		GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
+
+
+		//SUBJECT TO CHANGE!!!!!
 		if (GetMesh()->GetRelativeTransform().GetLocation() != Meshlocation)
 		{
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
@@ -307,19 +298,30 @@ void ACharacterBase::Vertical_Collision()
 //these bottom two are irrelevant, just get a boolean, that switches but its set to true at the start
 void ACharacterBase::SlideColliderDoOnce()
 {
+	if (SlideDooNce == true)
+	{
+		VerticalCollision = true;
+		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
+		GetCapsuleComponent()->SetCapsuleSize(42, 96, true);
+		//line below SUBJECT TO CHANGE!!!!!
+		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::None);
 
+		SlideDooNce = false;
+	}
 
 }
 
 void ACharacterBase::ResetSlideColliderDoOnce()
 {
 
-
+	SlideDooNce = true;
 }
 
 void ACharacterBase::SlideCollider()
 {
-	/*
+	
+
+	//horizontal raycast
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);	
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
@@ -333,15 +335,11 @@ void ACharacterBase::SlideCollider()
 	{
 		if (Out1.Actor->ActorHasTag("SLIDEDOWN") == true)
 		{
-
 			CollisionsForSliding = true;
-
-
 		}
 		else if(Out1.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
 			CollisionsForSliding = false;
-
 		}
 	}
 	else if (HorizontalCheckerIsHit == false)
@@ -350,6 +348,7 @@ void ACharacterBase::SlideCollider()
 	}
 
 
+	//vertical raycast from the player
 	FHitResult Out2;
 	FVector Start2 = GetActorLocation() + FVector(0, 0, 44) + GetActorForwardVector()*50;
 	FVector End2 = Start2 + GetActorUpVector() * 100;
@@ -359,6 +358,21 @@ void ACharacterBase::SlideCollider()
 
 	bool VerticalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
 
+
+	//vertical raycast behind the player
+	FHitResult Out3;
+	FVector Start3 = GetActorLocation() + GetActorForwardVector() * -100;
+	FVector End3 = Start3 + GetActorUpVector() * 100;
+	FCollisionQueryParams  CollisionP3;
+
+	DrawDebugLine(GetWorld(), Start3, End3, FColor::Purple, false, 1, 0, 1);
+
+	bool VerticalBehindCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out3, Start3, End3, ECC_Visibility, CollisionP3);
+
+
+
+
+
 	if (VerticalCheckerIsHit == true)
 	{
 
@@ -367,36 +381,90 @@ void ACharacterBase::SlideCollider()
 
 			CollisionsForSliding = true;
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
+			
+			//line below SUBJECT TO CHANGE!!!!!
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X-70.0f, Meshlocation.Y, Meshlocation.Z+70.0f), false, 0, ETeleportType::TeleportPhysics);
 			if (MoveForwards == true)
 			{
-				//do once
+				//do once RESET
+				ResetSlideColliderDoOnce();
 			}
 			if (MoveForwards == false)
 			{
 				AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
-				//do once
+				//do once RESET
+				ResetSlideColliderDoOnce();
 			}
 
 		}
 		else if (Out2.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
-
-			
-			if ()
+			if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
 			{
-			}
-			
+				VerticalCollision = true;
+				GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
+
+				//line below SUBJECT TO CHANGE!!!!!
+				GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
+
+				if (MoveForwards == true)
+				{
+					//do once RESET
+					ResetSlideColliderDoOnce();
+				}
+				else if (MoveForwards == false)
+				{
+					AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
+					//do once RESET
+					ResetSlideColliderDoOnce();
+				}
+			}			
+		}
+		
+	}
+	if (VerticalCheckerIsHit == false)
+	{
+		if (VerticalBehindCheckerIsHit == false)
+		{
+
+			//DO ONCE!!!!!!!!!!!!
+			SlideColliderDoOnce();
 		}
 
-
-
-
-
-
-
-
-
 	}
-	*/
+
+
+
+
+	if (VerticalBehindCheckerIsHit == true)
+	{
+		if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
+		{
+			VerticalCollision = true;
+			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
+
+			//line below SUBJECT TO CHANGE!!!!!
+			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
+
+			if (MoveForwards == true)
+			{
+				//do once RESET
+				ResetSlideColliderDoOnce();
+			}
+			else if (MoveForwards == false)
+			{
+				AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
+				//do once RESET
+				ResetSlideColliderDoOnce();
+			}
+		}
+	}
+	else if (VerticalBehindCheckerIsHit == false && VerticalCheckerIsHit == false)
+	{
+		//DO ONCE!!!!!!!!!!!!
+		SlideColliderDoOnce();
+	}
+
+
+
 }

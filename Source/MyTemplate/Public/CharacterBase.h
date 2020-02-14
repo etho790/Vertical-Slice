@@ -180,5 +180,5 @@ public:
 	void SlideCollider();
 
 private:
-	
+	bool SlideDooNce;
 };
