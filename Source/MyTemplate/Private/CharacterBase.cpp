@@ -3,7 +3,9 @@
 
 #include "CharacterBase.h"
 #include "MyAttributeSetBase.h"
+
 #include "..\Public\CharacterBase.h"
+
 
 
 
@@ -70,12 +72,13 @@ ACharacterBase::ACharacterBase()
 	Front->SetRelativeLocation(FVector(60.0f, 10, 30.f));
 	Front->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.f));
 
-
-
-
+	
 	Stamina = 1.0f;
 	SlideDooNce = true;
 	EndOfGame = false;
+
+
+
 }
 
 
@@ -115,6 +118,15 @@ void ACharacterBase::BeginPlay()
 
 
 
+	//TIMELINE!!!!!!!
+	if (CurveFloat)
+	{
+
+		Timelineprogress.BindUFunction(this, FName("TimelineProgress"));	//binds to the TimelineProgress function created
+		CurveTimeline.AddInterpFloat(CurveFloat, Timelineprogress);
+		CurveTimeline.SetLooping(true);
+		
+	}
 
 }
 
@@ -129,7 +141,9 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	HorizontalVelocity();
 	Vertical_Collision();//for sliding
+	CurveTimeline.TickTimeline(DeltaTime);	//timeline
 }
+
 
 
 
@@ -233,6 +247,15 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
+
+
+	FHitResult Out1;
+	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
+	FVector End1 = Start1 + GetActorForwardVector() * 400;
+	FCollisionQueryParams  CollisionP1;
+
+	
+	
 	
 	LeftShiftPressed = true;
 	ColliderCheckerMod = 150;
@@ -272,30 +295,34 @@ void ACharacterBase::ResetTimer()
 
 void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
 {
+	
 	LeftShiftPressed = false;	
+	
 }
 
 void ACharacterBase::Vertical_Collision()
 {
+	
 	if (VerticalCollision == false)
 	{
 		GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
 
 
 		//SUBJECT TO CHANGE!!!!!
-		if (GetMesh()->GetRelativeTransform().GetLocation() != Meshlocation)
+
+		//if (GetMesh()->GetRelativeTransform().GetLocation() != Meshlocation)
 		{
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 		}
 	}
-
+	
 }
 
 
 
 
 
-//these bottom two are irrelevant, just get a boolean, that switches but its set to true at the start
+
 void ACharacterBase::SlideColliderDoOnce()
 {
 	if (SlideDooNce == true)
@@ -319,8 +346,9 @@ void ACharacterBase::ResetSlideColliderDoOnce()
 
 void ACharacterBase::SlideCollider()
 {
-	
 
+	TArray<AActor*> none;
+	
 	//horizontal raycast
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);	
@@ -330,6 +358,8 @@ void ACharacterBase::SlideCollider()
 	DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 	bool HorizontalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
+	
+
 
 	if (HorizontalCheckerIsHit == true)
 	{
@@ -352,22 +382,25 @@ void ACharacterBase::SlideCollider()
 	FHitResult Out2;
 	FVector Start2 = GetActorLocation() + FVector(0, 0, 44) + GetActorForwardVector()*50;
 	FVector End2 = Start2 + GetActorUpVector() * 100;
-	FCollisionQueryParams  CollisionP2;
+	
 
-	DrawDebugLine(GetWorld(), Start2, End2, FColor::Blue, false, 1, 0, 1);
+	
 
-	bool VerticalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
-
+	bool VerticalCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start2, End2, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out2, true, FLinearColor::Red, FLinearColor::Red, 5);
+	//GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
+	
 
 	//vertical raycast behind the player
 	FHitResult Out3;
 	FVector Start3 = GetActorLocation() + GetActorForwardVector() * -100;
 	FVector End3 = Start3 + GetActorUpVector() * 100;
-	FCollisionQueryParams  CollisionP3;
+	
 
-	DrawDebugLine(GetWorld(), Start3, End3, FColor::Purple, false, 1, 0, 1);
+	
 
-	bool VerticalBehindCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out3, Start3, End3, ECC_Visibility, CollisionP3);
+	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Red, FLinearColor::Red, 5);
+
+		//GetWorld()->LineTraceSingleByChannel(Out3, Start3, End3, ECC_Visibility, CollisionP3);
 
 
 
@@ -379,7 +412,7 @@ void ACharacterBase::SlideCollider()
 		if (Out2.Actor->ActorHasTag("SLIDEDOWN") == true)
 		{
 
-			CollisionsForSliding = true;
+			VerticalCollision = true;
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
 			
 			//line below SUBJECT TO CHANGE!!!!!
@@ -466,5 +499,44 @@ void ACharacterBase::SlideCollider()
 	}
 
 
+	
+}
+
+void ACharacterBase::SlideInitiator()
+{
+
+	TArray<AActor*> none;
+
+	//horizontal raycast
+	FHitResult Out;
+	FVector Start = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector()*ColliderCheckerMod);
+	FVector End = Start + GetActorUpVector() * 100;
+
+	bool InitiatingCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
+
+	if (InitiatingCheckerIsHit == true)
+	{
+		if (Out.Actor->ActorHasTag("SLIDEDOWN") == true)
+		{
+
+			CurveTimeline.PlayFromStart();
+
+
+		}
+		else if (Out.Actor->ActorHasTag("SLIDEDOWN") == false)
+		{
+			VerticalCollision = false;
+			ColliderCheckerMod = -30;
+			CurveTimeline.Stop();
+		}
+	}
+
 
 }
+
+void ACharacterBase::TimelineProgress(float value)
+{
+	SlideCollider();
+	LaunchCharacter()
+}
+

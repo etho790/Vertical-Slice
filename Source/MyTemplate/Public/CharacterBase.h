@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 
 #include "Animation/AnimInstance.h"
+#include "Components/TimelineComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
@@ -16,7 +17,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Blueprint//UserWidget.h"
-
+#include "Kismet/KismetSystemLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "DrawDebugHelpers.h"
@@ -64,7 +65,7 @@ public:
 		TSubclassOf<UUserWidget> Player_UICLASS;
 
 
-
+	
 	
 	bool EndOfGame;
 
@@ -143,7 +144,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ColliderCheckerMod;
-
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -177,8 +178,19 @@ public:
 	void SlideColliderDoOnce();
 	void ResetSlideColliderDoOnce();
 	
+	UFUNCTION( BlueprintCallable)
 	void SlideCollider();
 
+	void SlideInitiator();
+	
+	
+	
+	
+	void TimelineProgress(float value);
+	FTimeline CurveTimeline;
+	UCurveFloat* CurveFloat;
+	FOnTimelineFloat Timelineprogress;
+	
 private:
 	bool SlideDooNce;
 };
