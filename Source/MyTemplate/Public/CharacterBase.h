@@ -188,9 +188,14 @@ public:
 	
 	void TimelineProgress(float value);
 	FTimeline CurveTimeline;
-	UCurveFloat* CurveFloat;
-	FOnTimelineFloat Timelineprogress;
 	
+	UFUNCTION(BlueprintCallable)
+		void WallRunnerFunction();
+
+	UFUNCTION(BlueprintCallable)
+		void WallRunRaycastFunction();
+
 private:
 	bool SlideDooNce;
+	bool SlidingTimelineInitiate;
 };

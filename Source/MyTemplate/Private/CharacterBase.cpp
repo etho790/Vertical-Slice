@@ -117,7 +117,7 @@ void ACharacterBase::BeginPlay()
 
 
 
-
+	/*
 	//TIMELINE!!!!!!!
 	if (CurveFloat)
 	{
@@ -127,6 +127,7 @@ void ACharacterBase::BeginPlay()
 		CurveTimeline.SetLooping(true);
 		
 	}
+	*/
 
 }
 
@@ -140,8 +141,9 @@ void ACharacterBase::Tick(float DeltaTime)
 	
 
 	HorizontalVelocity();
-	Vertical_Collision();//for sliding
-	CurveTimeline.TickTimeline(DeltaTime);	//timeline
+	Vertical_Collision();//for sliding	
+	SlideInitiator();
+	TimelineProgress(DeltaTime);
 }
 
 
@@ -248,7 +250,7 @@ void ACharacterBase::StaminaBar()
 void ACharacterBase::Slide()
 {
 
-
+	
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
@@ -325,6 +327,7 @@ void ACharacterBase::Vertical_Collision()
 
 void ACharacterBase::SlideColliderDoOnce()
 {
+	
 	if (SlideDooNce == true)
 	{
 		VerticalCollision = true;
@@ -335,12 +338,11 @@ void ACharacterBase::SlideColliderDoOnce()
 
 		SlideDooNce = false;
 	}
-
+	
 }
 
 void ACharacterBase::ResetSlideColliderDoOnce()
 {
-
 	SlideDooNce = true;
 }
 
@@ -467,8 +469,6 @@ void ACharacterBase::SlideCollider()
 	}
 
 
-
-
 	if (VerticalBehindCheckerIsHit == true)
 	{
 		if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
@@ -504,7 +504,7 @@ void ACharacterBase::SlideCollider()
 
 void ACharacterBase::SlideInitiator()
 {
-
+	
 	TArray<AActor*> none;
 
 	//horizontal raycast
@@ -519,24 +519,109 @@ void ACharacterBase::SlideInitiator()
 		if (Out.Actor->ActorHasTag("SLIDEDOWN") == true)
 		{
 
-			CurveTimeline.PlayFromStart();
-
-
+			//CurveTimeline.PlayFromStart();
+			SlidingTimelineInitiate = true;
 		}
 		else if (Out.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
 			VerticalCollision = false;
 			ColliderCheckerMod = -30;
-			CurveTimeline.Stop();
+			//CurveTimeline.Stop();
+			SlidingTimelineInitiate = false;
 		}
 	}
-
-
+	else if (InitiatingCheckerIsHit == false)
+	{
+		VerticalCollision = false;
+		ColliderCheckerMod = -30;
+		//CurveTimeline.Stop();
+		SlidingTimelineInitiate = false;
+	}
+	
 }
 
 void ACharacterBase::TimelineProgress(float value)
 {
-	SlideCollider();
-	LaunchCharacter()
+	if (SlidingTimelineInitiate == true)
+	{
+		SlideCollider();
+	}
+	
+		
+}
+
+
+//HAVENT ADDED IN THE TIMELINE NOR PUT THIS IN THE TICK FUNCTION
+void ACharacterBase::WallRunRaycastFunction()
+{
+	TArray<AActor*> none;
+
+	//left raycast
+	FHitResult Out;
+	FVector Start = GetActorLocation();
+	FVector End = Start + (GetActorRightVector() * -50);
+
+
+	bool LeftChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 2, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
+
+
+	//right raycast
+	FHitResult Out1;
+	FVector Start1 = GetActorLocation();
+	FVector End1 = Start1 + (GetActorRightVector() * 50);
+
+	bool RightChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start1, End1, 2, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out1, true, FLinearColor::Red, FLinearColor::Red, 5);
+
+	if (LeftChecker == true)
+	{
+		if (Out.Actor->ActorHasTag("RUNWALL") == true)
+		{
+			GetCharacterMovement()->GravityScale = 0.3;
+			CloseToTheWall = true;
+			LeftWall = true;
+
+		}
+		if (Out.Actor->ActorHasTag("RUNWALL") == false)
+		{
+			GetCharacterMovement()->GravityScale = 3.0f;
+			CloseToTheWall = false;
+			LeftWall = false;
+			OnTheWall = false;
+
+			//add in a madeuptimeline
+		}
+
+	}
+	else if (LeftChecker == false)
+	{
+		if (RightChecker == true)
+		{
+			if (Out1.Actor->ActorHasTag("RUNWALL") == true)
+			{
+				GetCharacterMovement()->GravityScale = 0.3;
+				CloseToTheWall = true;
+				RightWall = true;
+
+
+			}
+			if (Out1.Actor->ActorHasTag("RUNWALL") == false)
+			{
+				GetCharacterMovement()->GravityScale = 3;
+				CloseToTheWall = false;
+				RightWall = false;
+				OnTheWall = false;
+				//add in a madeuptimeline
+			}
+		}
+		if (RightChecker == false)
+		{
+
+			GetCharacterMovement()->GravityScale = 3;
+			CloseToTheWall = false;
+			RightWall = false;
+			OnTheWall = false;
+			//add in a madeuptimeline
+		}
+	}
 }
 
