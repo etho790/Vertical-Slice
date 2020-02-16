@@ -87,9 +87,7 @@ void ACharacterBase::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherA
 	if (OtherActor->ActorHasTag("Vault"))
 	{
 		VaultCollision = true;
-
 	}
-
 }
 
 void ACharacterBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -100,9 +98,22 @@ void ACharacterBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
 
 	}
 
+}
+
+
+
+void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
+	//EMPTY
+
 
 
 }
+
+
+
+
+
 
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay()
@@ -113,22 +124,18 @@ void ACharacterBase::BeginPlay()
 	VaultChecker->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlap);
 	VaultChecker->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEnd);
 
+	Front->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlapForFrontBox);
+	Front->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEndForFrontBox);
+
 	Meshlocation = GetMesh()->GetRelativeTransform().GetLocation();
 
-
-
-	/*
-	//TIMELINE!!!!!!!
-	if (CurveFloat)
-	{
-
-		Timelineprogress.BindUFunction(this, FName("TimelineProgress"));	//binds to the TimelineProgress function created
-		CurveTimeline.AddInterpFloat(CurveFloat, Timelineprogress);
-		CurveTimeline.SetLooping(true);
-		
-	}
-	*/
-
+	
+	
+	//SETTING THE SCALES OF THE LEFT WALL AND RIGHT WALL COLLIDER
+	Left->SetRelativeScale3D(FVector(0.4f, 1.5f, 2.0f));
+	//Left->SetRelativeLocation(FVector(0.000018, -64, 30));
+	Right->SetRelativeScale3D(FVector(0.4f, 1.5f, 2.0f));
+	//Right->SetRelativeLocation(FVector(0.000021, -64, 30));
 }
 
 // Called every frame
@@ -143,7 +150,33 @@ void ACharacterBase::Tick(float DeltaTime)
 	HorizontalVelocity();
 	Vertical_Collision();//for sliding	
 	SlideInitiator();
-	TimelineProgress(DeltaTime);
+
+
+	//Timeline like functions
+	TimelineForSliding();
+	TimelineForWallRunning();
+
+
+
+
+
+	//for wall running
+	WallRunRaycast();
+	if (GetMovementComponent()->IsFalling() == false)
+	{
+		Landed();
+	}
+	if (GetMovementComponent()->IsFalling() == true)
+	{
+		FVector VelocityVector = GetVelocity();
+		CharacterVelocity = VelocityVector.Size();
+
+		if (CharacterVelocity >= 100)
+		{
+			WallRunner();
+
+		}
+	}
 }
 
 
@@ -175,11 +208,13 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAxis("Moveforward", this, &ACharacterBase::Moveforward);
 		PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
 		
-
+		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacterBase::CharcterJump);
+		PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacterBase::DontJump);
 
 		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
 		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
+
 	}
 
 
@@ -220,6 +255,8 @@ void ACharacterBase::HorizontalVelocity()
 
 
 
+
+
 void ACharacterBase::StaminaBar()
 {
 			//because its being called every tick, refix it, its reset
@@ -243,9 +280,9 @@ void ACharacterBase::StaminaBar()
 
 
 
-
-
 // SLIDE!!!!!!!!!!!!!!!!
+
+
 
 void ACharacterBase::Slide()
 {
@@ -357,7 +394,7 @@ void ACharacterBase::SlideCollider()
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
 	FCollisionQueryParams  CollisionP1;
 
-	DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
+	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 	bool HorizontalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 	
@@ -389,7 +426,7 @@ void ACharacterBase::SlideCollider()
 	
 
 	bool VerticalCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start2, End2, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out2, true, FLinearColor::Red, FLinearColor::Red, 5);
-	//GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
+	
 	
 
 	//vertical raycast behind the player
@@ -402,7 +439,7 @@ void ACharacterBase::SlideCollider()
 
 	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Red, FLinearColor::Red, 5);
 
-		//GetWorld()->LineTraceSingleByChannel(Out3, Start3, End3, ECC_Visibility, CollisionP3);
+		
 
 
 
@@ -540,7 +577,8 @@ void ACharacterBase::SlideInitiator()
 	
 }
 
-void ACharacterBase::TimelineProgress(float value)
+
+void ACharacterBase::TimelineForSliding()
 {
 	if (SlidingTimelineInitiate == true)
 	{
@@ -551,27 +589,60 @@ void ACharacterBase::TimelineProgress(float value)
 }
 
 
-//HAVENT ADDED IN THE TIMELINE NOR PUT THIS IN THE TICK FUNCTION
-void ACharacterBase::WallRunRaycastFunction()
+
+//WALLRUN ABILITY
+
+
+void ACharacterBase::Landed()
 {
+	GetCharacterMovement()->GravityScale = 3;
+	LeftWall = false;
+	RightWall = false;
+	OnTheWall = false;
+	//stop time line
+	WallRunTimelineInitiate = false;
+}
+
+
+void ACharacterBase::WallRunner()
+{
+	if (CloseToTheWall == true)
+	{
+		OnTheWall = true;
+		//initiate the wall run time line
+		WallRunTimelineInitiate = true;
+	}
+	else if (CloseToTheWall == false)
+	{
+		OnTheWall = false;
+
+	}
+}
+
+//HAVENT ADDED IN THE TIMELINE NOR PUT THIS IN THE TICK FUNCTION
+void ACharacterBase::WallRunRaycast()
+{
+	
 	TArray<AActor*> none;
 
 	//left raycast
 	FHitResult Out;
 	FVector Start = GetActorLocation();
-	FVector End = Start + (GetActorRightVector() * -50);
+	FVector End = Start + (GetActorRightVector() * -60);
+	FCollisionQueryParams  CollisionP;
+	
 
-
-	bool LeftChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 2, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
-
+	bool LeftChecker =GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 
 	//right raycast
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation();
-	FVector End1 = Start1 + (GetActorRightVector() * 50);
+	FVector End1 = Start1 + (GetActorRightVector() * 60);
+	FCollisionQueryParams  CollisionP1;
 
-	bool RightChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start1, End1, 2, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out1, true, FLinearColor::Red, FLinearColor::Red, 5);
-
+	bool RightChecker = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
+	DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, false, 1, 0, 1);
 	if (LeftChecker == true)
 	{
 		if (Out.Actor->ActorHasTag("RUNWALL") == true)
@@ -588,7 +659,8 @@ void ACharacterBase::WallRunRaycastFunction()
 			LeftWall = false;
 			OnTheWall = false;
 
-			//add in a madeuptimeline
+			//stop time line
+			WallRunTimelineInitiate = false;
 		}
 
 	}
@@ -610,7 +682,8 @@ void ACharacterBase::WallRunRaycastFunction()
 				CloseToTheWall = false;
 				RightWall = false;
 				OnTheWall = false;
-				//add in a madeuptimeline
+				//stop time line
+				WallRunTimelineInitiate = false;
 			}
 		}
 		if (RightChecker == false)
@@ -620,8 +693,183 @@ void ACharacterBase::WallRunRaycastFunction()
 			CloseToTheWall = false;
 			RightWall = false;
 			OnTheWall = false;
-			//add in a madeuptimeline
+			//stop time line
+			WallRunTimelineInitiate = false;
 		}
 	}
+	
 }
 
+void ACharacterBase::TimelineForWallRunning()
+{
+	if (WallRunTimelineInitiate == true)
+	{
+		if (MoveForwards == true)
+		{
+			FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
+			FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
+			LaunchCharacter(LaunchVelocity, true, true);
+
+		}
+		if (MoveForwards == false)
+		{
+			
+			FVector LaunchVelocity = FVector(0, 0, -250);
+			LaunchCharacter(LaunchVelocity, false, false);
+
+		}
+	}
+
+}
+
+
+//OVERLAP FOR WALLRUNNING 
+void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult & SweepResult)
+{
+
+	if (OtherActor->ActorHasTag("RUNWALL") == false)
+	{
+		MoveForwards = false;
+		if (CloseToTheWall == true)
+		{
+			if (LeftWall == true)
+			{
+
+				FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
+				FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * 1000) +(Left->GetForwardVector().X * 1850), (Dash->GetForwardVector().Y * 1000) +(Left->GetForwardVector().Y * 1850), 0);
+
+				LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
+
+				LeftWall = false;
+				RightWall = false;
+				CloseToTheWall = false;
+
+				//stop time line
+				WallRunTimelineInitiate = false;
+
+
+
+			}
+			if (LeftWall == false)
+			{
+				if (RightWall == true)
+				{
+
+					FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
+					FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * 1000) + (Right->GetForwardVector().X * 1850), (Dash->GetForwardVector().Y * 1000) + (Right->GetForwardVector().Y * 1850), 0);
+
+					LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
+
+					LeftWall = false;
+					RightWall = false;
+					CloseToTheWall = false;
+
+					//stop time line
+					WallRunTimelineInitiate = false;
+
+				}
+				if (RightWall == false)
+				{
+					LeftWall = false;
+					RightWall = false;
+					CloseToTheWall = false;
+
+					//stop time line
+					WallRunTimelineInitiate = false;
+
+
+
+				}
+
+			}
+		}
+	}
+
+
+}
+
+
+//JUMP!!!!!!!!!!!!!!!
+void ACharacterBase::CharcterJump()
+{
+	if (CloseToTheWall == true)
+	{
+		if (LeftWall == true)
+		{
+
+			FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
+			
+			FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * 1000) + (Left->GetForwardVector().X * 1850), (Dash->GetForwardVector().Y * 1000) + (Left->GetForwardVector().Y * 1850), 0);
+
+			LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
+
+			LeftWall = false;
+			RightWall = false;
+			CloseToTheWall = false;
+
+			//stop time line
+			WallRunTimelineInitiate = false;
+
+
+
+		}
+		if (LeftWall == false)
+		{
+			if (RightWall == true)
+			{
+
+				FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
+				FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * 1000) + (Right->GetForwardVector().X * 1850), (Dash->GetForwardVector().Y * 1000) + (Right->GetForwardVector().Y * 1850), 0);
+
+				LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
+
+				LeftWall = false;
+				RightWall = false;
+				CloseToTheWall = false;
+
+				//stop time line
+				WallRunTimelineInitiate = false;				
+
+			}
+			if (RightWall == false)
+			{
+				LeftWall = false;
+				RightWall = false;
+				CloseToTheWall = false;
+
+				//stop time line
+				WallRunTimelineInitiate = false;
+
+
+
+			}
+
+		}
+
+	}
+	if (CloseToTheWall == false)
+	{
+		if (VaultCollision == false)
+		{
+			Jump();
+			OnTheWall = false;
+
+			//stop time line
+			WallRunTimelineInitiate = false;
+		}
+
+
+	}
+
+
+
+
+
+}
+
+void ACharacterBase::DontJump()
+{
+
+	StopJumping();
+
+}

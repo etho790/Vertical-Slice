@@ -126,7 +126,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
 		class UAnimMontage* IdleToSlide;
 
-	//COLLISION FUNCTION
+	//COLLISION FUNCTIONFOR THE VAULT
 	UFUNCTION()
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
@@ -134,6 +134,15 @@ public:
 	//COLLISION FUNCTION
 	UFUNCTION()
 		void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	//COLLISION FUNCTIONFOR THE FRONT
+	UFUNCTION()
+		void OnBeginOverlapForFrontBox(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
+
+	
+	//COLLISION FUNCTION
+	UFUNCTION()
+		void OnOverlapEndForFrontBox(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 
 	void StaminaBar();
@@ -169,7 +178,11 @@ public:
 
 	FTimerHandle SlideTimer;			//FTimerHandle has to be local for the timer to work but cant reset it
 
+	//JUMP
+	void CharcterJump();
+	void DontJump();
 
+	//SLIDE
 	void Slide();
 	void DontSlide();
 	void Vertical_Collision();
@@ -184,18 +197,21 @@ public:
 	void SlideInitiator();
 	
 	
-	
-	
-	void TimelineProgress(float value);
+	//wallrunning
+	void Landed();
+	void TimelineForSliding();
 	FTimeline CurveTimeline;
 	
 	UFUNCTION(BlueprintCallable)
-		void WallRunnerFunction();
+		void WallRunner();
 
 	UFUNCTION(BlueprintCallable)
-		void WallRunRaycastFunction();
+		void WallRunRaycast();
+	void TimelineForWallRunning();
+
 
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
+	bool WallRunTimelineInitiate;
 };
