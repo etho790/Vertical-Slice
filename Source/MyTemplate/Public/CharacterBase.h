@@ -183,6 +183,7 @@ public:
 	void DontJump();
 
 	//SLIDE
+	/*
 	void Slide();
 	void DontSlide();
 	void Vertical_Collision();
@@ -201,7 +202,7 @@ public:
 	
 	void TimelineForSliding();
 	
-	
+	*/
 
 	void Landed();
 	UFUNCTION(BlueprintCallable)

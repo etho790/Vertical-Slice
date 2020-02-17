@@ -148,18 +148,21 @@ void ACharacterBase::Tick(float DeltaTime)
 	
 
 	HorizontalVelocity();
-	Vertical_Collision();//for sliding	
-	SlideInitiator();
+	//for sliding
+	//Vertical_Collision();	
+	//SlideInitiator();
 
 
 	//Timeline like functions
-	TimelineForSliding();
+	//TimelineForSliding();
+	
+	
 	TimelineForWallRunning();
 
 
 
 	//vaulting
-	TimelineForVaulting();
+	//TimelineForVaulting();
 
 
 	//for wall running
@@ -214,8 +217,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacterBase::CharcterJump);
 		PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacterBase::DontJump);
 
-		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
-		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
+	//	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
+		//PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
 
 	}
@@ -286,7 +289,7 @@ void ACharacterBase::StaminaBar()
 // SLIDE!!!!!!!!!!!!!!!!
 
 
-
+/*
 void ACharacterBase::Slide()
 {
 
@@ -541,7 +544,8 @@ void ACharacterBase::SlideCollider()
 
 	
 }
-
+*/
+/*
 void ACharacterBase::SlideInitiator()
 {
 	
@@ -591,7 +595,7 @@ void ACharacterBase::TimelineForSliding()
 		
 }
 
-
+*/
 
 //WALLRUN ABILITY
 
