@@ -158,6 +158,8 @@ void ACharacterBase::Tick(float DeltaTime)
 
 
 
+	//vaulting
+	TimelineForVaulting();
 
 
 	//for wall running
@@ -177,6 +179,7 @@ void ACharacterBase::Tick(float DeltaTime)
 
 		}
 	}
+
 }
 
 
@@ -633,7 +636,7 @@ void ACharacterBase::WallRunRaycast()
 	
 
 	bool LeftChecker =GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 
 	//right raycast
 	FHitResult Out1;
@@ -642,7 +645,7 @@ void ACharacterBase::WallRunRaycast()
 	FCollisionQueryParams  CollisionP1;
 
 	bool RightChecker = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
-	DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, false, 1, 0, 1);
+	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, false, 1, 0, 1);
 	if (LeftChecker == true)
 	{
 		if (Out.Actor->ActorHasTag("RUNWALL") == true)
@@ -860,8 +863,8 @@ void ACharacterBase::CharcterJump()
 
 
 	}
-
-
+	//starting the vaulting time line
+	VaultTimelineInitiate = true;
 
 
 
@@ -871,5 +874,20 @@ void ACharacterBase::DontJump()
 {
 
 	StopJumping();
+
+}
+
+//Vaulting
+void ACharacterBase::TimelineForVaulting()
+{
+	//const TArray<FCollisionObjectQueryParams> none = { ECC_WorldStatic, ECC_Destructible };
+	FHitResult Out;
+	FVector Start = GetActorLocation() - FVector(0,0,44);
+	FVector End = Start + (GetActorForwardVector() * 200);
+	FCollisionQueryParams  CollisionP;
+
+
+	
+	//GetWorld()->LineTraceSingleByObjectType(Out,Start, End, none,)
 
 }

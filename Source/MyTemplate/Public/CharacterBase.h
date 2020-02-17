@@ -198,10 +198,12 @@ public:
 	
 	
 	//wallrunning
-	void Landed();
-	void TimelineForSliding();
-	FTimeline CurveTimeline;
 	
+	void TimelineForSliding();
+	
+	
+
+	void Landed();
 	UFUNCTION(BlueprintCallable)
 		void WallRunner();
 
@@ -209,9 +211,12 @@ public:
 		void WallRunRaycast();
 	void TimelineForWallRunning();
 
+	//vault
+	void TimelineForVaulting();
 
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
 	bool WallRunTimelineInitiate;
+	bool VaultTimelineInitiate;
 };
