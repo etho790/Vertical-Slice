@@ -21,6 +21,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/KismetMathLibrary.h"
+
 
 #include "CharacterBase.generated.h"
 
@@ -130,6 +132,9 @@ public:
 	UFUNCTION()
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+		class UAnimMontage* VaultAnim;
+
 
 	//COLLISION FUNCTION
 	UFUNCTION()
@@ -154,6 +159,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ColliderCheckerMod;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Leftwall_RaycastLengthChecker;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Rightwall_RaycastLengthChecker;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool FastEnoughToSlide;
 
 protected:
 	// Called when the game starts or when spawned
@@ -162,6 +175,9 @@ protected:
 	
 	void ResetTimer();
 
+	void ResetLeftRaycast();
+	void ResetRightRaycast();
+	void ResetVault();
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -176,7 +192,7 @@ public:
 	
 	void HorizontalVelocity();
 
-	FTimerHandle SlideTimer;			//FTimerHandle has to be local for the timer to work but cant reset it
+	FTimerHandle SlideTimer;			
 
 	//JUMP
 	void CharcterJump();
@@ -198,12 +214,18 @@ public:
 	void SlideInitiator();
 	
 	
-	//wallrunning
+	
 	
 	void TimelineForSliding();
 	
 	*/
+	
+	//WALL RUNNING
 
+	float forward_WallJumpVel;
+	float Side_WallJumpVel;
+	FTimerHandle LeftRaycastResetter;
+	FTimerHandle RightRaycastResetter;
 	void Landed();
 	UFUNCTION(BlueprintCallable)
 		void WallRunner();
@@ -214,10 +236,14 @@ public:
 
 	//vault
 	void TimelineForVaulting();
-
+	void VaultingFunctionInTimeline();
+	FTimerHandle VaultResetter;
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
 	bool WallRunTimelineInitiate;
 	bool VaultTimelineInitiate;
+	
+	bool ResettheLeftRaycast;
+	bool ResettheRightRaycast;
 };
