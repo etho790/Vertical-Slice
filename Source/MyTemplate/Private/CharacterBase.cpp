@@ -172,7 +172,7 @@ void ACharacterBase::Tick(float DeltaTime)
 
 
 	//vaulting
-	//TimelineForVaulting();
+	TimelineForVaulting();
 
 
 
@@ -979,23 +979,25 @@ void ACharacterBase::DontJump()
 //Vaulting
 void ACharacterBase::TimelineForVaulting()
 {
-	//Horizontal_VaultChecker from the bottom straight forwards
-	FHitResult Out;
-	FVector Start = GetActorLocation() - FVector(0,0,44);
-	FVector End = Start + (GetActorForwardVector() * 200);
-	FCollisionQueryParams  CollisionP;
-
-
+	
 	
 
 
 	if (VaultTimelineInitiate == true)
 	{
+		//Horizontal_VaultChecker from the bottom straight forwards
+		FHitResult Out;
+		FVector Start = GetActorLocation() - FVector(0, 0, 44);
+		FVector End = Start + (GetActorForwardVector() * 200);
+		FCollisionQueryParams  CollisionP;
+
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
+		
 		bool Horizontal_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
 		if (Horizontal_VaultCheckerIsHit == true)
 		{
-			if (Out.GetActor()->ActorHasTag == "Vault")
+			if (Out.GetActor()->ActorHasTag("Vault") == true)
 			{
 				
 				FVector WallLocation = Out.Location;
@@ -1010,6 +1012,8 @@ void ACharacterBase::TimelineForVaulting()
 				FVector Start1 = (ForwardVec_1 * -10) + WallLocation + FVector(0, 0, 200.0f);
 				FVector End1 = Start1 + FVector(0, 0, -200.0f);
 				FCollisionQueryParams  CollisionP1;
+
+				DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 				bool WallHeightChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 
@@ -1035,6 +1039,9 @@ void ACharacterBase::TimelineForVaulting()
 					FVector End2 = Start2 + FVector(0, 0, -300.0f);
 					FCollisionQueryParams  CollisionP2;
 
+					DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, false, 1, 0, 1);
+
+
 					bool WallThicknessChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
 
 					if (WallThicknessChecker_IsHit == true)
@@ -1053,11 +1060,7 @@ void ACharacterBase::TimelineForVaulting()
 						
 						if (ShouldClimb == false)
 						{
-
-
-
-
-
+							VaultingFunctionInTimeline();
 						}
 						
 					}
@@ -1069,10 +1072,7 @@ void ACharacterBase::TimelineForVaulting()
 
 						if (ShouldClimb == false)
 						{
-
-
-
-
+							VaultingFunctionInTimeline();
 						}
 
 					}
@@ -1083,7 +1083,7 @@ void ACharacterBase::TimelineForVaulting()
 				}
 
 			}
-			if (Out.GetActor()->ActorHasTag != "Vault")
+			if (Out.GetActor()->ActorHasTag("Vault") == false)
 			{
 				//stop the vault timeline
 				VaultTimelineInitiate = false;
@@ -1108,8 +1108,7 @@ void ACharacterBase::TimelineForVaulting()
 void ACharacterBase::VaultingFunctionInTimeline()
 {
 
-	if (ShouldClimb == false)
-	{
+	
 		if (WallThick == false)
 		{
 			GetCharacterMovement()->GravityScale = 0;
@@ -1122,7 +1121,7 @@ void ACharacterBase::VaultingFunctionInTimeline()
 
 		}
 
-	}
+	
 
 
 }
@@ -1130,7 +1129,7 @@ void ACharacterBase::VaultingFunctionInTimeline()
 
 void ACharacterBase::ResetVault()
 {
-	FVector LaunchVeloc = Dash->GetForwardVector* VaultVelocity;
+	FVector LaunchVeloc = Dash->GetForwardVector()* VaultVelocity;
 	LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 800), true, true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
@@ -1139,5 +1138,6 @@ void ACharacterBase::ResetVault()
 	VaultTimelineInitiate = false;
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(VaultResetter);
-
+	//stop the vault timeline
+	VaultTimelineInitiate = false;
 }
