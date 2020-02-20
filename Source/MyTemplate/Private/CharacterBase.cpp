@@ -1120,7 +1120,6 @@ void ACharacterBase::TimelineForVaulting()
 void ACharacterBase::VaultingFunctionInTimeline()
 {
 
-	
 		if (WallThick == false)
 		{
 			GetCharacterMovement()->GravityScale = 0;
@@ -1129,43 +1128,8 @@ void ACharacterBase::VaultingFunctionInTimeline()
 			PlayAnimMontage(VaultAnim, 1.5f, NAME_None);
 			GetWorld()->GetTimerManager().SetTimer(VaultResetter, this, &ACharacterBase::ResetVault, 0.2f, false);
 
-
-
 		}
 
-	
-
-
-}
-
-void ACharacterBase::ForwardTracer()
-{
-
-
-
-
-
-
-}
-
-
-void ACharacterBase::HeightTracer()
-{
-
-
-
-}
-
-void ACharacterBase::GrabLedge()
-{
-}
-
-void ACharacterBase::ExitLedge()
-{
-}
-
-void ACharacterBase::GetStandingPoint()
-{
 }
 
 
@@ -1182,4 +1146,67 @@ void ACharacterBase::ResetVault()
 	GetWorld()->GetTimerManager().ClearTimer(VaultResetter);
 	//stop the vault timeline
 	VaultTimelineInitiate = false;
+}
+
+
+
+
+//Climbing
+
+void ACharacterBase::ForwardTracer()
+{
+	TArray<AActor*> none;
+	FHitResult Out;
+	FVector Start = GetActorLocation();
+	FVector ForwardVec = UKismetMathLibrary::GetForwardVector(GetActorRotation());
+	FVector End = FVector(ForwardVec.X * 150, ForwardVec.Y * 150, ForwardVec.Z) + Start;
+
+	//ask if TraceTypeQuery3 is a custom trace channel
+	bool HorizontalLineCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery3, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
+
+	if (HorizontalLineCheckerIsHit == true)
+	{
+		M_WallLocation = Out.Location;
+		M_WallNormal = Out.Normal;
+	}
+}
+
+
+void ACharacterBase::HeightTracer()
+{
+	TArray<AActor*> none;
+	FHitResult Out;
+	FVector Start = FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 500)+ (UKismetMathLibrary::GetForwardVector(GetActorRotation()) * 70);
+	
+	FVector End = FVector(Start.X , Start.Y , Start.Z -500);
+
+	//ask if TraceTypeQuery3 is a custom trace channel
+	bool VerticalLineCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery3, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
+
+	if (VerticalLineCheckerIsHit == true)
+	{
+		M_HeightLocation = Out.Location;
+		
+		float val = GetMesh()->GetSocketLocation("PelvisSocket").Z - M_HeightLocation.Z;
+		float M_ClimbHeightRange = -50;
+		if (UKismetMathLibrary::InRange_FloatFloat(val, M_ClimbHeightRange, 0, true, true)==true)
+		{
+			if (M_IsClimbingLedge == false)
+			{
+				GrabLedge();
+			}
+		}
+	}
+}
+
+void ACharacterBase::GrabLedge()
+{
+}
+
+void ACharacterBase::ExitLedge()
+{
+}
+
+void ACharacterBase::GetStandingPoint()
+{
 }

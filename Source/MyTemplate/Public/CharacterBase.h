@@ -168,6 +168,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool FastEnoughToSlide;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector M_WallLocation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector M_WallNormal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector M_HeightLocation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool M_IsClimbingLedge;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
