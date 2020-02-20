@@ -187,38 +187,25 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	void Moveforward(float axis);
-
-	void MoveRight(float axis);
-	
+	void MoveRight(float axis);	
 	void HorizontalVelocity();
-
-	FTimerHandle SlideTimer;			
-
+	
 	//JUMP
 	void CharcterJump();
 	void DontJump();
 
-	//SLIDE
-	/*
+	//SLIDE	
 	void Slide();
 	void DontSlide();
-	void Vertical_Collision();
-
-
+	void Vertical_Collision();		
 	void SlideColliderDoOnce();
-	void ResetSlideColliderDoOnce();
-	
+	void ResetSlideColliderDoOnce();	
 	UFUNCTION( BlueprintCallable)
-	void SlideCollider();
-
+	void SlideCollider();	
+	UFUNCTION(BlueprintCallable)
 	void SlideInitiator();
-	
-	
-	
-	
-	void TimelineForSliding();
-	
-	*/
+	void TimelineForSliding();	
+	FTimerHandle SlideTimer;
 	
 	//WALL RUNNING
 
@@ -238,6 +225,15 @@ public:
 	void TimelineForVaulting();
 	void VaultingFunctionInTimeline();
 	FTimerHandle VaultResetter;
+
+	//Climb			//WORK ON!!!!!!!!
+	void ForwardTracer();
+	void HeightTracer();
+
+	void GrabLedge();
+	void ExitLedge();
+	void GetStandingPoint();
+
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;

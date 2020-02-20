@@ -159,26 +159,22 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	HorizontalVelocity();
 	
-	//for sliding
-	//Vertical_Collision();	
-	//SlideInitiator();
-	
+
+
+	//SLIDING
+	Vertical_Collision();		
 	//Timeline like functions
-	//TimelineForSliding();
+	TimelineForSliding();
 	
 	
-
-
-
-
-	//vaulting
+	//VAULTING TIMELINE
 	TimelineForVaulting();
 
 
 
-	//for wall running timeline
+	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
-	//wall running
+	//WALLRUNNING
 	WallRunRaycast();
 	if (GetMovementComponent()->IsFalling() == false)
 	{
@@ -230,8 +226,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacterBase::CharcterJump);
 		PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacterBase::DontJump);
 
-	//	PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
-		//PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
+		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
+		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
 
 	}
@@ -302,7 +298,7 @@ void ACharacterBase::StaminaBar()
 // SLIDE!!!!!!!!!!!!!!!!
 
 
-/*
+
 void ACharacterBase::Slide()
 {
 
@@ -313,36 +309,49 @@ void ACharacterBase::Slide()
 	FCollisionQueryParams  CollisionP1;
 
 	
-	
-	
 	LeftShiftPressed = true;
-	ColliderCheckerMod = 150;
+	ColliderCheckerMod = 200;
 	float VelocityVector = GetVelocity().Size();
 	
 	if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
 	{
-
+		FastEnoughToSlide = true;
 		
 		FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 		LaunchCharacter(LaunchVelocity, true, false);
 						
-			PlayAnimMontage(IdleToSlide, 0.8f, NAME_None);
+			PlayAnimMontage(IdleToSlide, 0.6f, NAME_None);
 
 			SlideCollider();
 
 			//delay
-			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.8f, false);
+			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.6f, false);
 
 	}
-	
+	else
+	{
+		FastEnoughToSlide = false;
+	}
 
 }
-*/
+
+
+
+
+void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
+{
+
+	LeftShiftPressed = false;
+
+}
+
+
+
 
 void ACharacterBase::ResetTimer()
 {
-	/*
+	
 	GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
 	
 	//SUBJECT TO CHANGE!!!!!
@@ -351,58 +360,39 @@ void ACharacterBase::ResetTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);
-	*/
-}
-
-void ACharacterBase::ResetLeftRaycast()
-{
-
-	Leftwall_RaycastLengthChecker = -100.0f;
-
-
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(LeftRaycastResetter);
-	
-	//re-enables the execution of the delay function once Leftwall_RaycastLengthChecker=0;
-	ResettheLeftRaycast = true;
-}
-
-void ACharacterBase::ResetRightRaycast()
-{
-
-
-	Rightwall_RaycastLengthChecker = 100.0f;
-
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(RightRaycastResetter);
-	
-	//re-enables the execution of the delay function once Rightwall_RaycastLengthChecker=0;
-	ResettheRightRaycast = true;
-}
-
-
-
-/*
-void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
-{
-	
-	LeftShiftPressed = false;	
 	
 }
-*/
 
-/*
+
+
+
+
+
+
 void ACharacterBase::Vertical_Collision()
 {
-	
+	if (VerticalCollision == true)
+	{
+
+		//initiate the timeline
+		SlidingTimelineInitiate = true;
+
+
+	}
+
+
 	if (VerticalCollision == false)
 	{
+		//STOP the timeline
+		SlidingTimelineInitiate = false;
+
+
 		GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
 
 
 		//SUBJECT TO CHANGE!!!!!
 
-		//if (GetMesh()->GetRelativeTransform().GetLocation() != Meshlocation)
+		if (GetMesh()->GetRelativeTransform().GetLocation() != Meshlocation)
 		{
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 		}
@@ -410,17 +400,17 @@ void ACharacterBase::Vertical_Collision()
 	
 }
 
-*/
 
 
 
-/*
+//MIGHT HAVE TO FIX THIS
+
 void ACharacterBase::SlideColliderDoOnce()
 {
 	
 	if (SlideDooNce == true)
 	{
-		VerticalCollision = true;
+		VerticalCollision = false;
 		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
 		GetCapsuleComponent()->SetCapsuleSize(42, 96, true);
 		//line below SUBJECT TO CHANGE!!!!!
@@ -430,17 +420,19 @@ void ACharacterBase::SlideColliderDoOnce()
 	}
 	
 }
-*/
 
-/*
+
+
 void ACharacterBase::ResetSlideColliderDoOnce()
 {
 	
 	SlideDooNce = true;
 	
 }
-*/
-/*
+//!!!!!!!!!!!!!!!!!!!!
+
+
+
 void ACharacterBase::SlideCollider()
 {
 	
@@ -477,7 +469,7 @@ void ACharacterBase::SlideCollider()
 
 	//vertical raycast from the player
 	FHitResult Out2;
-	FVector Start2 = GetActorLocation() + FVector(0, 0, 44) + GetActorForwardVector()*50;
+	FVector Start2 = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector()*50);
 	FVector End2 = Start2 + GetActorUpVector() * 100;
 	
 
@@ -496,11 +488,6 @@ void ACharacterBase::SlideCollider()
 	
 
 	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Red, FLinearColor::Red, 5);
-
-		
-
-
-
 
 
 	if (VerticalCheckerIsHit == true)
@@ -596,8 +583,8 @@ void ACharacterBase::SlideCollider()
 	
 	
 }
-*/
-/*
+
+
 void ACharacterBase::SlideInitiator()
 {
 	
@@ -608,33 +595,27 @@ void ACharacterBase::SlideInitiator()
 	FVector Start = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector()*ColliderCheckerMod);
 	FVector End = Start + GetActorUpVector() * 100;
 
-	bool InitiatingCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
+	bool InitiatingCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
 
 	if (InitiatingCheckerIsHit == true)
 	{
-		if (Out.Actor->ActorHasTag("SLIDEDOWN") == true)
-		{
-
-			//CurveTimeline.PlayFromStart();
-			SlidingTimelineInitiate = true;
-		}
-		else if (Out.Actor->ActorHasTag("SLIDEDOWN") == false)
+		
+		if (Out.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
 			VerticalCollision = false;
 			ColliderCheckerMod = -30;
-			//CurveTimeline.Stop();
-			SlidingTimelineInitiate = false;
+			
 		}
 	}
 	else if (InitiatingCheckerIsHit == false)
 	{
 		VerticalCollision = false;
 		ColliderCheckerMod = -30;
-		//CurveTimeline.Stop();
-		SlidingTimelineInitiate = false;
+		
 	}
 	
 }
+
 
 
 void ACharacterBase::TimelineForSliding()
@@ -643,13 +624,44 @@ void ACharacterBase::TimelineForSliding()
 	{
 		SlideCollider();
 	}
-	
-		
+
+
+}
+//WALLRUN ABILITY
+
+
+
+
+
+
+
+
+void ACharacterBase::ResetLeftRaycast()
+{
+
+	Leftwall_RaycastLengthChecker = -100.0f;
+
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(LeftRaycastResetter);
+
+	//re-enables the execution of the delay function once Leftwall_RaycastLengthChecker=0;
+	ResettheLeftRaycast = true;
 }
 
-*/
+void ACharacterBase::ResetRightRaycast()
+{
 
-//WALLRUN ABILITY
+
+	Rightwall_RaycastLengthChecker = 100.0f;
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(RightRaycastResetter);
+
+	//re-enables the execution of the delay function once Rightwall_RaycastLengthChecker=0;
+	ResettheRightRaycast = true;
+}
+
 
 
 void ACharacterBase::Landed()
@@ -1124,6 +1136,36 @@ void ACharacterBase::VaultingFunctionInTimeline()
 	
 
 
+}
+
+void ACharacterBase::ForwardTracer()
+{
+
+
+
+
+
+
+}
+
+
+void ACharacterBase::HeightTracer()
+{
+
+
+
+}
+
+void ACharacterBase::GrabLedge()
+{
+}
+
+void ACharacterBase::ExitLedge()
+{
+}
+
+void ACharacterBase::GetStandingPoint()
+{
 }
 
 
