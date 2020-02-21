@@ -1201,12 +1201,24 @@ void ACharacterBase::HeightTracer()
 
 void ACharacterBase::GrabLedge()
 {
+
+
+
+
 }
 
 void ACharacterBase::ExitLedge()
 {
+
+
+
+
 }
 
 void ACharacterBase::GetStandingPoint()
 {
+
+
+
+
 }

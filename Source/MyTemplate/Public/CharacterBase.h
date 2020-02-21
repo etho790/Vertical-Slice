@@ -176,6 +176,15 @@ public:
 	FVector M_HeightLocation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool M_IsClimbingLedge;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool UseControllerRotationYaw;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool M_CanGrab;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool M_CanClimb;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
