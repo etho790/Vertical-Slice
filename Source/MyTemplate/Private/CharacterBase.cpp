@@ -191,7 +191,10 @@ void ACharacterBase::Tick(float DeltaTime)
 
 		}
 	}
-	
+
+	//Climbing
+	ForwardTracer();
+	HeightTracer();
 }
 
 
@@ -1207,30 +1210,71 @@ void ACharacterBase::GrabLedge()
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 	M_Hanging = true;
 
-
-	float relativeLocationX = (M_WallNormal * FVector(22, 22, 0)).X + M_WallLocation.X;
-	float relativeLocationY = M_WallLocation.Y + (M_WallNormal * FVector(22, 22, 0)).Y;
+	
+	float relativeLocationX = (UKismetMathLibrary::Multiply_VectorVector(M_WallNormal, FVector(22, 22, 0))).X + M_WallLocation.X;
+	float relativeLocationY = M_WallLocation.Y + (UKismetMathLibrary::Multiply_VectorVector(M_WallNormal, FVector(22, 22, 0))).Y;
 	float relativeLocationZ = M_HeightLocation.Z - 120.0f;
 
 
-	FRotator relativeRotation = UKismetMathLibrary::Conv_VectorToRotator(M_WallNormal);
+	FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(M_WallNormal);
+	
+	FRotator RelativeRotation = FRotator(Rotation.Roll, 0, Rotation.Yaw - 180);
+		
 
-	UKismetSystemLibrary::MoveComponentTo(GetCapsuleComponent(), FVector(relativeLocationX, relativeLocationY, relativeLocationZ),)
+	//SETTING THE LOCATION AND ROTATION OF THE CHARACTER WHILE CLIMBING
+	//SetActorRelativeRotation(RelativeRotation,false, NULL, ETeleportType:: None);
+	SetActorRelativeLocation(FVector(relativeLocationX, relativeLocationY, relativeLocationZ), false, NULL, ETeleportType::None);
+
+	GetCharacterMovement()->StopMovementImmediately();
+
+	GetWorld()->GetTimerManager().SetTimer(ClimbUpDelay, this, &ACharacterBase::ResetClimbUpDelay, 0.1f, false);
 
 }
+
+
+void ACharacterBase::ResetClimbUpDelay()
+{
+	DisableInput(NULL);
+	ClimbLedge();
+	GetWorld()->GetTimerManager().SetTimer(EnableInputDelay, this, &ACharacterBase::ResetEnableInputDelay, 1.0f, false);
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(ClimbUpDelay);
+}
+
+void ACharacterBase::ClimbLedge()
+{
+	if (M_IsClimbingLedge == false)
+	{
+		M_IsClimbingLedge = true;
+		M_CanClimb = true;
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+		M_Hanging = false;
+
+	}
+}
+
+void ACharacterBase::ResetEnableInputDelay()
+{
+	EnableInput(NULL);
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(EnableInputDelay);
+}
+
 
 void ACharacterBase::ExitLedge()
 {
-
-
-
+	M_IsClimbingLedge = false;
+	M_CanClimb = false;
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 
 }
 
+
 void ACharacterBase::GetStandingPoint()
 {
-
-
-
+	FRotator RelRotation = FRotator(GetCapsuleComponent()->K2_GetComponentRotation().Roll, 0, GetCapsuleComponent()->K2_GetComponentRotation().Yaw);
+	
+	GetCapsuleComponent()->SetRelativeRotation(RelRotation, false, NULL, ETeleportType::None);
 
 }

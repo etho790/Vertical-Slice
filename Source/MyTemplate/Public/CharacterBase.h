@@ -23,7 +23,6 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 
-
 #include "CharacterBase.generated.h"
 
 
@@ -225,7 +224,6 @@ public:
 	FTimerHandle SlideTimer;
 	
 	//WALL RUNNING
-
 	float forward_WallJumpVel;
 	float Side_WallJumpVel;
 	FTimerHandle LeftRaycastResetter;
@@ -248,9 +246,15 @@ public:
 	void HeightTracer();
 
 	void GrabLedge();
+	UFUNCTION(BlueprintCallable)
 	void ExitLedge();
+	void ClimbLedge();
 	void GetStandingPoint();
-
+	FTimerHandle ClimbUpDelay;
+	FTimerHandle EnableInputDelay;
+	void ResetClimbUpDelay();
+	void ResetEnableInputDelay();
+	
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
