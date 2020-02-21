@@ -1201,9 +1201,21 @@ void ACharacterBase::HeightTracer()
 
 void ACharacterBase::GrabLedge()
 {
+	UseControllerRotationYaw = false;
+	GetCharacterMovement()->StopMovementImmediately();
+	M_CanGrab = true;
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+	M_Hanging = true;
 
 
+	float relativeLocationX = (M_WallNormal * FVector(22, 22, 0)).X + M_WallLocation.X;
+	float relativeLocationY = M_WallLocation.Y + (M_WallNormal * FVector(22, 22, 0)).Y;
+	float relativeLocationZ = M_HeightLocation.Z - 120.0f;
 
+
+	FRotator relativeRotation = UKismetMathLibrary::Conv_VectorToRotator(M_WallNormal);
+
+	UKismetSystemLibrary::MoveComponentTo(GetCapsuleComponent(), FVector(relativeLocationX, relativeLocationY, relativeLocationZ),)
 
 }
 
