@@ -22,6 +22,7 @@
 #include "Components/CapsuleComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "CharacterBase.generated.h"
 
@@ -134,6 +135,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
 		class UAnimMontage* VaultAnim;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+		class UAnimMontage* RamAnim;
+	
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sounds, meta = (AllowPrivateAccess = "true"))
+	class USoundBase* RamSound;
+	
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CameraShake, meta = (AllowPrivateAccess = "true"))
+		TSubclassOf<class UCameraShake> CamShake;
+		
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
+		UParticleSystem* StunFromRam;
 
 	//COLLISION FUNCTION
 	UFUNCTION()
@@ -184,6 +198,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool M_CanClimb;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool RamUse;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool HitTheOtherPlayer;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -241,7 +259,7 @@ public:
 	void VaultingFunctionInTimeline();
 	FTimerHandle VaultResetter;
 
-	//Climb			//WORK ON!!!!!!!!
+	//Climb			
 	void ForwardTracer();
 	void HeightTracer();
 
@@ -255,12 +273,29 @@ public:
 	void ResetClimbUpDelay();
 	void ResetEnableInputDelay();
 	
+	//Ram -Inate Ability
+	void Ram();
+	void TimelineForCharging();
+	void TimelineEndOfRamEffects();
+	float TimelineDuration;
+	FTimerHandle EndOfRamDelay;
+	void ResetRamEndDelay();
+
+	FTimerHandle RamParticlesDelay;
+	void ResetRamParticlesDelay();
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
 	bool WallRunTimelineInitiate;
 	bool VaultTimelineInitiate;
-	
+	bool ChargingTimelineInitiate;
+	bool RamEffects_TimelineInitiate;
+
+
+
+
 	bool ResettheLeftRaycast;
 	bool ResettheRightRaycast;
+
+	ACharacterBase* OtherHitPlayer;
 };

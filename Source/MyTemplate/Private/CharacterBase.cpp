@@ -104,7 +104,15 @@ void ACharacterBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
 
 void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
-	//EMPTY
+	
+	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
+
+	if (OtherHitPlayer != NULL)
+	{
+		//do a check if the hit is not this character but first test it 
+		HitTheOtherPlayer = false;
+
+	}
 
 
 
@@ -146,31 +154,29 @@ void ACharacterBase::BeginPlay()
 	//walljump off velocity floats
 	forward_WallJumpVel = 1500.0f;
 	Side_WallJumpVel = 2000.0f;
+
+
+	//for the ram timeline
+	TimelineDuration = 0;
+	OtherHitPlayer = nullptr;
 }
 
 // Called every frame
 void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	
+		
 	StaminaBar();
-	
 
 	HorizontalVelocity();
 	
-
-
 	//SLIDING
 	Vertical_Collision();		
 	//Timeline like functions
 	TimelineForSliding();
-	
-	
+
 	//VAULTING TIMELINE
 	TimelineForVaulting();
-
-
 
 	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
@@ -195,6 +201,10 @@ void ACharacterBase::Tick(float DeltaTime)
 	//Climbing
 	ForwardTracer();
 	HeightTracer();
+
+	//ram
+	TimelineForCharging();
+	TimelineEndOfRamEffects();
 }
 
 
@@ -232,7 +242,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
 		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
-
+		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACharacterBase::Ram);
 	}
 
 
@@ -898,7 +908,15 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent * HitComp, AA
 		}
 	}
 
-	
+	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
+
+	if (OtherHitPlayer != NULL)
+	{
+		//do a check if the hit is not this character but first test it 
+		HitTheOtherPlayer = true;
+			   
+	}
+
 }
 
 
@@ -1262,6 +1280,7 @@ void ACharacterBase::ResetEnableInputDelay()
 }
 
 
+
 void ACharacterBase::ExitLedge()
 {
 	M_IsClimbingLedge = false;
@@ -1278,3 +1297,132 @@ void ACharacterBase::GetStandingPoint()
 	GetCapsuleComponent()->SetRelativeRotation(RelRotation, false, NULL, ETeleportType::None);
 
 }
+
+
+//RAM
+void ACharacterBase::Ram()
+{
+	if (M_Hanging == false)
+	{
+		if (Stamina > 0.3)
+		{
+			if (GetCharacterMovement()->IsFalling() == false)
+			{
+				float Ram_animationLength = 1.0f;
+
+				Stamina = Stamina - 0.3f;
+				PlayAnimMontage(RamAnim, Ram_animationLength, NAME_None);
+				RamUse = true;
+
+				//initiate the charging time line
+				ChargingTimelineInitiate = true;
+
+				//delay
+				GetWorld()->GetTimerManager().SetTimer(EndOfRamDelay, this, &ACharacterBase::ResetRamEndDelay, Ram_animationLength, false);
+
+			}
+		}
+	}
+}
+
+
+void ACharacterBase::ResetRamEndDelay()
+{
+	RamUse = false;
+	//STOP the charging time line
+	ChargingTimelineInitiate = false;
+
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(EndOfRamDelay);
+}
+
+
+void ACharacterBase::TimelineForCharging()
+{
+	if (ChargingTimelineInitiate == true)
+	{
+		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
+		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, -500);
+		LaunchCharacter(LaunchVelocity, true, true);
+
+
+		if (HitTheOtherPlayer == true)
+		{
+
+			FVector ForwardVelocity = Dash->GetForwardVector() * 3500;
+			FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
+	
+			if (OtherHitPlayer != nullptr && OtherHitPlayer!=this)
+			{
+
+				//sends the other player flying
+				OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
+				
+				
+				
+				//play sound
+				UWorld* WorldContextObject = GetWorld();
+				UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
+
+				//camera shake
+				UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+			}
+
+			
+			
+			
+			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
+			{
+				OtherHitPlayer->DisableInput(NULL);
+			}
+			//initiate the endofRam time line
+			RamEffects_TimelineInitiate = true;
+		}
+	}
+
+}
+
+void ACharacterBase::TimelineEndOfRamEffects()
+{
+	if (RamEffects_TimelineInitiate == true)
+	{
+		TimelineDuration += 0.1f;
+
+		if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
+		{
+			if (OtherHitPlayer->GetCharacterMovement()->IsFalling() == false)
+			{
+				float delay = 0.5f;
+				//delay
+				GetWorld()->GetTimerManager().SetTimer(RamParticlesDelay, this, &ACharacterBase::ResetRamParticlesDelay, delay, false);
+
+			}
+		}
+
+		if (TimelineDuration >= 5)
+		{
+			//Enabling Input in other player
+			if (OtherHitPlayer != nullptr)
+			{
+				OtherHitPlayer->EnableInput(NULL);
+			}
+
+			TimelineDuration = 0;
+			RamEffects_TimelineInitiate = false;
+		}
+	}
+}
+
+
+
+void ACharacterBase::ResetRamParticlesDelay()
+{
+	 UWorld* WorldContextObject = GetWorld();
+	UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, StunFromRam, OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), FVector(5, 5, 5), false, EPSCPoolMethod::None);
+
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(RamParticlesDelay);
+}
+
