@@ -1387,7 +1387,7 @@ void ACharacterBase::TimelineEndOfRamEffects()
 {
 	if (RamEffects_TimelineInitiate == true)
 	{
-		TimelineDuration += 0.1f;
+		TimelineDuration += 0.005f;
 
 		if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 		{
