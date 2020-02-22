@@ -193,7 +193,15 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 
 		if (bHasSolution)
 		{
-			Player->LaunchCharacter(LaunchVelocity * GetWorld()->GetDeltaSeconds() * 65, true, true);
+			//swing to location
+			//Player->LaunchCharacter( (GetClosestGrapplingPoint()->GetActorLocation() - Player->// GetActorLocation()  ), true, true);
+			
+
+			//teleport to location
+			FVector NewLocation = FMath::Lerp<FVector, float>(Player->GetActorLocation(), GetClosestGrapplingPoint()->GetActorLocation(), 1.0f);
+			Player->SetActorLocation(NewLocation);
+			
+			
 			GrapplingHook->SetVisibility(false);
 			bIsGrappling = false;
 			GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
