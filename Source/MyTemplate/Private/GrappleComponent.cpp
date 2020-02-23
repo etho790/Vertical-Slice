@@ -19,6 +19,7 @@ UGrappleComponent::UGrappleComponent()
 	GrapplingHook->CableLength = 0;
 
 	ThrowGrapplingHookTimeline = CreateDefaultSubobject<UTimelineComponent>("ThrowGrapplingHookTimeline");
+	GrappleActorMoveTimeline = CreateDefaultSubobject<UTimelineComponent>("GrappleActorMoveTimeline");
 }
 
 
@@ -41,6 +42,11 @@ void UGrappleComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	FindGrapplingPoints();
+
+	if (bIsGrappling)
+	{
+		(LaunchCharacterTowardsTarget());
+	}
 }
 
 void UGrappleComponent::FindGrapplingPoints()
@@ -167,7 +173,7 @@ void UGrappleComponent::Grapple()
 
 			// launch the player when the grappling hook is at target location
 			FOnTimelineEvent TimelineFinished;
-			TimelineFinished.BindUFunction(this, FName("LaunchCharacterTowardsTarget"));
+			//TimelineFinished.BindUFunction(this, FName("LaunchCharacterTowardsTarget"));
 			ThrowGrapplingHookTimeline->SetTimelineFinishedFunc(TimelineFinished);
 
 			bIsGrappling = true;
@@ -192,21 +198,30 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 			0.0f, 0.5f);
 
 		if (bHasSolution)
-		{
-			//swing to location
-			//Player->LaunchCharacter( (GetClosestGrapplingPoint()->GetActorLocation() - Player->// GetActorLocation()  ), true, true);
+		{			
 			
+			FVector PlayerLocation = Player->GetActorLocation();
+			bool VChecker = UKismetMathLibrary::EqualEqual_VectorVector(GetClosestGrapplingPoint()->GetActorLocation(), PlayerLocation, 10) ;
 
-			//teleport to location
-			FVector NewLocation = FMath::Lerp<FVector, float>(Player->GetActorLocation(), GetClosestGrapplingPoint()->GetActorLocation(), 1.0f);
-			Player->SetActorLocation(NewLocation);
-			
-			
-			GrapplingHook->SetVisibility(false);
-			bIsGrappling = false;
-			GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
+			if (VChecker == false)
+			{
+				FVector LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) * ((GetWorld()->GetDeltaSeconds() * 250));
+				Player->LaunchCharacter(LaunchVel, true, true);
+			}
+			else if (VChecker == true)
+			{
+				GrapplingHook->SetVisibility(false);
+				bIsGrappling = false;
+				GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
+			}
 		}
 	}
+
+	
+
+	
+
+
 }
 
 void UGrappleComponent::ThrowGrapplingHook(float Value)

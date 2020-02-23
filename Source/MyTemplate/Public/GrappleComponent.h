@@ -24,9 +24,14 @@ private:
 
 	UPROPERTY()
 		class UTimelineComponent* ThrowGrapplingHookTimeline = nullptr;
+	UPROPERTY()
+		class UTimelineComponent* GrappleActorMoveTimeline = nullptr;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 		UCurveFloat* ThrowTimeCurve = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+		UCurveFloat* MoveCurve = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		TArray<float> Angles;
@@ -34,6 +39,16 @@ private:
 		TArray<class AGrapplingPoint*> GrapplingPoints;
 
 	bool bIsGrappling = false;
+
+
+	
+	// Are we hooked on something?
+	bool bHooked;
+	// Is the hooked finished moving to the hit location?
+	bool bHookedFinished;
+
+
+
 
 protected:
 	// Called when the game starts
@@ -64,4 +79,6 @@ public:
 
 	UFUNCTION()
 		void ThrowGrapplingHook(float Value);
+
+	
 };
