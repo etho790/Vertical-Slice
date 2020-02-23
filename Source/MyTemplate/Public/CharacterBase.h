@@ -67,6 +67,9 @@ public:
 		TSubclassOf<UUserWidget> Player_UICLASS;
 
 
+	//christian
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UGrappleComponent* GrappleComponent;
 	
 	
 	bool EndOfGame;
@@ -190,8 +193,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool M_IsClimbingLedge;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool UseControllerRotationYaw;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool M_CanGrab;

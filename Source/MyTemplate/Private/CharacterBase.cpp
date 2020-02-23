@@ -6,6 +6,13 @@
 
 #include "..\Public\CharacterBase.h"
 
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/InputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GrappleComponent.h"
 
 
 
@@ -72,10 +79,15 @@ ACharacterBase::ACharacterBase()
 	Front->SetRelativeLocation(FVector(60.0f, 10, 30.f));
 	Front->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.f));
 
+	//CHRISTIAN
+	GrappleComponent = CreateDefaultSubobject<UGrappleComponent>(TEXT("GrappleComponent"));
 	
+
+
 	Stamina = 1.0f;
 	SlideDooNce = true;
 	EndOfGame = false;
+
 
 
 
@@ -241,6 +253,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
 		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
+		PlayerInputComponent->BindAction("Grapple", IE_Pressed, GrappleComponent, &UGrappleComponent::Grapple);
+
 		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACharacterBase::Ram);
 	}
 
