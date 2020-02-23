@@ -35,7 +35,6 @@ class MYTEMPLATE_API ACharacterBase : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ACharacterBase();
 
 
@@ -67,11 +66,8 @@ public:
 		TSubclassOf<UUserWidget> Player_UICLASS;
 
 
-	//christian
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UGrappleComponent* GrappleComponent;
-	
-	
+
+
 	bool EndOfGame;
 
 
@@ -140,15 +136,15 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
 		class UAnimMontage* RamAnim;
-	
-	
+
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sounds, meta = (AllowPrivateAccess = "true"))
-	class USoundBase* RamSound;
-	
-	
+		class USoundBase* RamSound;
+
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CameraShake, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<class UCameraShake> CamShake;
-		
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
 		UParticleSystem* StunFromRam;
 
@@ -160,7 +156,7 @@ public:
 	UFUNCTION()
 		void OnBeginOverlapForFrontBox(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
-	
+
 	//COLLISION FUNCTION
 	UFUNCTION()
 		void OnOverlapEndForFrontBox(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
@@ -174,7 +170,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ColliderCheckerMod;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Leftwall_RaycastLengthChecker;
 
@@ -185,24 +181,32 @@ public:
 		bool FastEnoughToSlide;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector M_WallLocation;
+		FVector M_WallLocation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector M_WallNormal;
+		FVector M_WallNormal;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector M_HeightLocation;
+		FVector M_HeightLocation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool M_IsClimbingLedge;
+		bool M_IsClimbingLedge;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool UseControllerRotationYaw;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool M_CanGrab;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool M_CanClimb;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool RamUse;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool HitTheOtherPlayer;
+
+	
+
+	//christian
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UGrappleComponent* GrappleComponent;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -220,11 +224,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	void Moveforward(float axis);
-	void MoveRight(float axis);	
+	void MoveRight(float axis);
 	void HorizontalVelocity();
-	
+
 	//JUMP
 	void CharcterJump();
 	void DontJump();
@@ -232,16 +236,16 @@ public:
 	//SLIDE	
 	void Slide();
 	void DontSlide();
-	void Vertical_Collision();		
+	void Vertical_Collision();
 	void SlideColliderDoOnce();
-	void ResetSlideColliderDoOnce();	
-	UFUNCTION( BlueprintCallable)
-	void SlideCollider();	
+	void ResetSlideColliderDoOnce();
 	UFUNCTION(BlueprintCallable)
-	void SlideInitiator();
-	void TimelineForSliding();	
+		void SlideCollider();
+	UFUNCTION(BlueprintCallable)
+		void SlideInitiator();
+	void TimelineForSliding();
 	FTimerHandle SlideTimer;
-	
+
 	//WALL RUNNING
 	float forward_WallJumpVel;
 	float Side_WallJumpVel;
@@ -266,14 +270,14 @@ public:
 
 	void GrabLedge();
 	UFUNCTION(BlueprintCallable)
-	void ExitLedge();
+		void ExitLedge();
 	void ClimbLedge();
 	void GetStandingPoint();
 	FTimerHandle ClimbUpDelay;
 	FTimerHandle EnableInputDelay;
 	void ResetClimbUpDelay();
 	void ResetEnableInputDelay();
-	
+
 	//Ram -Inate Ability
 	void Ram();
 	void TimelineForCharging();

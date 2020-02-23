@@ -267,7 +267,7 @@ void ACharacterBase::Moveforward(float axis)
 	{
 
 		AddMovementInput(GetActorForwardVector() * axis);
-		
+
 	}
 
 }
@@ -286,11 +286,11 @@ void ACharacterBase::MoveRight(float axis)
 void ACharacterBase::HorizontalVelocity()
 {
 	//Characters HorizontalVelocity
-	
+
 	FVector VelocityVector = GetVelocity();
 	CharacterVelocity = VelocityVector.Size();
 	VaultVelocity = CharacterVelocity;
-	
+
 
 }
 
@@ -300,9 +300,9 @@ void ACharacterBase::HorizontalVelocity()
 
 void ACharacterBase::StaminaBar()
 {
-			//because its being called every tick, refix it, its reset
+	//because its being called every tick, refix it, its reset
 
-	
+
 	if (Stamina < 0)
 	{
 		Stamina = 0;
@@ -314,7 +314,7 @@ void ACharacterBase::StaminaBar()
 		Stamina = Stamina + 0.0009f;
 	}
 
-	
+
 }
 
 
@@ -328,31 +328,31 @@ void ACharacterBase::StaminaBar()
 void ACharacterBase::Slide()
 {
 
-	
+
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
 	FCollisionQueryParams  CollisionP1;
 
-	
+
 	LeftShiftPressed = true;
 	ColliderCheckerMod = 200;
 	float VelocityVector = GetVelocity().Size();
-	
+
 	if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
 	{
 		FastEnoughToSlide = true;
-		
+
 		FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 		LaunchCharacter(LaunchVelocity, true, false);
-						
-			PlayAnimMontage(IdleToSlide, 0.6f, NAME_None);
 
-			SlideCollider();
+		PlayAnimMontage(IdleToSlide, 0.6f, NAME_None);
 
-			//delay
-			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.6f, false);
+		SlideCollider();
+
+		//delay
+		GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.6f, false);
 
 	}
 	else
@@ -377,16 +377,16 @@ void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
 
 void ACharacterBase::ResetTimer()
 {
-	
+
 	GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
-	
+
 	//SUBJECT TO CHANGE!!!!!
 	GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 	//UE_LOG(LogTemp, Warning, TEXT("Your message"));
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);
-	
+
 }
 
 
@@ -423,7 +423,7 @@ void ACharacterBase::Vertical_Collision()
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 		}
 	}
-	
+
 }
 
 
@@ -433,7 +433,7 @@ void ACharacterBase::Vertical_Collision()
 
 void ACharacterBase::SlideColliderDoOnce()
 {
-	
+
 	if (SlideDooNce == true)
 	{
 		VerticalCollision = false;
@@ -444,16 +444,16 @@ void ACharacterBase::SlideColliderDoOnce()
 
 		SlideDooNce = false;
 	}
-	
+
 }
 
 
 
 void ACharacterBase::ResetSlideColliderDoOnce()
 {
-	
+
 	SlideDooNce = true;
-	
+
 }
 //!!!!!!!!!!!!!!!!!!!!
 
@@ -461,19 +461,19 @@ void ACharacterBase::ResetSlideColliderDoOnce()
 
 void ACharacterBase::SlideCollider()
 {
-	
+
 	TArray<AActor*> none;
-	
+
 	//horizontal raycast
 	FHitResult Out1;
-	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);	
+	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
 	FCollisionQueryParams  CollisionP1;
 
 	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 	bool HorizontalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
-	
+
 
 
 	if (HorizontalCheckerIsHit == true)
@@ -482,7 +482,7 @@ void ACharacterBase::SlideCollider()
 		{
 			CollisionsForSliding = true;
 		}
-		else if(Out1.Actor->ActorHasTag("SLIDEDOWN") == false)
+		else if (Out1.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
 			CollisionsForSliding = false;
 		}
@@ -495,23 +495,23 @@ void ACharacterBase::SlideCollider()
 
 	//vertical raycast from the player
 	FHitResult Out2;
-	FVector Start2 = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector()*50);
+	FVector Start2 = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector() * 50);
 	FVector End2 = Start2 + GetActorUpVector() * 100;
-	
 
-	
+
+
 
 	bool VerticalCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start2, End2, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out2, true, FLinearColor::Red, FLinearColor::Red, 5);
-	
-	
+
+
 
 	//vertical raycast behind the player
 	FHitResult Out3;
 	FVector Start3 = GetActorLocation() + GetActorForwardVector() * -100;
 	FVector End3 = Start3 + GetActorUpVector() * 100;
-	
 
-	
+
+
 
 	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Red, FLinearColor::Red, 5);
 
@@ -524,9 +524,9 @@ void ACharacterBase::SlideCollider()
 
 			VerticalCollision = true;
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
-			
+
 			//line below SUBJECT TO CHANGE!!!!!
-			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X-70.0f, Meshlocation.Y, Meshlocation.Z+70.0f), false, 0, ETeleportType::TeleportPhysics);
+			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
 			if (MoveForwards == true)
 			{
 				//do once RESET
@@ -561,9 +561,9 @@ void ACharacterBase::SlideCollider()
 					//do once RESET
 					ResetSlideColliderDoOnce();
 				}
-			}			
+			}
 		}
-		
+
 	}
 	if (VerticalCheckerIsHit == false)
 	{
@@ -606,40 +606,40 @@ void ACharacterBase::SlideCollider()
 		SlideColliderDoOnce();
 	}
 
-	
-	
+
+
 }
 
 
 void ACharacterBase::SlideInitiator()
 {
-	
+
 	TArray<AActor*> none;
 
 	//horizontal raycast
 	FHitResult Out;
-	FVector Start = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector()*ColliderCheckerMod);
+	FVector Start = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector() * ColliderCheckerMod);
 	FVector End = Start + GetActorUpVector() * 100;
 
 	bool InitiatingCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
 
 	if (InitiatingCheckerIsHit == true)
 	{
-		
+
 		if (Out.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
 			VerticalCollision = false;
 			ColliderCheckerMod = -30;
-			
+
 		}
 	}
 	else if (InitiatingCheckerIsHit == false)
 	{
 		VerticalCollision = false;
 		ColliderCheckerMod = -30;
-		
+
 	}
-	
+
 }
 
 
@@ -698,13 +698,13 @@ void ACharacterBase::Landed()
 	OnTheWall = false;
 	//stop time line
 	WallRunTimelineInitiate = false;
-	
+
 }
 
 
 void ACharacterBase::WallRunner()
 {
-	
+
 	if (CloseToTheWall == true)
 	{
 		OnTheWall = true;
@@ -716,13 +716,13 @@ void ACharacterBase::WallRunner()
 		OnTheWall = false;
 
 	}
-	
+
 }
 
 //HAVENT ADDED IN THE TIMELINE NOR PUT THIS IN THE TICK FUNCTION
 void ACharacterBase::WallRunRaycast()
 {
-	
+
 	TArray<AActor*> none;
 
 	//left raycast
@@ -730,9 +730,9 @@ void ACharacterBase::WallRunRaycast()
 	FVector Start = GetActorLocation();
 	FVector End = Start + (GetActorRightVector() * Leftwall_RaycastLengthChecker);
 	FCollisionQueryParams  CollisionP;
-	
 
-	bool LeftChecker =GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+
+	bool LeftChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
 
 	//right raycast
@@ -770,8 +770,8 @@ void ACharacterBase::WallRunRaycast()
 		{
 			if (ResettheLeftRaycast == true)
 			{
-			
-			//delay
+
+				//delay
 				GetWorld()->GetTimerManager().SetTimer(LeftRaycastResetter, this, &ACharacterBase::ResetLeftRaycast, 0.5f, false);
 				ResettheLeftRaycast = false;
 			}
@@ -800,7 +800,7 @@ void ACharacterBase::WallRunRaycast()
 		}
 		if (RightChecker == false)
 		{
-			
+
 
 
 
@@ -824,12 +824,12 @@ void ACharacterBase::WallRunRaycast()
 			}
 		}
 	}
-	
+
 }
 
 void ACharacterBase::TimelineForWallRunning()
 {
-	
+
 	if (WallRunTimelineInitiate == true)
 	{
 		if (MoveForwards == true)
@@ -837,25 +837,25 @@ void ACharacterBase::TimelineForWallRunning()
 			FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 			FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 			LaunchCharacter(LaunchVelocity, true, true);
-			
+
 		}
 		if (MoveForwards == false)
 		{
-			
+
 			FVector LaunchVelocity = FVector(0, 0, -250);
 			LaunchCharacter(LaunchVelocity, false, false);
 			GetCharacterMovement()->GravityScale = 3;
 		}
 	}
-	
+
 }
 
 
 //HERE!!!!!!!!!!!!
 //OVERLAP FOR WALLRUNNING 
-void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult & SweepResult)
+void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
 {
-	
+
 	if (OtherActor->ActorHasTag("RUNWALL") == false)
 	{
 		MoveForwards = false;
@@ -923,19 +923,19 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent * HitComp, AA
 
 
 	//HITTING THE OTHERPLAYER TO SEND THEM FLYING
-	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
+	OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
 
 	if (OtherHitPlayer != NULL)
 	{
-		
+
 		HitTheOtherPlayer = true;
-			   
+
 	}
 
 	//RAMMING INTO WALLS
 	if (RamUse == true)
 	{
-		
+
 
 
 
@@ -948,7 +948,7 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent * HitComp, AA
 //JUMP!!!!!!!!!!!!!!!
 void ACharacterBase::CharcterJump()
 {
-	
+
 	if (CloseToTheWall == true)
 	{
 		if (LeftWall == true)
@@ -1018,25 +1018,25 @@ void ACharacterBase::CharcterJump()
 
 	}
 	//START THE VAULT TIMELINE!!!!!!!!!!!!
-	
+
 	VaultTimelineInitiate = true;
 
-	
+
 
 }
 
 void ACharacterBase::DontJump()
 {
-	
+
 	StopJumping();
-	
+
 }
 
 //Vaulting
 void ACharacterBase::TimelineForVaulting()
 {
-	
-	
+
+
 
 
 	if (VaultTimelineInitiate == true)
@@ -1048,14 +1048,14 @@ void ACharacterBase::TimelineForVaulting()
 		FCollisionQueryParams  CollisionP;
 
 		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
-		
+
 		bool Horizontal_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
 		if (Horizontal_VaultCheckerIsHit == true)
 		{
 			if (Out.GetActor()->ActorHasTag("Vault") == true)
 			{
-				
+
 				FVector WallLocation = Out.Location;
 				FVector WallNormal = Out.Normal;
 
@@ -1110,15 +1110,15 @@ void ACharacterBase::TimelineForVaulting()
 						}
 						else
 						{
-							WallThick = true;							
+							WallThick = true;
 						}
-						
-						
+
+
 						if (ShouldClimb == false)
 						{
 							VaultingFunctionInTimeline();
 						}
-						
+
 					}
 					if (WallThicknessChecker_IsHit == false)
 					{
@@ -1157,29 +1157,29 @@ void ACharacterBase::TimelineForVaulting()
 
 
 	}
-	
+
 
 }
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
 
-		if (WallThick == false)
-		{
-			GetCharacterMovement()->GravityScale = 0;
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
-			PlayAnimMontage(VaultAnim, 1.5f, NAME_None);
-			GetWorld()->GetTimerManager().SetTimer(VaultResetter, this, &ACharacterBase::ResetVault, 0.2f, false);
+	if (WallThick == false)
+	{
+		GetCharacterMovement()->GravityScale = 0;
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+		PlayAnimMontage(VaultAnim, 1.5f, NAME_None);
+		GetWorld()->GetTimerManager().SetTimer(VaultResetter, this, &ACharacterBase::ResetVault, 0.2f, false);
 
-		}
+	}
 
 }
 
 
 void ACharacterBase::ResetVault()
 {
-	FVector LaunchVeloc = Dash->GetForwardVector()* VaultVelocity;
+	FVector LaunchVeloc = Dash->GetForwardVector() * VaultVelocity;
 	LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 800), true, true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
@@ -1220,9 +1220,9 @@ void ACharacterBase::HeightTracer()
 {
 	TArray<AActor*> none;
 	FHitResult Out;
-	FVector Start = FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 500)+ (UKismetMathLibrary::GetForwardVector(GetActorRotation()) * 70);
-	
-	FVector End = FVector(Start.X , Start.Y , Start.Z -500);
+	FVector Start = FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 500) + (UKismetMathLibrary::GetForwardVector(GetActorRotation()) * 70);
+
+	FVector End = FVector(Start.X, Start.Y, Start.Z - 500);
 
 	//ask if TraceTypeQuery3 is a custom trace channel
 	bool VerticalLineCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery3, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
@@ -1230,10 +1230,10 @@ void ACharacterBase::HeightTracer()
 	if (VerticalLineCheckerIsHit == true)
 	{
 		M_HeightLocation = Out.Location;
-		
+
 		float val = GetMesh()->GetSocketLocation("PelvisSocket").Z - M_HeightLocation.Z;
 		float M_ClimbHeightRange = -50;
-		if (UKismetMathLibrary::InRange_FloatFloat(val, M_ClimbHeightRange, 0, true, true)==true)
+		if (UKismetMathLibrary::InRange_FloatFloat(val, M_ClimbHeightRange, 0, true, true) == true)
 		{
 			if (M_IsClimbingLedge == false)
 			{
@@ -1251,16 +1251,16 @@ void ACharacterBase::GrabLedge()
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 	M_Hanging = true;
 
-	
+
 	float relativeLocationX = (UKismetMathLibrary::Multiply_VectorVector(M_WallNormal, FVector(22, 22, 0))).X + M_WallLocation.X;
 	float relativeLocationY = M_WallLocation.Y + (UKismetMathLibrary::Multiply_VectorVector(M_WallNormal, FVector(22, 22, 0))).Y;
 	float relativeLocationZ = M_HeightLocation.Z - 120.0f;
 
 
 	FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(M_WallNormal);
-	
+
 	FRotator RelativeRotation = FRotator(Rotation.Roll, 0, Rotation.Yaw - 180);
-		
+
 
 	//SETTING THE LOCATION AND ROTATION OF THE CHARACTER WHILE CLIMBING
 	//SetActorRelativeRotation(RelativeRotation,false, NULL, ETeleportType:: None);
@@ -1316,7 +1316,7 @@ void ACharacterBase::ExitLedge()
 void ACharacterBase::GetStandingPoint()
 {
 	FRotator RelRotation = FRotator(GetCapsuleComponent()->K2_GetComponentRotation().Roll, 0, GetCapsuleComponent()->K2_GetComponentRotation().Yaw);
-	
+
 	GetCapsuleComponent()->SetRelativeRotation(RelRotation, false, NULL, ETeleportType::None);
 
 }
@@ -1375,15 +1375,15 @@ void ACharacterBase::TimelineForCharging()
 
 			FVector ForwardVelocity = Dash->GetForwardVector() * 3500;
 			FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
-	
-			if (OtherHitPlayer != nullptr && OtherHitPlayer!=this)
+
+			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 			{
 
 				//sends the other player flying
 				OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
-				
-				
-				
+
+
+
 				//play sound
 				UWorld* WorldContextObject = GetWorld();
 				UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
@@ -1392,9 +1392,9 @@ void ACharacterBase::TimelineForCharging()
 				UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
 			}
 
-			
-			
-			
+
+
+
 			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 			{
 				OtherHitPlayer->DisableInput(NULL);
@@ -1441,13 +1441,13 @@ void ACharacterBase::TimelineEndOfRamEffects()
 
 void ACharacterBase::ResetRamParticlesDelay()
 {
-	 UWorld* WorldContextObject = GetWorld();
+	UWorld* WorldContextObject = GetWorld();
 	UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, StunFromRam, OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), FVector(5, 5, 5), false, EPSCPoolMethod::None);
-	
+
 	//USceneComponent* scenecomp;
 	//UGameplayStatics::SpawnEmitterAttached(StunFromRam, scenecomp, OtherHitPlayer->GetMesh()->GetSocketByName("End"), OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), EAttachLocation::SnapToTarget, true, EPSCPoolMethod::None);
-	
-	
+
+
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(RamParticlesDelay);
 }
