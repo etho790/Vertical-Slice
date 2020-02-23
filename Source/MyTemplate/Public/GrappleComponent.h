@@ -71,6 +71,8 @@ public:
 		class AGrapplingPoint* GetClosestGrapplingPoint() const;
 
 	void AddToGrapplingPoints(class AGrapplingPoint* GrapplingPoint);
+	
+	
 	void RemoveFromGrapplingPoints(class AGrapplingPoint* GrapplingPoint);
 	void Grapple();
 

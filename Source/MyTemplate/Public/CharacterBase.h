@@ -66,6 +66,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		TSubclassOf<UUserWidget> Player_UICLASS;
 
+
+	//christian
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UGrappleComponent* GrappleComponent;
 	

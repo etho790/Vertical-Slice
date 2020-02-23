@@ -79,6 +79,7 @@ ACharacterBase::ACharacterBase()
 	Front->SetRelativeLocation(FVector(60.0f, 10, 30.f));
 	Front->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.f));
 
+	//CHRISTIAN
 	GrappleComponent = CreateDefaultSubobject<UGrappleComponent>(TEXT("GrappleComponent"));
 	
 
