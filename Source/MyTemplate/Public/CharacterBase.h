@@ -298,4 +298,5 @@ private:
 	bool ResettheRightRaycast;
 
 	ACharacterBase* OtherHitPlayer;
+	
 };

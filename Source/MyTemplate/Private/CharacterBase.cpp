@@ -106,16 +106,14 @@ void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedCom
 {
 	
 	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
-
+	 //RAMING INTO OTHER PLAYER AND SEND THEM FLYING
 	if (OtherHitPlayer != NULL)
 	{
-		//do a check if the hit is not this character but first test it 
+		
 		HitTheOtherPlayer = false;
 
 	}
-
-
-
+	
 }
 
 
@@ -203,6 +201,7 @@ void ACharacterBase::Tick(float DeltaTime)
 	HeightTracer();
 
 	//ram
+	
 	TimelineForCharging();
 	TimelineEndOfRamEffects();
 }
@@ -908,15 +907,25 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent * HitComp, AA
 		}
 	}
 
+
+	//HITTING THE OTHERPLAYER TO SEND THEM FLYING
 	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
 
 	if (OtherHitPlayer != NULL)
 	{
-		//do a check if the hit is not this character but first test it 
+		
 		HitTheOtherPlayer = true;
 			   
 	}
 
+	//RAMMING INTO WALLS
+	if (RamUse == true)
+	{
+		
+
+
+
+	}
 }
 
 
@@ -1420,8 +1429,11 @@ void ACharacterBase::ResetRamParticlesDelay()
 {
 	 UWorld* WorldContextObject = GetWorld();
 	UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, StunFromRam, OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), FVector(5, 5, 5), false, EPSCPoolMethod::None);
-
-
+	
+	//USceneComponent* scenecomp;
+	//UGameplayStatics::SpawnEmitterAttached(StunFromRam, scenecomp, OtherHitPlayer->GetMesh()->GetSocketByName("End"), OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), EAttachLocation::SnapToTarget, true, EPSCPoolMethod::None);
+	
+	
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(RamParticlesDelay);
 }
