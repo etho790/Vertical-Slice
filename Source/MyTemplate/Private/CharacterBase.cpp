@@ -542,26 +542,28 @@ void ACharacterBase::SlideCollider()
 		}
 		else if (Out2.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
-			if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
-			{
-				VerticalCollision = true;
-				GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
-
-				//line below SUBJECT TO CHANGE!!!!!
-				GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
-
-				if (MoveForwards == true)
+			/*
+				if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
 				{
-					//do once RESET
-					ResetSlideColliderDoOnce();
+					VerticalCollision = true;
+					GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
+
+					//line below SUBJECT TO CHANGE!!!!!
+					GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
+
+					if (MoveForwards == true)
+					{
+						//do once RESET
+						ResetSlideColliderDoOnce();
+					}
+					else if (MoveForwards == false)
+					{
+						AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
+						//do once RESET
+						ResetSlideColliderDoOnce();
+					}
 				}
-				else if (MoveForwards == false)
-				{
-					AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
-					//do once RESET
-					ResetSlideColliderDoOnce();
-				}
-			}
+			*/
 		}
 
 	}

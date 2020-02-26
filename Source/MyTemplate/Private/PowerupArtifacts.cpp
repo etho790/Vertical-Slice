@@ -2,6 +2,7 @@
 
 
 #include "PowerupArtifacts.h"
+#include "..\Public\PowerupArtifacts.h"
 
 // Sets default values
 APowerupArtifacts::APowerupArtifacts()
@@ -19,6 +20,12 @@ APowerupArtifacts::APowerupArtifacts()
 	Collider->SetupAttachment(RootComponent);
 
 
+	UWorld* WorldContextObject = GetWorld();
+	//UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, StunFromRam, OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), FVector(5, 5, 5), false, EPSCPoolMethod::None);
+
+
+
+
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -34,6 +41,12 @@ void APowerupArtifacts::BeginPlay()
 void APowerupArtifacts::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+}
+
+void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
+{
+
 
 }
 

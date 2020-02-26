@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "PowerupArtifacts.generated.h"
 
 UCLASS()
@@ -39,4 +40,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		USphereComponent * Collider;
+
+
+
+	UFUNCTION()
+		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
+
 };
