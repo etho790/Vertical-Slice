@@ -146,7 +146,7 @@ public:
 		TSubclassOf<class UCameraShake> CamShake;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
-		UParticleSystem* StunFromRam;
+		UClass* StunFromRam;
 
 	//COLLISION FUNCTION
 	UFUNCTION()
@@ -202,7 +202,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool HitTheOtherPlayer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool HasPickedUpPowerup;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool FlashBombPicked;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool HomingMissilePicked;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool ThirdPickup;
 
 	//christian
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -286,8 +296,11 @@ public:
 	FTimerHandle EndOfRamDelay;
 	void ResetRamEndDelay();
 
-	FTimerHandle RamParticlesDelay;
-	void ResetRamParticlesDelay();
+
+
+	float initiateRamParticles;
+	void RamParticles( float num);
+
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;

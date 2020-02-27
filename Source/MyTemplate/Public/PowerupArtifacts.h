@@ -7,7 +7,15 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "CharacterBase.h"
+#include "TypeOfArtifact.h"
+
 #include "PowerupArtifacts.generated.h"
+
+
+
+
 
 UCLASS()
 class MYTEMPLATE_API APowerupArtifacts : public AActor
@@ -31,8 +39,8 @@ public:
 	FVector TimerTick;
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		UParticleSystem* Particle;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Particles)
+		UParticleSystemComponent* Particle;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -41,9 +49,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		USphereComponent * Collider;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
+		UParticleSystem* AttachedVfx;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
+		UParticleSystem* PickedUpVfx;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sounds, meta = (AllowPrivateAccess = "true"))
+		class USoundBase* DestructionSound;
+	
+
+	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TypeofArtifact, meta = (AllowPrivateAccess = "true"))
+		int Artifact_Type;
+
+		PickupType artifact;
+	
 	UFUNCTION()
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
+
+	ACharacterBase* Character;
 };
