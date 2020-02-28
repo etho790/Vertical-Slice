@@ -74,6 +74,7 @@ public:
 	
 	
 	void RemoveFromGrapplingPoints(class AGrapplingPoint* GrapplingPoint);
+	bool CheckIfTooFar(AGrapplingPoint* GrapplingPoint);
 	void Grapple();
 
 	UFUNCTION(BlueprintCallable, Category = "GamePlay")
