@@ -268,12 +268,12 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 		{
 
 			FVector PlayerLocation = Player->GetActorLocation();
-			bool VChecker = UKismetMathLibrary::EqualEqual_VectorVector(GetClosestGrapplingPoint()->GetActorLocation(), PlayerLocation, 10);
+			bool VChecker = UKismetMathLibrary::EqualEqual_VectorVector(GetClosestGrapplingPoint()->GetActorLocation(), PlayerLocation, 80);		//I CHANGED IT TO 80
 
-			if (VChecker == false)
+			if (VChecker == false)		//if it hasnt collided with the grapple point
 			{
 				
-				FVector LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) * ((GetWorld()->GetDeltaSeconds() * 900));
+				FVector LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) * ((GetWorld()->GetDeltaSeconds() * 1000));
 				//FVector Smooth = FMath::Lerp<FVector, float>(LaunchVel, Player->GetActorForwardVector() * 800, 0.5);
 				//Player->SetActorLocation(FMath::Lerp<FVector, float>(PlayerLocation, GetClosestGrapplingPoint()->GetActorLocation(),0.1f),true);
 				//float alpha = 0.2f;
@@ -285,8 +285,8 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				GrapplingHook->SetVisibility(false);
 				bIsGrappling = false;
 				GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
-				Player->LaunchCharacter( Player->GetActorForwardVector() * 800
-					, true, true);
+				Player->LaunchCharacter( Player->GetActorForwardVector() * 1200
+					, false, false);
 				
 			}
 		}
