@@ -150,7 +150,7 @@ void UGrappleComponent::RemoveFromGrapplingPoints(class AGrapplingPoint* Grappli
 	//	Angles.RemoveAt(Index);
 	//}
 }
-
+/*
 bool UGrappleComponent::CheckIfTooFar(class AGrapplingPoint* GrapplingPoint)
 {
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());	
@@ -165,6 +165,31 @@ bool UGrappleComponent::CheckIfTooFar(class AGrapplingPoint* GrapplingPoint)
 	return false;
 
 }
+*/
+
+bool UGrappleComponent::CheckIfTooFar(class AGrapplingPoint* GrapplingPoint)
+{
+	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
+	float Distance = (Player->GetActorLocation() - GrapplingPoint->GetActorLocation()).Size();
+
+	FVector ControllerForwardVector = FVector(Player->GetControlRotation().Vector().X, Player->GetControlRotation().Vector().Y, 0.f).GetSafeNormal();
+	FVector GrapplingPointDirection = FVector((Player->GetActorLocation() - GrapplingPoint->GetActorLocation()).X,
+		(Player->GetActorLocation() - GrapplingPoint->GetActorLocation()).Y, 0.f).GetSafeNormal();
+
+	float Angle = FMath::Acos(FMath::Abs(FVector::DotProduct(ControllerForwardVector, GrapplingPointDirection)));
+
+
+
+	if ((Distance >= MaxGrapplingDistance) || (FVector::DotProduct(-ControllerForwardVector, GrapplingPointDirection) <= 0))
+	{
+		RemoveFromGrapplingPoints(GrapplingPoint);
+		return true;
+	}
+
+
+	return false;
+}
+
 
 AGrapplingPoint* UGrappleComponent::GetClosestGrapplingPoint() const
 {
@@ -273,7 +298,11 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 			if (VChecker == false)		//if it hasnt collided with the grapple point
 			{
 				//WRAP THIS UNDER A CONDITION!!!!!!!!!!!!!!!!!!!! UNER LaunchedToPoint BOOL
-				LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) * 2;
+				if (LaunchedToPoint == false)
+				{
+					LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) *1.5f ;
+					LaunchedToPoint = true;
+				}
 				// ((GetWorld()->GetDeltaSeconds() * 1000));
 				//FVector Smooth = FMath::Lerp<FVector, float>(LaunchVel, Player->GetActorForwardVector() * 800, 0.5);
 				//Player->SetActorLocation(FMath::Lerp<FVector, float>(PlayerLocation, GetClosestGrapplingPoint()->GetActorLocation(),0.1f),true);
@@ -286,15 +315,11 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				GrapplingHook->SetVisibility(false);
 				bIsGrappling = false;
 				GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
-				if (LaunchVel.Z <= 0)
-				{
-					LaunchVel.Z = 500;
-				}
-				FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 800, Player->GetActorForwardVector().Y * 800, LaunchVel.Z);
-
-				Player->LaunchCharacter(NewVelocity
-					, false, false);
 				
+				FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 1000, Player->GetActorForwardVector().Y * 1000, LaunchVel.Z);
+
+				//Player->LaunchCharacter(LaunchVel*0.5f, false, false);
+				LaunchedToPoint = false;
 			}
 		}
 	}
