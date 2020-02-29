@@ -342,7 +342,7 @@ void ACharacterBase::Slide()
 	{
 		FastEnoughToSlide = true;
 
-		FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
+		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 		LaunchCharacter(LaunchVelocity, true, false);
 

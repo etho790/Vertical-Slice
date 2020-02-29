@@ -27,7 +27,7 @@ UGrappleComponent::UGrappleComponent()
 void UGrappleComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	LaunchedToPoint = false;
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (Player)
 	{
@@ -269,11 +269,12 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 
 			FVector PlayerLocation = Player->GetActorLocation();
 			bool VChecker = UKismetMathLibrary::EqualEqual_VectorVector(GetClosestGrapplingPoint()->GetActorLocation(), PlayerLocation, 80);		//I CHANGED IT TO 80
-
+			
 			if (VChecker == false)		//if it hasnt collided with the grapple point
 			{
-				
-				FVector LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) * ((GetWorld()->GetDeltaSeconds() * 1000));
+				//WRAP THIS UNDER A CONDITION!!!!!!!!!!!!!!!!!!!! UNER LaunchedToPoint BOOL
+				LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) * 2;
+				// ((GetWorld()->GetDeltaSeconds() * 1000));
 				//FVector Smooth = FMath::Lerp<FVector, float>(LaunchVel, Player->GetActorForwardVector() * 800, 0.5);
 				//Player->SetActorLocation(FMath::Lerp<FVector, float>(PlayerLocation, GetClosestGrapplingPoint()->GetActorLocation(),0.1f),true);
 				//float alpha = 0.2f;
@@ -285,7 +286,13 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				GrapplingHook->SetVisibility(false);
 				bIsGrappling = false;
 				GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
-				Player->LaunchCharacter( Player->GetActorForwardVector() * 1200
+				if (LaunchVel.Z <= 0)
+				{
+					LaunchVel.Z = 500;
+				}
+				FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 800, Player->GetActorForwardVector().Y * 800, LaunchVel.Z);
+
+				Player->LaunchCharacter(NewVelocity
 					, false, false);
 				
 			}

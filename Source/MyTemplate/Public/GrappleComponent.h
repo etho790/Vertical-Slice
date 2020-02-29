@@ -83,5 +83,6 @@ public:
 	UFUNCTION()
 		void ThrowGrapplingHook(float Value);
 
-	
+	FVector LaunchVel;
+	bool LaunchedToPoint;
 };
