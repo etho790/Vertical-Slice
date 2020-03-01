@@ -274,7 +274,8 @@ public:
 	void VaultingFunctionInTimeline();
 	FTimerHandle VaultResetter;
 
-	//Climb			
+	//Climb		
+	/*
 	void ForwardTracer();
 	void HeightTracer();
 
@@ -287,7 +288,7 @@ public:
 	FTimerHandle EnableInputDelay;
 	void ResetClimbUpDelay();
 	void ResetEnableInputDelay();
-
+	*/
 	//Ram -Inate Ability
 	void Ram();
 	void TimelineForCharging();

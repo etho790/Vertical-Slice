@@ -208,8 +208,8 @@ void ACharacterBase::Tick(float DeltaTime)
 	}
 
 	//Climbing
-	ForwardTracer();
-	HeightTracer();
+	//ForwardTracer();
+	//HeightTracer();
 
 	//ram
 	
@@ -1196,7 +1196,7 @@ void ACharacterBase::ResetVault()
 
 
 //Climbing
-
+/*
 void ACharacterBase::ForwardTracer()
 {
 	TArray<AActor*> none;
@@ -1320,7 +1320,7 @@ void ACharacterBase::GetStandingPoint()
 	GetCapsuleComponent()->SetRelativeRotation(RelRotation, false, NULL, ETeleportType::None);
 
 }
-
+*/
 
 //RAM
 void ACharacterBase::Ram()
