@@ -82,8 +82,9 @@ ACharacterBase::ACharacterBase()
 	//CHRISTIAN
 	GrappleComponent = CreateDefaultSubobject<UGrappleComponent>(TEXT("GrappleComponent"));
 	
-
-
+	ChargingTimelineInitiate = false;
+	initiateRamParticles = 0;
+	
 	Stamina = 1.0f;
 	SlideDooNce = true;
 	EndOfGame = false;
@@ -120,12 +121,9 @@ void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedCom
 	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
 	 //RAMING INTO OTHER PLAYER AND SEND THEM FLYING
 	if (OtherHitPlayer != NULL)
-	{
-		
+	{		
 		HitTheOtherPlayer = false;
-
-	}
-	
+	}	
 }
 
 
@@ -169,6 +167,7 @@ void ACharacterBase::BeginPlay()
 	//for the ram timeline
 	TimelineDuration = 0;
 	OtherHitPlayer = nullptr;
+	RamEffects_TimelineInitiate = false;
 }
 
 // Called every frame
@@ -343,7 +342,7 @@ void ACharacterBase::Slide()
 	{
 		FastEnoughToSlide = true;
 
-		FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
+		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 		LaunchCharacter(LaunchVelocity, true, false);
 
@@ -542,26 +541,28 @@ void ACharacterBase::SlideCollider()
 		}
 		else if (Out2.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
-			if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
-			{
-				VerticalCollision = true;
-				GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
-
-				//line below SUBJECT TO CHANGE!!!!!
-				GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
-
-				if (MoveForwards == true)
+			/*
+				if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
 				{
-					//do once RESET
-					ResetSlideColliderDoOnce();
+					VerticalCollision = true;
+					GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
+
+					//line below SUBJECT TO CHANGE!!!!!
+					GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
+
+					if (MoveForwards == true)
+					{
+						//do once RESET
+						ResetSlideColliderDoOnce();
+					}
+					else if (MoveForwards == false)
+					{
+						AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
+						//do once RESET
+						ResetSlideColliderDoOnce();
+					}
 				}
-				else if (MoveForwards == false)
-				{
-					AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
-					//do once RESET
-					ResetSlideColliderDoOnce();
-				}
-			}
+			*/
 		}
 
 	}
@@ -927,7 +928,6 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 
 	if (OtherHitPlayer != NULL)
 	{
-
 		HitTheOtherPlayer = true;
 
 	}
@@ -1416,10 +1416,13 @@ void ACharacterBase::TimelineEndOfRamEffects()
 		{
 			if (OtherHitPlayer->GetCharacterMovement()->IsFalling() == false)
 			{
-				float delay = 0.5f;
-				//delay
-				GetWorld()->GetTimerManager().SetTimer(RamParticlesDelay, this, &ACharacterBase::ResetRamParticlesDelay, delay, false);
 
+				
+				initiateRamParticles++;
+				RamParticles(initiateRamParticles);
+				
+					
+				
 			}
 		}
 
@@ -1438,17 +1441,23 @@ void ACharacterBase::TimelineEndOfRamEffects()
 }
 
 
-
-void ACharacterBase::ResetRamParticlesDelay()
+void ACharacterBase::RamParticles(float num)
 {
-	UWorld* WorldContextObject = GetWorld();
-	UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, StunFromRam, OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), FVector(5, 5, 5), false, EPSCPoolMethod::None);
 
-	//USceneComponent* scenecomp;
-	//UGameplayStatics::SpawnEmitterAttached(StunFromRam, scenecomp, OtherHitPlayer->GetMesh()->GetSocketByName("End"), OtherHitPlayer->GetMesh()->GetSocketLocation("End"), FRotator(0, 0, 0), EAttachLocation::SnapToTarget, true, EPSCPoolMethod::None);
+	FVector head = FVector(OtherHitPlayer->GetMesh()->GetSocketLocation("head").X, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Y, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Z + 20.0f);
+
+	if (initiateRamParticles > 30)
+	{
+		FActorSpawnParameters param;
+		AActor* particleSpawner =GetWorld()->SpawnActor<AActor>(StunFromRam, head, FRotator(0, 0, 0), param);
+
+		
+		particleSpawner->AttachToComponent(OtherHitPlayer->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, ("head"));
+		
+		initiateRamParticles = 0;
+
+	}
 
 
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(RamParticlesDelay);
 }
 

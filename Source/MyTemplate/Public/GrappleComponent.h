@@ -74,6 +74,7 @@ public:
 	
 	
 	void RemoveFromGrapplingPoints(class AGrapplingPoint* GrapplingPoint);
+	bool CheckIfTooFar(AGrapplingPoint* GrapplingPoint);
 	void Grapple();
 
 	UFUNCTION(BlueprintCallable, Category = "GamePlay")
@@ -82,5 +83,6 @@ public:
 	UFUNCTION()
 		void ThrowGrapplingHook(float Value);
 
-	
+	FVector LaunchVel;
+	bool LaunchedToPoint;
 };
