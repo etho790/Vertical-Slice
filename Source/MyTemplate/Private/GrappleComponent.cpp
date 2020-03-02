@@ -210,66 +210,73 @@ AGrapplingPoint* UGrappleComponent::GetClosestGrapplingPoint() const
 //THROWING THE GRAPPLE
 void UGrappleComponent::Grapple()
 {
+
 	AGrapplingPoint* GrapplingPoint = GetClosestGrapplingPoint();
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (!Player) { return; }
+	
+	
 
 	//horizontal raycast
 	FHitResult Out1;
 	FVector ControllerForwardVector = Player->GetActorLocation();
 	FCollisionQueryParams  CollisionP1;
 
-	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
-	if (GrapplingPoint != nullptr)
+	if (Player->Stamina > 0.3)
 	{
-
-		bool IsBlocked = GetWorld()->LineTraceSingleByChannel(Out1, ControllerForwardVector, GrapplingPoint->GetActorLocation(), ECC_Visibility, CollisionP1);
-
-		DrawDebugLine(GetWorld(), ControllerForwardVector, GrapplingPoint->GetActorLocation(), FColor::Green, true, 1, 0, 1);
-
-		if (IsBlocked == true)
+		
+		//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
+		if (GrapplingPoint != nullptr)
 		{
 
-			if (Out1.Actor->ActorHasTag("Grapple") == true)
+			bool IsBlocked = GetWorld()->LineTraceSingleByChannel(Out1, ControllerForwardVector, GrapplingPoint->GetActorLocation(), ECC_Visibility, CollisionP1);
+
+			DrawDebugLine(GetWorld(), ControllerForwardVector, GrapplingPoint->GetActorLocation(), FColor::Green, true, 1, 0, 1);
+
+			if (IsBlocked == true)
 			{
 
-				if (GrapplingPoint)
+				if (Out1.Actor->ActorHasTag("Grapple") == true)
 				{
-					GrapplingHook->SetVisibility(true);
 
-
-					if (ensure(ThrowTimeCurve))
+					if (GrapplingPoint)
 					{
-						// get the ThrowHook time
-						float MinTime = 0.f, CurveLength = 0.f;
-						ThrowTimeCurve->GetTimeRange(MinTime, CurveLength);
+						GrapplingHook->SetVisibility(true);
 
-						// setup the Timeline
-						ThrowGrapplingHookTimeline->SetLooping(false);
-						ThrowGrapplingHookTimeline->SetIgnoreTimeDilation(true);
-						ThrowGrapplingHookTimeline->SetTimelineLength(CurveLength);
 
-						// set the ThrowHookDelegate to be bound to ThrowGrapplingHook
-						FOnTimelineFloat ThrowHookDelegate;
-						ThrowHookDelegate.BindUFunction(this, "ThrowGrapplingHook");
-						ThrowGrapplingHookTimeline->AddInterpFloat(ThrowTimeCurve, ThrowHookDelegate, "Value");
+						if (ensure(ThrowTimeCurve))
+						{
+							// get the ThrowHook time
+							float MinTime = 0.f, CurveLength = 0.f;
+							ThrowTimeCurve->GetTimeRange(MinTime, CurveLength);
 
-						// launch the player when the grappling hook is at target location
-						FOnTimelineEvent TimelineFinished;
-						//TimelineFinished.BindUFunction(this, FName("LaunchCharacterTowardsTarget"));
-						ThrowGrapplingHookTimeline->SetTimelineFinishedFunc(TimelineFinished);
+							// setup the Timeline
+							ThrowGrapplingHookTimeline->SetLooping(false);
+							ThrowGrapplingHookTimeline->SetIgnoreTimeDilation(true);
+							ThrowGrapplingHookTimeline->SetTimelineLength(CurveLength);
 
-						bIsGrappling = true;
-						ThrowGrapplingHookTimeline->PlayFromStart();
+							// set the ThrowHookDelegate to be bound to ThrowGrapplingHook
+							FOnTimelineFloat ThrowHookDelegate;
+							ThrowHookDelegate.BindUFunction(this, "ThrowGrapplingHook");
+							ThrowGrapplingHookTimeline->AddInterpFloat(ThrowTimeCurve, ThrowHookDelegate, "Value");
+
+							// launch the player when the grappling hook is at target location
+							FOnTimelineEvent TimelineFinished;
+							//TimelineFinished.BindUFunction(this, FName("LaunchCharacterTowardsTarget"));
+							ThrowGrapplingHookTimeline->SetTimelineFinishedFunc(TimelineFinished);
+
+							bIsGrappling = true;
+							ThrowGrapplingHookTimeline->PlayFromStart();
+						}
 					}
 				}
 			}
-		}
-		//else
-		//{
-		//
-		//}
+			//else
+			//{
+			//
+			//}
 
+		}
 	}
 }
 
@@ -280,6 +287,8 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 	if (!Player) { return; }
 
 	AGrapplingPoint* Target = GetClosestGrapplingPoint();
+	
+	
 	if (Target && GrapplingHook)
 	{
 		FVector LaunchVelocity = FVector::ZeroVector;
@@ -300,6 +309,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				//WRAP THIS UNDER A CONDITION!!!!!!!!!!!!!!!!!!!! UNER LaunchedToPoint BOOL
 				if (LaunchedToPoint == false)
 				{
+					Player->Stamina -= 0.5f;
 					LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) *1.5f ;
 					LaunchedToPoint = true;
 				}
@@ -316,9 +326,9 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				bIsGrappling = false;
 				GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
 				
-				FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 1000, Player->GetActorForwardVector().Y * 1000, LaunchVel.Z);
+				//FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 1000, Player->GetActorForwardVector().Y * 1000, LaunchVel.Z);
 
-				//Player->LaunchCharacter(LaunchVel*0.5f, false, false);
+				Player->LaunchCharacter(LaunchVel*0.5f, true, true);
 				LaunchedToPoint = false;
 			}
 		}

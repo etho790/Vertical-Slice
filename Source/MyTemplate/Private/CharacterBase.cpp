@@ -161,7 +161,7 @@ void ACharacterBase::BeginPlay()
 	ResettheLeftRaycast = true;
 	//walljump off velocity floats
 	forward_WallJumpVel = 1500.0f;
-	Side_WallJumpVel = 2000.0f;
+	Side_WallJumpVel = 1000.0f;
 
 
 	//for the ram timeline
@@ -469,7 +469,7 @@ void ACharacterBase::SlideCollider()
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
 	FCollisionQueryParams  CollisionP1;
 
-	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
+	DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 	bool HorizontalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 
@@ -498,7 +498,7 @@ void ACharacterBase::SlideCollider()
 	FVector End2 = Start2 + GetActorUpVector() * 100;
 
 
-
+	//DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, false, 1, 0, 1);
 
 	bool VerticalCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start2, End2, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out2, true, FLinearColor::Red, FLinearColor::Red, 5);
 
@@ -509,7 +509,7 @@ void ACharacterBase::SlideCollider()
 	FVector Start3 = GetActorLocation() + GetActorForwardVector() * -100;
 	FVector End3 = Start3 + GetActorUpVector() * 100;
 
-
+	//DrawDebugLine(GetWorld(), Start3, End3, FColor::Red, false, 1, 0, 1);
 
 
 	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Red, FLinearColor::Red, 5);
@@ -1047,7 +1047,7 @@ void ACharacterBase::TimelineForVaulting()
 		FVector End = Start + (GetActorForwardVector() * 200);
 		FCollisionQueryParams  CollisionP;
 
-		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
 
 		bool Horizontal_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
@@ -1069,7 +1069,7 @@ void ACharacterBase::TimelineForVaulting()
 				FVector End1 = Start1 + FVector(0, 0, -200.0f);
 				FCollisionQueryParams  CollisionP1;
 
-				DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
+				//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 				bool WallHeightChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 
@@ -1095,7 +1095,7 @@ void ACharacterBase::TimelineForVaulting()
 					FVector End2 = Start2 + FVector(0, 0, -300.0f);
 					FCollisionQueryParams  CollisionP2;
 
-					DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, false, 1, 0, 1);
+					//DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, false, 1, 0, 1);
 
 
 					bool WallThicknessChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
@@ -1333,7 +1333,7 @@ void ACharacterBase::Ram()
 			{
 				float Ram_animationLength = 1.0f;
 
-				Stamina = Stamina - 0.3f;
+				Stamina = Stamina - 0.5f;
 				PlayAnimMontage(RamAnim, Ram_animationLength, NAME_None);
 				RamUse = true;
 
