@@ -301,7 +301,7 @@ public:
 
 	float initiateRamParticles;
 	void RamParticles( float num);
-
+	float GrappleTimer;
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
@@ -310,7 +310,7 @@ private:
 	bool ChargingTimelineInitiate;
 	bool RamEffects_TimelineInitiate;
 
-
+	
 
 
 	bool ResettheLeftRaycast;

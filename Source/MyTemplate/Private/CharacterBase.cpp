@@ -168,6 +168,8 @@ void ACharacterBase::BeginPlay()
 	TimelineDuration = 0;
 	OtherHitPlayer = nullptr;
 	RamEffects_TimelineInitiate = false;
+
+	GrappleTimer = 10;
 }
 
 // Called every frame

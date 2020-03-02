@@ -306,19 +306,36 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 			
 			if (VChecker == false)		//if it hasnt collided with the grapple point
 			{
+
+				Player->GrappleTimer -= 0.1f;
+				
 				//WRAP THIS UNDER A CONDITION!!!!!!!!!!!!!!!!!!!! UNER LaunchedToPoint BOOL
 				if (LaunchedToPoint == false)
 				{
-					Player->Stamina -= 0.5f;
+					Player->Stamina -= 0.3f;
 					LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) *1.5f ;
 					LaunchedToPoint = true;
+					
 				}
-				// ((GetWorld()->GetDeltaSeconds() * 1000));
-				//FVector Smooth = FMath::Lerp<FVector, float>(LaunchVel, Player->GetActorForwardVector() * 800, 0.5);
-				//Player->SetActorLocation(FMath::Lerp<FVector, float>(PlayerLocation, GetClosestGrapplingPoint()->GetActorLocation(),0.1f),true);
-				//float alpha = 0.2f;
-				//Player->SetActorLocation(FMath::VInterpTo(PlayerLocation, GetClosestGrapplingPoint()->GetActorLocation(), GetWorld()->GetDeltaSeconds() * 100, alpha));
-				Player->LaunchCharacter(LaunchVel, true, true);
+				if (Player->GrappleTimer > 0)
+				{
+					Player->LaunchCharacter(LaunchVel, true, true);
+				}
+				
+				else//if he hasnt reached the point and the timers depleted!!!!!!!!!!					
+				{
+					GrapplingHook->SetVisibility(false);
+					bIsGrappling = false;
+					
+					GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
+
+					//FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 1000, Player->GetActorForwardVector().Y * 1000, LaunchVel.Z);
+
+					Player->LaunchCharacter(LaunchVel * 0.5f, true, true);
+					Player->GrappleTimer = 10;
+					LaunchedToPoint = false;
+
+				}
 			}
 			else if (VChecker == true)
 			{
@@ -329,6 +346,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				//FVector NewVelocity = FVector(Player->GetActorForwardVector().X * 1000, Player->GetActorForwardVector().Y * 1000, LaunchVel.Z);
 
 				Player->LaunchCharacter(LaunchVel*0.5f, true, true);
+				Player->GrappleTimer = 10;
 				LaunchedToPoint = false;
 			}
 		}
