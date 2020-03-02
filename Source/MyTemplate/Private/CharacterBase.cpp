@@ -160,7 +160,7 @@ void ACharacterBase::BeginPlay()
 	ResettheRightRaycast = true;
 	ResettheLeftRaycast = true;
 	//walljump off velocity floats
-	forward_WallJumpVel = 1500.0f;
+	forward_WallJumpVel = 1000.0f;
 	Side_WallJumpVel = 1000.0f;
 
 
@@ -328,7 +328,7 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
-
+	
 
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
@@ -342,25 +342,28 @@ void ACharacterBase::Slide()
 
 	if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
 	{
+
+		float AnimationDuration = 0.6f;
 		FastEnoughToSlide = true;
 
+		/*
 		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 		LaunchCharacter(LaunchVelocity, true, false);
-
-		PlayAnimMontage(IdleToSlide, 0.6f, NAME_None);
+		*/
+		PlayAnimMontage(IdleToSlide, AnimationDuration, NAME_None);
 
 		SlideCollider();
 
 		//delay
-		GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.6f, false);
+		GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, AnimationDuration, false);
 
 	}
 	else
 	{
 		FastEnoughToSlide = false;
 	}
-
+	
 }
 
 
@@ -368,9 +371,9 @@ void ACharacterBase::Slide()
 
 void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
 {
-
+	
 	LeftShiftPressed = false;
-
+	
 }
 
 
@@ -378,7 +381,7 @@ void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
 
 void ACharacterBase::ResetTimer()
 {
-
+	
 	GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
 
 	//SUBJECT TO CHANGE!!!!!
@@ -387,7 +390,7 @@ void ACharacterBase::ResetTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);
-
+	
 }
 
 
@@ -398,6 +401,8 @@ void ACharacterBase::ResetTimer()
 
 void ACharacterBase::Vertical_Collision()
 {
+
+	
 	if (VerticalCollision == true)
 	{
 
@@ -424,6 +429,7 @@ void ACharacterBase::Vertical_Collision()
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 		}
 	}
+	
 
 }
 
@@ -434,7 +440,7 @@ void ACharacterBase::Vertical_Collision()
 
 void ACharacterBase::SlideColliderDoOnce()
 {
-
+	
 	if (SlideDooNce == true)
 	{
 		VerticalCollision = false;
@@ -445,16 +451,16 @@ void ACharacterBase::SlideColliderDoOnce()
 
 		SlideDooNce = false;
 	}
-
+	
 }
 
 
 
 void ACharacterBase::ResetSlideColliderDoOnce()
 {
-
+	
 	SlideDooNce = true;
-
+	
 }
 //!!!!!!!!!!!!!!!!!!!!
 
@@ -462,7 +468,7 @@ void ACharacterBase::ResetSlideColliderDoOnce()
 
 void ACharacterBase::SlideCollider()
 {
-
+	
 	TArray<AActor*> none;
 
 	//horizontal raycast
@@ -502,7 +508,7 @@ void ACharacterBase::SlideCollider()
 
 	//DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, false, 1, 0, 1);
 
-	bool VerticalCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start2, End2, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out2, true, FLinearColor::Red, FLinearColor::Red, 5);
+	bool VerticalCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start2, End2, 40, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out2, true, FLinearColor::Green, FLinearColor::Red, 5);
 
 
 
@@ -514,7 +520,7 @@ void ACharacterBase::SlideCollider()
 	//DrawDebugLine(GetWorld(), Start3, End3, FColor::Red, false, 1, 0, 1);
 
 
-	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 5, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Red, FLinearColor::Red, 5);
+	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 40, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Gray, FLinearColor::Red, 5);
 
 
 	if (VerticalCheckerIsHit == true)
@@ -543,36 +549,16 @@ void ACharacterBase::SlideCollider()
 		}
 		else if (Out2.Actor->ActorHasTag("SLIDEDOWN") == false)
 		{
-			/*
-				if (Out3.Actor->ActorHasTag("SLIDEDOWN") == true)
-				{
-					VerticalCollision = true;
-					GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
-
-					//line below SUBJECT TO CHANGE!!!!!
-					GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
-
-					if (MoveForwards == true)
-					{
-						//do once RESET
-						ResetSlideColliderDoOnce();
-					}
-					else if (MoveForwards == false)
-					{
-						AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
-						//do once RESET
-						ResetSlideColliderDoOnce();
-					}
-				}
-			*/
+		
 		}
-
+		
 	}
 	if (VerticalCheckerIsHit == false)
 	{
 		if (VerticalBehindCheckerIsHit == false)
 		{
 
+			SlideDooNce = true;
 			//DO ONCE!!!!!!!!!!!!
 			SlideColliderDoOnce();
 		}
@@ -605,18 +591,19 @@ void ACharacterBase::SlideCollider()
 	}
 	else if (VerticalBehindCheckerIsHit == false && VerticalCheckerIsHit == false)
 	{
+		SlideDooNce = true;
 		//DO ONCE!!!!!!!!!!!!
 		SlideColliderDoOnce();
 	}
 
-
+	
 
 }
 
 
 void ACharacterBase::SlideInitiator()
 {
-
+	
 	TArray<AActor*> none;
 
 	//horizontal raycast
@@ -624,7 +611,7 @@ void ACharacterBase::SlideInitiator()
 	FVector Start = GetActorLocation() + FVector(0, 0, 44) + (GetActorForwardVector() * ColliderCheckerMod);
 	FVector End = Start + GetActorUpVector() * 100;
 
-	bool InitiatingCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
+	bool InitiatingCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 30, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Green, FLinearColor::Red, 5);
 
 	if (InitiatingCheckerIsHit == true)
 	{
@@ -642,18 +629,19 @@ void ACharacterBase::SlideInitiator()
 		ColliderCheckerMod = -30;
 
 	}
-
+	
 }
 
 
 
 void ACharacterBase::TimelineForSliding()
 {
+	
 	if (SlidingTimelineInitiate == true)
 	{
 		SlideCollider();
 	}
-
+	
 
 }
 //WALLRUN ABILITY
