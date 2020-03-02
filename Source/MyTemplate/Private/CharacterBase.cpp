@@ -441,7 +441,7 @@ void ACharacterBase::SlideColliderDoOnce()
 		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
 		GetCapsuleComponent()->SetCapsuleSize(42, 96, true);
 		//line below SUBJECT TO CHANGE!!!!!
-		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::None);
+		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 60.0f), false, 0, ETeleportType::None);
 
 		SlideDooNce = false;
 	}
@@ -527,7 +527,7 @@ void ACharacterBase::SlideCollider()
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
 
 			//line below SUBJECT TO CHANGE!!!!!
-			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
+			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 60.0f), false, 0, ETeleportType::TeleportPhysics);
 			if (MoveForwards == true)
 			{
 				//do once RESET
@@ -588,7 +588,7 @@ void ACharacterBase::SlideCollider()
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
 
 			//line below SUBJECT TO CHANGE!!!!!
-			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 70.0f, Meshlocation.Y, Meshlocation.Z + 70.0f), false, 0, ETeleportType::TeleportPhysics);
+			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 60.0f), false, 0, ETeleportType::TeleportPhysics);
 
 			if (MoveForwards == true)
 			{
