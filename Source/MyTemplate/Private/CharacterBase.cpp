@@ -170,6 +170,7 @@ void ACharacterBase::BeginPlay()
 	RamEffects_TimelineInitiate = false;
 
 	GrappleTimer = 10;
+	StopTheWallrunRaycast = false;
 }
 
 // Called every frame
@@ -683,7 +684,7 @@ void ACharacterBase::ResetRightRaycast()
 
 void ACharacterBase::Landed()
 {
-	GetCharacterMovement()->GravityScale = 3;
+	//GetCharacterMovement()->GravityScale = 3;
 	LeftWall = false;
 	RightWall = false;
 	OnTheWall = false;
@@ -713,109 +714,112 @@ void ACharacterBase::WallRunner()
 //HAVENT ADDED IN THE TIMELINE NOR PUT THIS IN THE TICK FUNCTION
 void ACharacterBase::WallRunRaycast()
 {
+	//ONLY LETS THIS RAYCAST FUNCTION WORK IF NOT VAULTING !!!!!!!!!!!!!
 
-	TArray<AActor*> none;
-
-	//left raycast
-	FHitResult Out;
-	FVector Start = GetActorLocation();
-	FVector End = Start + (GetActorRightVector() * Leftwall_RaycastLengthChecker);
-	FCollisionQueryParams  CollisionP;
-
-
-	bool LeftChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
-	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
-
-	//right raycast
-	FHitResult Out1;
-	FVector Start1 = GetActorLocation();
-	FVector End1 = Start1 + (GetActorRightVector() * Rightwall_RaycastLengthChecker);
-	FCollisionQueryParams  CollisionP1;
-
-	bool RightChecker = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
-	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, false, 1, 0, 1);
-	if (LeftChecker == true)
+	if (StopTheWallrunRaycast == false)
 	{
-		if (Out.Actor->ActorHasTag("RUNWALL") == true)
+		TArray<AActor*> none;
+
+		//left raycast
+		FHitResult Out;
+		FVector Start = GetActorLocation();
+		FVector End = Start + (GetActorRightVector() * Leftwall_RaycastLengthChecker);
+		FCollisionQueryParams  CollisionP;
+
+
+		bool LeftChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+
+		//right raycast
+		FHitResult Out1;
+		FVector Start1 = GetActorLocation();
+		FVector End1 = Start1 + (GetActorRightVector() * Rightwall_RaycastLengthChecker);
+		FCollisionQueryParams  CollisionP1;
+
+		bool RightChecker = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
+		//DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, false, 1, 0, 1);
+		if (LeftChecker == true)
 		{
-			GetCharacterMovement()->GravityScale = 0.3;
-			CloseToTheWall = true;
-			LeftWall = true;
-
-		}
-		if (Out.Actor->ActorHasTag("RUNWALL") == false)
-		{
-			GetCharacterMovement()->GravityScale = 3.0f;
-			CloseToTheWall = false;
-			LeftWall = false;
-			OnTheWall = false;
-
-			//stop time line
-			WallRunTimelineInitiate = false;
-		}
-
-	}
-	else if (LeftChecker == false)
-	{
-		if (Leftwall_RaycastLengthChecker == 0)
-		{
-			if (ResettheLeftRaycast == true)
-			{
-
-				//delay
-				GetWorld()->GetTimerManager().SetTimer(LeftRaycastResetter, this, &ACharacterBase::ResetLeftRaycast, 0.5f, false);
-				ResettheLeftRaycast = false;
-			}
-		}
-
-
-		if (RightChecker == true)
-		{
-			if (Out1.Actor->ActorHasTag("RUNWALL") == true)
+			if (Out.Actor->ActorHasTag("RUNWALL") == true)
 			{
 				GetCharacterMovement()->GravityScale = 0.3;
 				CloseToTheWall = true;
-				RightWall = true;
-
+				LeftWall = true;
 
 			}
-			if (Out1.Actor->ActorHasTag("RUNWALL") == false)
+			if (Out.Actor->ActorHasTag("RUNWALL") == false)
 			{
+				GetCharacterMovement()->GravityScale = 3.0f;
+				CloseToTheWall = false;
+				LeftWall = false;
+				OnTheWall = false;
+
+				//stop time line
+				WallRunTimelineInitiate = false;
+			}
+
+		}
+		else if (LeftChecker == false)
+		{
+			if (Leftwall_RaycastLengthChecker == 0)
+			{
+				if (ResettheLeftRaycast == true)
+				{
+
+					//delay
+					GetWorld()->GetTimerManager().SetTimer(LeftRaycastResetter, this, &ACharacterBase::ResetLeftRaycast, 0.5f, false);
+					ResettheLeftRaycast = false;
+				}
+			}
+
+
+			if (RightChecker == true)
+			{
+				if (Out1.Actor->ActorHasTag("RUNWALL") == true)
+				{
+					GetCharacterMovement()->GravityScale = 0.3;
+					CloseToTheWall = true;
+					RightWall = true;
+
+
+				}
+				if (Out1.Actor->ActorHasTag("RUNWALL") == false)
+				{
+					GetCharacterMovement()->GravityScale = 3;
+					CloseToTheWall = false;
+					RightWall = false;
+					OnTheWall = false;
+					//stop time line
+					WallRunTimelineInitiate = false;
+				}
+			}
+			if (RightChecker == false)
+			{
+
+
+
+
 				GetCharacterMovement()->GravityScale = 3;
 				CloseToTheWall = false;
 				RightWall = false;
 				OnTheWall = false;
 				//stop time line
 				WallRunTimelineInitiate = false;
-			}
-		}
-		if (RightChecker == false)
-		{
 
 
 
-
-			GetCharacterMovement()->GravityScale = 3;
-			CloseToTheWall = false;
-			RightWall = false;
-			OnTheWall = false;
-			//stop time line
-			WallRunTimelineInitiate = false;
-
-
-
-			if (Rightwall_RaycastLengthChecker == 0)
-			{
-				if (ResettheRightRaycast == true)
+				if (Rightwall_RaycastLengthChecker == 0)
 				{
-					//delay
-					GetWorld()->GetTimerManager().SetTimer(RightRaycastResetter, this, &ACharacterBase::ResetRightRaycast, 0.5f, false);
-					ResettheRightRaycast = false;
+					if (ResettheRightRaycast == true)
+					{
+						//delay
+						GetWorld()->GetTimerManager().SetTimer(RightRaycastResetter, this, &ACharacterBase::ResetRightRaycast, 0.5f, false);
+						ResettheRightRaycast = false;
+					}
 				}
 			}
 		}
 	}
-
 }
 
 void ACharacterBase::TimelineForWallRunning()
@@ -1033,7 +1037,7 @@ void ACharacterBase::TimelineForVaulting()
 	{
 		//Horizontal_VaultChecker from the bottom straight forwards
 		FHitResult Out;
-		FVector Start = GetActorLocation() - FVector(0, 0, 44);
+		FVector Start = GetActorLocation() - FVector(0, 0, 40);
 		FVector End = Start + (GetActorForwardVector() * 200);
 		FCollisionQueryParams  CollisionP;
 
@@ -1059,7 +1063,7 @@ void ACharacterBase::TimelineForVaulting()
 				FVector End1 = Start1 + FVector(0, 0, -200.0f);
 				FCollisionQueryParams  CollisionP1;
 
-				//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
+				DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, true, 1, 0, 1);
 
 				bool WallHeightChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 
@@ -1085,7 +1089,7 @@ void ACharacterBase::TimelineForVaulting()
 					FVector End2 = Start2 + FVector(0, 0, -300.0f);
 					FCollisionQueryParams  CollisionP2;
 
-					//DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, false, 1, 0, 1);
+					DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, true, 1, 0, 1);
 
 
 					bool WallThicknessChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
@@ -1106,7 +1110,9 @@ void ACharacterBase::TimelineForVaulting()
 
 						if (ShouldClimb == false)
 						{
+							StopTheWallrunRaycast = true;
 							VaultingFunctionInTimeline();
+							
 						}
 
 					}
@@ -1118,6 +1124,7 @@ void ACharacterBase::TimelineForVaulting()
 
 						if (ShouldClimb == false)
 						{
+							StopTheWallrunRaycast = true;
 							VaultingFunctionInTimeline();
 						}
 
@@ -1153,33 +1160,47 @@ void ACharacterBase::TimelineForVaulting()
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
-
+	
 	if (WallThick == false)
 	{
+		
 		GetCharacterMovement()->GravityScale = 0;
+
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+		//GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);		
+		
+		
 		PlayAnimMontage(VaultAnim, 1.5f, NAME_None);
-		GetWorld()->GetTimerManager().SetTimer(VaultResetter, this, &ACharacterBase::ResetVault, 0.2f, false);
+		
+		
+		GetWorld()->GetTimerManager().SetTimer(VaultResetter, this, &ACharacterBase::ResetVault, 0.25f, false);
 
 	}
 
+	if (WallThick == true)
+	{
+		StopTheWallrunRaycast = false;
+
+	}
 }
 
 
 void ACharacterBase::ResetVault()
 {
+	
 	FVector LaunchVeloc = Dash->GetForwardVector() * VaultVelocity;
 	LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 800), true, true);
+	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	ShouldClimb = false;
 	GetCharacterMovement()->GravityScale = 3.0f;
-	VaultTimelineInitiate = false;
+	
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(VaultResetter);
 	//stop the vault timeline
 	VaultTimelineInitiate = false;
+	
 }
 
 

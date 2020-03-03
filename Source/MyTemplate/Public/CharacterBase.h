@@ -214,6 +214,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool ThirdPickup;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool VaultTimelineInitiate;
+
+
 	//christian
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UGrappleComponent* GrappleComponent;
@@ -273,7 +277,7 @@ public:
 	void TimelineForVaulting();
 	void VaultingFunctionInTimeline();
 	FTimerHandle VaultResetter;
-
+	bool StopTheWallrunRaycast;
 	//Climb		
 	/*
 	void ForwardTracer();
@@ -306,7 +310,7 @@ private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
 	bool WallRunTimelineInitiate;
-	bool VaultTimelineInitiate;
+	
 	bool ChargingTimelineInitiate;
 	bool RamEffects_TimelineInitiate;
 
