@@ -1030,7 +1030,7 @@ void ACharacterBase::DontJump()
 void ACharacterBase::TimelineForVaulting()
 {
 
-
+	/*
 
 
 	if (VaultTimelineInitiate == true)
@@ -1155,12 +1155,12 @@ void ACharacterBase::TimelineForVaulting()
 
 	}
 
-
+	*/
 }
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
-	
+	/*
 	if (WallThick == false)
 	{
 		
@@ -1182,12 +1182,13 @@ void ACharacterBase::VaultingFunctionInTimeline()
 		StopTheWallrunRaycast = false;
 
 	}
+	*/
 }
 
 
 void ACharacterBase::ResetVault()
 {
-	
+	/*
 	FVector LaunchVeloc = Dash->GetForwardVector() * VaultVelocity;
 	LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 800), true, true);
 	
@@ -1200,7 +1201,7 @@ void ACharacterBase::ResetVault()
 	GetWorld()->GetTimerManager().ClearTimer(VaultResetter);
 	//stop the vault timeline
 	VaultTimelineInitiate = false;
-	
+	*/
 }
 
 
