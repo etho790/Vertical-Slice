@@ -169,7 +169,9 @@ void ACharacterBase::BeginPlay()
 	OtherHitPlayer = nullptr;
 	RamEffects_TimelineInitiate = false;
 
-	GrappleTimer = 10;
+
+
+	//GrappleTimer = 10;
 	StopTheWallrunRaycast = false;
 }
 

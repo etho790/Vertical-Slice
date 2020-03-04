@@ -85,4 +85,12 @@ public:
 
 	FVector LaunchVel;
 	bool LaunchedToPoint;
+
+
+	
+	void GrappleShootNow();
+	bool PlayAnim;
+	FTimerHandle GrappleShootDelay;
+	FVector PlayerLocation;
+	float grappleTimer;
 };

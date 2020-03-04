@@ -141,6 +141,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sounds, meta = (AllowPrivateAccess = "true"))
 		class USoundBase* RamSound;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sounds, meta = (AllowPrivateAccess = "true"))
+		class USoundBase* GrappleSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+		class UAnimMontage* GrappleAnim;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CameraShake, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<class UCameraShake> CamShake;
@@ -293,6 +299,7 @@ public:
 	void ResetClimbUpDelay();
 	void ResetEnableInputDelay();
 	*/
+
 	//Ram -Inate Ability
 	void Ram();
 	void TimelineForCharging();
@@ -305,7 +312,7 @@ public:
 
 	float initiateRamParticles;
 	void RamParticles( float num);
-	float GrappleTimer;
+	//float GrappleTimer;
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;
