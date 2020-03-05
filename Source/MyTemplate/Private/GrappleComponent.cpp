@@ -72,17 +72,6 @@ void UGrappleComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 		(LaunchCharacterTowardsTarget(DeltaTime));
 	
 
-		/*
-		if (PlayAnim == false)		//starts executin stuff the minute play anim is set to false, default value is true so its only set to false once you first try and grapple
-		{
-			grappleAnimTime = grappleAnimTime - DeltaTime;		//this variable just decrements and is a condition that prevents the player from flying in case the player hasnt reached the grapple point
-			if (grappleAnimTime <= 0)
-			{
-				GrappleNow = true;
-				
-			}
-		}
-		*/
 	}
 	
 	
