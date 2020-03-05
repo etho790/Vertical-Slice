@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "GrappleComponent.generated.h"
 
 
@@ -58,7 +59,11 @@ public:
 	// Sets default values for this component's properties
 	UGrappleComponent();
 
+
+
+
 	// Called every frame
+	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Finds all visible grappling points
@@ -78,7 +83,7 @@ public:
 	void Grapple();
 
 	UFUNCTION(BlueprintCallable, Category = "GamePlay")
-		void LaunchCharacterTowardsTarget();
+		void LaunchCharacterTowardsTarget( float tick);
 
 	UFUNCTION()
 		void ThrowGrapplingHook(float Value);
@@ -87,10 +92,15 @@ public:
 	bool LaunchedToPoint;
 
 
-	
-	void GrappleShootNow();
+	void GrappleShootNow(float tick);
 	bool PlayAnim;
-	FTimerHandle GrappleShootDelay;
+	
 	FVector PlayerLocation;
-	float grappleTimer;
+	float GrappleTimer;
+	bool GrappleNow;
+	float grappleAnimTime;
+	float GrappleTimerValue;
+
+
+	void DetachFromGrappling();
 };

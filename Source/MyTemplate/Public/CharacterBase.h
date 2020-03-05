@@ -312,7 +312,7 @@ public:
 
 	float initiateRamParticles;
 	void RamParticles( float num);
-	//float GrappleTimer;
+	float GrappleTimer;
 private:
 	bool SlideDooNce;
 	bool SlidingTimelineInitiate;

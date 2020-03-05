@@ -1,3 +1,5 @@
+
+
 #include "GrappleComponent.h"
 #include "Components/TimelineComponent.h"
 #include "GrapplingPoint.h"
@@ -5,6 +7,11 @@
 #include "CableComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+
+
+//MAKE SURE THE GRAPPLE POINTS ARE PLACED IN PLACES THAT THE PLAYER WOULDNT COLLIDE WITH
+
+
 
 // Sets default values for this component's properties
 UGrappleComponent::UGrappleComponent()
@@ -20,39 +27,65 @@ UGrappleComponent::UGrappleComponent()
 
 	ThrowGrapplingHookTimeline = CreateDefaultSubobject<UTimelineComponent>("ThrowGrapplingHookTimeline");
 	GrappleActorMoveTimeline = CreateDefaultSubobject<UTimelineComponent>("GrappleActorMoveTimeline");
+
+	GrappleTimerValue = 3.f;
+	GrappleNow = false;
+	LaunchedToPoint = false;
+	GrappleTimer = GrappleTimerValue;
+	PlayAnim = true;
+	grappleAnimTime = 0.7f;
+
+	
 }
+
+
 
 
 // Called when the game starts
 void UGrappleComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	LaunchedToPoint = false;
+	
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (Player)
 	{
 		GrapplingHook->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "GrapplingHook");
 	}
 
-
-	grappleTimer = 10;
-	PlayAnim = true;
+	
+	
 }
 
 
 // Called every frame
+
 void UGrappleComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	FindGrapplingPoints();
 
+
+	
 	if (bIsGrappling)
 	{
-		(LaunchCharacterTowardsTarget());
-	}
+		(LaunchCharacterTowardsTarget(DeltaTime));
+	
 
-	GrappleShootNow();
+		/*
+		if (PlayAnim == false)		//starts executin stuff the minute play anim is set to false, default value is true so its only set to false once you first try and grapple
+		{
+			grappleAnimTime = grappleAnimTime - DeltaTime;		//this variable just decrements and is a condition that prevents the player from flying in case the player hasnt reached the grapple point
+			if (grappleAnimTime <= 0)
+			{
+				GrappleNow = true;
+				
+			}
+		}
+		*/
+	}
+	
+	
 }
 
 void UGrappleComponent::FindGrapplingPoints()
@@ -221,7 +254,6 @@ void UGrappleComponent::Grapple()
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (!Player) { return; }
 	
-	
 
 	//horizontal raycast
 	FHitResult Out1;
@@ -287,7 +319,7 @@ void UGrappleComponent::Grapple()
 }
 
 
-void UGrappleComponent::LaunchCharacterTowardsTarget()
+void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 {
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (!Player) { return; }
@@ -295,6 +327,9 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 	AGrapplingPoint* Target = GetClosestGrapplingPoint();
 	
 	
+	
+	//UE_LOG(LogTemp, Warning, TEXT("MyCharacter's grappletimer is %f"), GrappleTimer);
+
 	if (Target && GrapplingHook)
 	{
 		FVector LaunchVelocity = FVector::ZeroVector;
@@ -312,20 +347,16 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 			
 			if (VChecker == false)		//if it hasnt collided with the grapple point
 			{
-
-				grappleTimer -= 0.1f;
+				
+				GrappleTimer = GrappleTimer - tick* 3.f;		//this variable just decrements and is a condition that prevents the player from flying in case the player hasnt reached the grapple point
 
 
 				//Animation playing
 				if (PlayAnim == true)
 				{
-					float grappleAnim = 0.7f;
+					grappleAnimTime = 0.7f;
 					Player->PlayAnimMontage(Player->GrappleAnim, 1, NAME_None);
-
-
-					//delay
-					GetWorld()->GetTimerManager().SetTimer(GrappleShootDelay, this, &UGrappleComponent::GrappleShootNow, grappleAnim, false);
-
+						
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
 					UGameplayStatics::PlaySound2D(WorldContextObject, Player->GrappleSound, 1.0f, 1.0f, 0, NULL, NULL);
@@ -333,24 +364,31 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 				}
 
 				
-
+				//HAPPENS ONCE
 				if (LaunchedToPoint == false)
 				{
 					Player->Stamina -= 0.3f;
-					LaunchVel = ((GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation)) *1.5f ;
+					FVector DirectionOfLaunch = (GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation);
+					LaunchVel = FVector(DirectionOfLaunch.X*0.15f, DirectionOfLaunch.Y * 0.15f, DirectionOfLaunch.Z * 0.15f);
+
 					LaunchedToPoint = true;
 					
+					GrappleNow = true;
+					GrappleTimer = 1;
 				}
 
-				/*
-				if (grappleAnim  > 0)
-				{
-					Player->LaunchCharacter(LaunchVel, true, true);
-					PlayAnim = true;
-				}*/
+				//grapple now is only true after the animation time is set to 0 and GrappleNow=true in the GrappleShootNow function
 				
-				else if(grappleTimer<=0)//if he hasnt reached the point and the timers depleted!!!!!!!!!!					
+				if (GrappleNow ==true  && GrappleTimer > 0)
 				{
+					Player->LaunchCharacter(LaunchVel , false, false);
+					
+				}
+				
+				//HITS ONCE		
+				else if(GrappleTimer <=0)//if he hasnt reached the point and the grappleTimer has depleted!!!!!!!!!!					
+				{
+
 					GrapplingHook->SetVisibility(false);
 					bIsGrappling = false;
 					
@@ -360,23 +398,29 @@ void UGrappleComponent::LaunchCharacterTowardsTarget()
 					PlayAnim = true;
 				
 					LaunchedToPoint = false;
-					grappleTimer = 10;
+					GrappleTimer = GrappleTimerValue;
+					GrappleNow = false;
 				}
 				
 				
 			}
+			/*
 			else if (VChecker == true)
 			{
+				//Player->EnableInput(nullptr);
+				
 				GrapplingHook->SetVisibility(false);
 				bIsGrappling = false;
 				GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
 				
-				Player->LaunchCharacter(LaunchVel*0.5f, true, true);
+				Player->LaunchCharacter(LaunchVel * 0.5f, true, true);
 				PlayAnim = true;
 				
 				LaunchedToPoint = false;
-				grappleTimer = 10;
+				GrappleTimer = GrappleTimerValue;
+				GrappleNow = false;
 			}
+			*/
 		}
 	}
 
@@ -396,18 +440,25 @@ void UGrappleComponent::ThrowGrapplingHook(float Value)
 	}
 }
 
-void UGrappleComponent::GrappleShootNow()
+
+//called from the grapplingpoint
+void UGrappleComponent::DetachFromGrappling()
 {
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (!Player) { return; }
-	
-		Player->LaunchCharacter(LaunchVel, true, true);
-		PlayAnim = true;
-	
 
+	GrapplingHook->SetVisibility(false);
+	bIsGrappling = false;
+	GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
 
+	Player->LaunchCharacter(LaunchVel *1.f, true, true);
+	PlayAnim = true;
 
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(GrappleShootDelay);
+	LaunchedToPoint = false;
+	GrappleTimer = GrappleTimerValue;
+	GrappleNow = false;
+
 
 }
+
+

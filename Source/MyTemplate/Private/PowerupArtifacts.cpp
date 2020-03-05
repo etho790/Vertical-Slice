@@ -6,11 +6,6 @@
 
 
 
-
-
-
-
-
 // Sets default values
 APowerupArtifacts::APowerupArtifacts()
 {
@@ -93,8 +88,10 @@ void APowerupArtifacts::Tick(float DeltaTime)
 void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
 {
 
-	Character = Cast< ACharacterBase>(OtherActor);
-	
+	Character = Cast< ACharacterBase>(OtherActor);	
+	if (!Character) { return; }
+
+
 	if (artifact == PickupType::Homing_Missile)
 	{
 		if (Character->HasPickedUpPowerup == false)
@@ -149,9 +146,6 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 		}
 
-
-
 	}
 	
 }
-

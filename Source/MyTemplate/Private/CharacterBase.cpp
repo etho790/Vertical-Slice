@@ -165,13 +165,13 @@ void ACharacterBase::BeginPlay()
 
 
 	//for the ram timeline
-	TimelineDuration = 0;
+	TimelineDuration = 0.0f;
 	OtherHitPlayer = nullptr;
 	RamEffects_TimelineInitiate = false;
 
 
-
-	//GrappleTimer = 10;
+	//CHANGE RIGHT AFTER GRAPPLES FIXED
+	GrappleTimer = 2.5f;
 	StopTheWallrunRaycast = false;
 }
 

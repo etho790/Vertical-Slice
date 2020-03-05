@@ -2,6 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/SphereComponent.h"
+#include "CharacterBase.h"
+#include "GrappleComponent.h"
+
 #include "GrapplingPoint.generated.h"
 
 UCLASS()
@@ -19,6 +23,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "GamePlay")
 		UMaterialInstance* GrapplingMaterial = nullptr;
 
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,6 +36,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		USphereComponent* Collider;
+
+	ACharacterBase* Character;
+
 	void ChangeToBaseMat();
 	void ChangeToGrapplingMat();
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
 };
