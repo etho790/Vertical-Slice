@@ -7,7 +7,8 @@
 #include "CableComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 //MAKE SURE THE GRAPPLE POINTS ARE PLACED IN PLACES THAT THE PLAYER WOULDNT COLLIDE WITH
 
@@ -199,16 +200,20 @@ bool UGrappleComponent::CheckIfTooFar(class AGrapplingPoint* GrapplingPoint)
 {
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	float Distance = (Player->GetActorLocation() - GrapplingPoint->GetActorLocation()).Size();
+	UCameraComponent* Camera = Cast<UCameraComponent>(Player->FollowCamera);
+
 
 	FVector ControllerForwardVector = FVector(Player->GetControlRotation().Vector().X, Player->GetControlRotation().Vector().Y, 0.f).GetSafeNormal();
 	FVector GrapplingPointDirection = FVector((Player->GetActorLocation() - GrapplingPoint->GetActorLocation()).X,
 		(Player->GetActorLocation() - GrapplingPoint->GetActorLocation()).Y, 0.f).GetSafeNormal();
+	
+		
 
 	float Angle = FMath::Acos(FMath::Abs(FVector::DotProduct(ControllerForwardVector, GrapplingPointDirection)));
 
 
 
-	if ((Distance >= MaxGrapplingDistance) || (FVector::DotProduct(-ControllerForwardVector, GrapplingPointDirection) <= 0))
+	if ((Distance >= MaxGrapplingDistance) || (FVector::DotProduct(-ControllerForwardVector, GrapplingPointDirection)) <= 0.5)
 	{
 		RemoveFromGrapplingPoints(GrapplingPoint);
 		return true;
@@ -249,7 +254,7 @@ void UGrappleComponent::Grapple()
 	FVector ControllerForwardVector = Player->GetActorLocation();
 	FCollisionQueryParams  CollisionP1;
 
-	if (Player->Stamina > 0.3)
+	if (Player->Stamina > 0.4)
 	{
 		
 		//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
@@ -337,7 +342,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 			if (VChecker == false)		//if it hasnt collided with the grapple point
 			{
 				
-				GrappleTimer = GrappleTimer - tick* 3.f;		//this variable just decrements and is a condition that prevents the player from flying in case the player hasnt reached the grapple point
+				GrappleTimer = GrappleTimer - tick* 3.5f;		//this variable just decrements and is a condition that prevents the player from flying in case the player hasnt reached the grapple point
 
 
 				//Animation playing
@@ -356,9 +361,9 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 				//HAPPENS ONCE
 				if (LaunchedToPoint == false)
 				{
-					Player->Stamina -= 0.3f;
+					Player->Stamina -= 0.4f;
 					FVector DirectionOfLaunch = (GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation);
-					LaunchVel = FVector(DirectionOfLaunch.X*0.15f, DirectionOfLaunch.Y * 0.15f, DirectionOfLaunch.Z * 0.15f);
+					LaunchVel = FVector(DirectionOfLaunch.X/**0.15f*/, DirectionOfLaunch.Y /** 0.15f*/, DirectionOfLaunch.Z /** 0.15f*/);
 
 					LaunchedToPoint = true;
 					
@@ -370,7 +375,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 				
 				if (GrappleNow ==true  && GrappleTimer > 0)
 				{
-					Player->LaunchCharacter(LaunchVel , false, false);
+					Player->LaunchCharacter(LaunchVel *2.f , true, true);
 					
 				}
 				
@@ -383,7 +388,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 					
 					GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
 
-					Player->LaunchCharacter(LaunchVel * 0.5f, true, true);
+					//Player->LaunchCharacter(LaunchVel * 0.f, true, true);
 					PlayAnim = true;
 				
 					LaunchedToPoint = false;
@@ -431,7 +436,7 @@ void UGrappleComponent::ThrowGrapplingHook(float Value)
 
 
 //called from the grapplingpoint
-void UGrappleComponent::DetachFromGrappling()
+void UGrappleComponent::DetachFromGrapplingOnceHit()
 {
 	ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
 	if (!Player) { return; }
@@ -440,7 +445,8 @@ void UGrappleComponent::DetachFromGrappling()
 	bIsGrappling = false;
 	GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
 
-	Player->LaunchCharacter(LaunchVel *1.f, true, true);
+	//Player->LaunchCharacter(LaunchVel /**15.f*/, true, true);
+	Player->LaunchCharacter(LaunchVel *0.01f, false, false);
 	PlayAnim = true;
 
 	LaunchedToPoint = false;

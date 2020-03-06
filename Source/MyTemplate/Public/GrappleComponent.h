@@ -92,7 +92,6 @@ public:
 	bool LaunchedToPoint;
 
 
-	void GrappleShootNow(float tick);
 	bool PlayAnim;
 	
 	FVector PlayerLocation;
@@ -102,5 +101,5 @@ public:
 	float GrappleTimerValue;
 
 
-	void DetachFromGrappling();
+	void DetachFromGrapplingOnceHit();
 };
