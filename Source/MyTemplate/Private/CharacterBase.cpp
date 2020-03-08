@@ -194,7 +194,7 @@ void ACharacterBase::BeginPlay()
 
 	//CHANGE RIGHT AFTER GRAPPLES FIXED
 	GrappleTimer = 2.5f;
-	StopTheWallrunRaycast = false;
+	//StopTheWallrunRaycast = false;
 
 	HookDistance = 2000.0f;
 }
@@ -233,7 +233,7 @@ void ACharacterBase::Tick(float DeltaTime)
 		FVector VelocityVector = GetVelocity();
 		CharacterVelocity = VelocityVector.Size();
 
-		if (CharacterVelocity >= 100)
+		//if (CharacterVelocity >= 100)
 		{
 			WallRunner();
 
@@ -751,7 +751,7 @@ void ACharacterBase::WallRunRaycast()
 {
 	//ONLY LETS THIS RAYCAST FUNCTION WORK IF NOT VAULTING !!!!!!!!!!!!!
 
-	if (StopTheWallrunRaycast == false)
+	//if (StopTheWallrunRaycast == false)
 	{
 		TArray<AActor*> none;
 
@@ -1297,7 +1297,7 @@ void ACharacterBase::TimelineForVaulting()
 
 						//if (ShouldClimb == false)
 						//{
-							StopTheWallrunRaycast = true;
+							//StopTheWallrunRaycast = true;
 							VaultingFunctionInTimeline();
 							
 						//}
@@ -1311,7 +1311,7 @@ void ACharacterBase::TimelineForVaulting()
 
 						//if (ShouldClimb == false)
 						//{
-							StopTheWallrunRaycast = true;
+							//StopTheWallrunRaycast = true;
 							VaultingFunctionInTimeline();
 						//}
 
@@ -1353,7 +1353,7 @@ void ACharacterBase::VaultingFunctionInTimeline()
 
 	if (WallThick == true)
 	{
-		StopTheWallrunRaycast = false;
+	//	StopTheWallrunRaycast = false;
 
 	}
 	
