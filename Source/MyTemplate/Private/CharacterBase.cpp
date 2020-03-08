@@ -95,7 +95,6 @@ ACharacterBase::ACharacterBase()
 	VaultmechanicDoOnce = true;
 	SlideDooNce = true;
 	PlayGrappleSoundOnce = true;
-	DurationUntilMovementEnabled = 1.f;
 	
 	EndOfGame = false;
 
@@ -143,13 +142,7 @@ void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedCom
 	 //RAMING INTO OTHER PLAYER AND SEND THEM FLYING
 
 	
-	/*
-	if (OtherHitPlayer == this)
-	{
-		//ADDED!!!!!!!
-		OtherHitPlayer = nullptr;
-	}
-	*/
+	
 }
 
 
@@ -1488,15 +1481,6 @@ void ACharacterBase::ResetThirdVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
-}
-
-void ACharacterBase::EnableInputIfDisabled()
-{
-
-
-
-
-
 }
 
 

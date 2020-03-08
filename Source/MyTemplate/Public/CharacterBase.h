@@ -235,8 +235,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UCableComponent* GrappleHook;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//	bool CanGrappleHook;
+	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		float HookDistance;
@@ -334,9 +333,7 @@ public:
 	void ResetSecondVaultTimer();
 	void ResetThirdVaultTimer();
 
-	//EnablingInput 
-	void EnableInputIfDisabled();
-	float DurationUntilMovementEnabled;
+	
 
 
 	//Grapple Pull
@@ -350,8 +347,6 @@ public:
 	void TimelineForGrapplePulling();
 
 
-	//UFUNCTION(BlueprintCallable)
-	//	void GrapplePullOtherPlayer();
 
 	
 
