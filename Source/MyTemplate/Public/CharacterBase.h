@@ -23,6 +23,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "CableComponent.h"
 
 #include "CharacterBase.generated.h"
 
@@ -192,6 +193,7 @@ public:
 		FVector M_WallNormal;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector M_HeightLocation;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool M_IsClimbingLedge;
 
@@ -224,9 +226,43 @@ public:
 	bool VaultTimelineInitiate;
 
 
-	//christian
+	//christian GRAPPLE
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UGrappleComponent* GrappleComponent;
+
+	float GrappleTimer;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class UCableComponent* GrappleHook;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//	bool CanGrappleHook;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float HookDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector HookLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float GrappleHookDelay =0.2f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sounds, meta = (AllowPrivateAccess = "true"))
+		class USoundBase* GrapplePullSound;
+
+	FTimerHandle GrappleDelayForVisiblity;
+	void GrappleVisibility();
+
+	void DoOncePlayGrappleSound();
+	bool PlayGrappleSoundOnce;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool ShowVisibilityOfGrappleHook;
+	
+	FTimerHandle GrappleDelayForPull;
+	void GrappleDelayPullResetter();
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -236,7 +272,8 @@ protected:
 
 	void ResetLeftRaycast();
 	void ResetRightRaycast();
-	void ResetVault();
+	
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -282,23 +319,41 @@ public:
 	//vault
 	void TimelineForVaulting();
 	void VaultingFunctionInTimeline();
-	FTimerHandle VaultResetter;
+	
 	bool StopTheWallrunRaycast;
-	//Climb		
-	/*
-	void ForwardTracer();
-	void HeightTracer();
+	void VaultDoOnce();
+	void ResetVaultDoOnce();
+	void TimelineForZoomingIn();
+	void TimelineForZoomingOut();
+	void TimelineForVaultingUp();
 
-	void GrabLedge();
+	FTimerHandle FirstVaultTimer;
+	FTimerHandle SecondVaultTimer;
+	FTimerHandle ThirdVaultTimer;
+	void ResetFirstVaultTimer();
+	void ResetSecondVaultTimer();
+	void ResetThirdVaultTimer();
+
+	//EnablingInput 
+	void EnableInputIfDisabled();
+	float DurationUntilMovementEnabled;
+
+
+	//Grapple Pull
 	UFUNCTION(BlueprintCallable)
-		void ExitLedge();
-	void ClimbLedge();
-	void GetStandingPoint();
-	FTimerHandle ClimbUpDelay;
-	FTimerHandle EnableInputDelay;
-	void ResetClimbUpDelay();
-	void ResetEnableInputDelay();
-	*/
+		void ResetGrapple();
+
+	UFUNCTION(BlueprintCallable)
+		void ShootGrappleHook();
+
+	void GrappleAbility();
+	void TimelineForGrapplePulling();
+
+
+	//UFUNCTION(BlueprintCallable)
+	//	void GrapplePullOtherPlayer();
+
+	
 
 	//Ram -Inate Ability
 	void Ram();
@@ -307,14 +362,17 @@ public:
 	float TimelineDuration;
 	FTimerHandle EndOfRamDelay;
 	void ResetRamEndDelay();
-
-
-
 	float initiateRamParticles;
 	void RamParticles( float num);
-	float GrappleTimer;
+	
 private:
 	bool SlideDooNce;
+	bool VaultmechanicDoOnce;
+
+	bool ZoomingInTimelineInitiate;
+	bool ZoomingOutTimelineInitiate;
+	bool VaultingUpTimelineInitiate;
+
 	bool SlidingTimelineInitiate;
 	bool WallRunTimelineInitiate;
 	
@@ -322,11 +380,11 @@ private:
 	bool RamEffects_TimelineInitiate;
 
 	
-
+	bool GrapplePullTimelineInitiate;
 
 	bool ResettheLeftRaycast;
 	bool ResettheRightRaycast;
 
 	ACharacterBase* OtherHitPlayer;
-	
+	ACharacterBase *OtherGrappledCharacter;
 };

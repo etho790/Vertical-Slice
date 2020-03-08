@@ -4,7 +4,9 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "CableComponent.h"
 #include "GrappleComponent.generated.h"
+
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -21,7 +23,7 @@ private:
 		TSubclassOf<class AGrapplingPoint> GrapplingPointBlueprint;
 
 	UPROPERTY()
-		class UCableComponent* GrapplingHook;
+		 UCableComponent* GrapplingHook;
 
 	UPROPERTY()
 		class UTimelineComponent* ThrowGrapplingHookTimeline = nullptr;
@@ -80,6 +82,8 @@ public:
 	
 	void RemoveFromGrapplingPoints(class AGrapplingPoint* GrapplingPoint);
 	bool CheckIfTooFar(AGrapplingPoint* GrapplingPoint);
+	
+	UFUNCTION(BlueprintCallable)
 	void Grapple();
 
 	UFUNCTION(BlueprintCallable, Category = "GamePlay")

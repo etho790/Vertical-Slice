@@ -14,6 +14,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GrappleComponent.h"
 
+#include "Components/SceneComponent.h"
+
 
 
 // Sets default values
@@ -82,11 +84,19 @@ ACharacterBase::ACharacterBase()
 	//CHRISTIAN
 	GrappleComponent = CreateDefaultSubobject<UGrappleComponent>(TEXT("GrappleComponent"));
 	
+	GrappleHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
+	GrappleHook->SetupAttachment(RootComponent);
+
+
 	ChargingTimelineInitiate = false;
 	initiateRamParticles = 0;
 	
 	Stamina = 1.0f;
+	VaultmechanicDoOnce = true;
 	SlideDooNce = true;
+	PlayGrappleSoundOnce = true;
+	DurationUntilMovementEnabled = 1.f;
+	
 	EndOfGame = false;
 
 
@@ -118,13 +128,32 @@ void ACharacterBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
 void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
 	
-	 OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
-	 //RAMING INTO OTHER PLAYER AND SEND THEM FLYING
-	if (OtherHitPlayer != NULL)
-	{		
-		HitTheOtherPlayer = false;
+
+	if (OtherActor->IsA(ACharacterBase::StaticClass()))
+	{
+		if (OtherActor != this)
+		{
+			OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
+			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
+			{									//ADDED THIS CONDITION
+				HitTheOtherPlayer = false;
+			}
+		}
 	}	
+	 //RAMING INTO OTHER PLAYER AND SEND THEM FLYING
+
+	
+	/*
+	if (OtherHitPlayer == this)
+	{
+		//ADDED!!!!!!!
+		OtherHitPlayer = nullptr;
+	}
+	*/
 }
+
+
+
 
 
 
@@ -173,6 +202,8 @@ void ACharacterBase::BeginPlay()
 	//CHANGE RIGHT AFTER GRAPPLES FIXED
 	GrappleTimer = 2.5f;
 	StopTheWallrunRaycast = false;
+
+	HookDistance = 2000.0f;
 }
 
 // Called every frame
@@ -191,6 +222,10 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	//VAULTING TIMELINE
 	TimelineForVaulting();
+	TimelineForZoomingIn();
+	TimelineForZoomingOut();
+	TimelineForVaultingUp();
+
 
 	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
@@ -212,14 +247,23 @@ void ACharacterBase::Tick(float DeltaTime)
 		}
 	}
 
-	//Climbing
-	//ForwardTracer();
-	//HeightTracer();
+	//grapple 
+	TimelineForGrapplePulling();
 
 	//ram
 	
 	TimelineForCharging();
+
+
+	if (OtherHitPlayer == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Your message"));
+
+	}
+
 	TimelineEndOfRamEffects();
+
+
 }
 
 
@@ -236,7 +280,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	//if (EndOfGame == false)
 	{
 
-		//THIS DOES NOT WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 		Super::SetupPlayerInputComponent(PlayerInputComponent);
 		PlayerInputComponent->BindAxis("LookSideways", this, &APawn::AddControllerYawInput);	//BINDS THE "TURN" action mappings in project settings to the "use controller yaw settings in the BP.
 													//pawn									//since "TURN" is mouseX, so the mouse X will control the yaw input
@@ -257,8 +301,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
 		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
-		PlayerInputComponent->BindAction("Grapple", IE_Pressed, GrappleComponent, &UGrappleComponent::Grapple);
-
+		//PlayerInputComponent->BindAction("Grapple", IE_Pressed, GrappleComponent, &UGrappleComponent::Grapple);
+		PlayerInputComponent->BindAction("Grapple", IE_Pressed, this, &ACharacterBase::GrappleAbility);
 		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACharacterBase::Ram);
 	}
 
@@ -349,11 +393,7 @@ void ACharacterBase::Slide()
 		float AnimationDuration = 0.6f;
 		FastEnoughToSlide = true;
 
-		/*
-		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
-		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
-		LaunchCharacter(LaunchVelocity, true, false);
-		*/
+		
 		PlayAnimMontage(IdleToSlide, AnimationDuration, NAME_None);
 
 		SlideCollider();
@@ -389,7 +429,7 @@ void ACharacterBase::ResetTimer()
 
 	//SUBJECT TO CHANGE!!!!!
 	GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
-	//UE_LOG(LogTemp, Warning, TEXT("Your message"));
+
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);
@@ -480,7 +520,7 @@ void ACharacterBase::SlideCollider()
 	FVector End1 = Start1 + GetActorForwardVector() * 400;
 	FCollisionQueryParams  CollisionP1;
 
-	DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
+	//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 
 	bool HorizontalCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 
@@ -920,13 +960,20 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 
 
 	//HITTING THE OTHERPLAYER TO SEND THEM FLYING
-	OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
 
-	if (OtherHitPlayer != NULL)
+	if (OtherActor->IsA(ACharacterBase::StaticClass()))
 	{
-		HitTheOtherPlayer = true;
-
+		if (OtherActor != this)
+		{
+			OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
+			if (OtherHitPlayer != nullptr &&  OtherHitPlayer != this)
+			{
+				HitTheOtherPlayer = true;
+			}
+		}
 	}
+
+	
 
 	//RAMMING INTO WALLS
 	if (RamUse == true)
@@ -1028,19 +1075,163 @@ void ACharacterBase::DontJump()
 
 }
 
+
+//Grapple Pull
+
+
+
+void ACharacterBase::GrappleAbility()
+{
+	if (M_Hanging == false)
+	{
+		if (Stamina > 0.4f)
+		{
+			TArray<AActor*> none;
+			//ForwardGrappleCheckerIsHit 
+			FHitResult Out;
+			FVector Start = GetActorLocation() + FollowCamera->GetForwardVector()*100 ;
+			FVector End = Start + (FollowCamera->GetForwardVector()*HookDistance);
+			FCollisionQueryParams  CollisionP;
+			CollisionP.bTraceComplex = false;
+			CollisionP.bReturnPhysicalMaterial = true;
+		
+			
+			bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 10, TraceTypeQuery2, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
+
+			if (ForwardGrappleCheckerIsHit == true)
+			{
+				HookLocation = Out.Location;
+				OtherGrappledCharacter =Cast< ACharacterBase>(Out.Actor);
+
+
+				if (OtherGrappledCharacter != nullptr)
+				{
+					if (OtherGrappledCharacter != this)
+					{
+						HookLocation = OtherGrappledCharacter->GetMesh()->GetSocketLocation("Pelvis");
+
+						ShootGrappleHook();
+
+						PlayAnimMontage(GrappleAnim, 1.f, NAME_None);
+
+						//Delay
+						GetWorld()->GetTimerManager().SetTimer(GrappleDelayForPull, this, &ACharacterBase::GrappleDelayPullResetter, 0.55f, false);
+
+
+					}
+					else if (OtherGrappledCharacter == this)
+					{
+						//switch to the grapple to waypoint
+						GrappleComponent->Grapple();
+						
+
+					}
+
+				}
+				if (OtherGrappledCharacter ==nullptr)
+				{
+					//switch to the grapple to waypoint
+					GrappleComponent->Grapple();
+
+
+				}
+			}
+			else if (ForwardGrappleCheckerIsHit == false)
+			{
+				GrappleComponent->Grapple();
+			}
+		}
+	}
+
+}
+
+void ACharacterBase::TimelineForGrapplePulling()
+{
+	if (GrapplePullTimelineInitiate == true)
+	{
+		
+		if (OtherGrappledCharacter->M_Hanging == true)
+		{
+			ResetGrapple();
+		}
+		if (OtherGrappledCharacter->M_Hanging == false)
+		{
+			FVector grappleVeloc = FVector(Dash->GetForwardVector().X*-2000.f, Dash->GetForwardVector().Y*-2000.f,1500.f);
+
+			OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
+
+			ResetGrapple();
+			GrapplePullTimelineInitiate = false;
+		}
+		
+	}
+}
+
+
+
+void ACharacterBase::ResetGrapple()
+{	
+	ShowVisibilityOfGrappleHook = false;
+	//CanGrappleHook = true;
+	PlayGrappleSoundOnce = true;	
+}
+
+void ACharacterBase::ShootGrappleHook()
+{
+	Stamina -= 0.4f;
+	//Delay
+	GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &ACharacterBase::GrappleVisibility, 0.3f, false);	
+}
+
+
+
+
+void ACharacterBase::GrappleVisibility()
+{
+	ShowVisibilityOfGrappleHook = true;
+	DoOncePlayGrappleSound();
+	
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(GrappleDelayForVisiblity);
+	
+}
+
+void ACharacterBase::DoOncePlayGrappleSound()
+{
+	if (PlayGrappleSoundOnce == true)
+	{
+		//play sound
+		UWorld* WorldContextObject = GetWorld();
+		UGameplayStatics::PlaySound2D(WorldContextObject, GrapplePullSound, 5.0f, 1.0f, 0, NULL, NULL);
+
+		PlayGrappleSoundOnce = false;
+	}
+}
+
+
+void ACharacterBase::GrappleDelayPullResetter()
+{
+	GrapplePullTimelineInitiate = true;
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(GrappleDelayForPull);
+	   
+}
+
+
+
+
 //Vaulting
 void ACharacterBase::TimelineForVaulting()
 {
-
-	/*
-
+	
 
 	if (VaultTimelineInitiate == true)
 	{
 		//Horizontal_VaultChecker from the bottom straight forwards
 		FHitResult Out;
-		FVector Start = GetActorLocation() - FVector(0, 0, 40);
-		FVector End = Start + (GetActorForwardVector() * 200);
+		FVector Start = GetActorLocation() - FVector(0, 0, 44);
+		FVector End = Start + (GetActorForwardVector() * 100);
 		FCollisionQueryParams  CollisionP;
 
 		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
@@ -1065,7 +1256,7 @@ void ACharacterBase::TimelineForVaulting()
 				FVector End1 = Start1 + FVector(0, 0, -200.0f);
 				FCollisionQueryParams  CollisionP1;
 
-				DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, true, 1, 0, 1);
+				//DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, true, 1, 0, 1);
 
 				bool WallHeightChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
 
@@ -1073,6 +1264,7 @@ void ACharacterBase::TimelineForVaulting()
 				{
 					FVector WallHeight = Out1.Location;
 
+					/*
 					if ((WallHeight - WallLocation).Z > 60.0f)
 					{
 						ShouldClimb = true;
@@ -1081,7 +1273,7 @@ void ACharacterBase::TimelineForVaulting()
 					{
 						ShouldClimb = false;
 					}
-
+					*/
 
 					FHitResult Out2;
 					FRotator rot_2 = UKismetMathLibrary::MakeRotFromX(WallNormal);
@@ -1091,7 +1283,7 @@ void ACharacterBase::TimelineForVaulting()
 					FVector End2 = Start2 + FVector(0, 0, -300.0f);
 					FCollisionQueryParams  CollisionP2;
 
-					DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, true, 1, 0, 1);
+					//DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, true, 1, 0, 1);
 
 
 					bool WallThicknessChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
@@ -1110,12 +1302,12 @@ void ACharacterBase::TimelineForVaulting()
 						}
 
 
-						if (ShouldClimb == false)
-						{
+						//if (ShouldClimb == false)
+						//{
 							StopTheWallrunRaycast = true;
 							VaultingFunctionInTimeline();
 							
-						}
+						//}
 
 					}
 					if (WallThicknessChecker_IsHit == false)
@@ -1124,11 +1316,11 @@ void ACharacterBase::TimelineForVaulting()
 
 
 
-						if (ShouldClimb == false)
-						{
+						//if (ShouldClimb == false)
+						//{
 							StopTheWallrunRaycast = true;
 							VaultingFunctionInTimeline();
-						}
+						//}
 
 					}
 
@@ -1151,32 +1343,19 @@ void ACharacterBase::TimelineForVaulting()
 		}
 
 
-
-
-
-
 	}
 
-	*/
+	
 }
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
-	/*
+	
 	if (WallThick == false)
-	{
-		
-		GetCharacterMovement()->GravityScale = 0;
-
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		//GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);		
-		
-		
-		PlayAnimMontage(VaultAnim, 1.5f, NAME_None);
-		
-		
-		GetWorld()->GetTimerManager().SetTimer(VaultResetter, this, &ACharacterBase::ResetVault, 0.25f, false);
-
+	{		
+		//do once vault
+		VaultDoOnce();
+					   		 
 	}
 
 	if (WallThick == true)
@@ -1184,157 +1363,146 @@ void ACharacterBase::VaultingFunctionInTimeline()
 		StopTheWallrunRaycast = false;
 
 	}
-	*/
+	
 }
 
-
-void ACharacterBase::ResetVault()
+void ACharacterBase::VaultDoOnce()
 {
-	/*
-	FVector LaunchVeloc = Dash->GetForwardVector() * VaultVelocity;
-	LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 800), true, true);
-	
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-	ShouldClimb = false;
-	GetCharacterMovement()->GravityScale = 3.0f;
-	
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(VaultResetter);
-	//stop the vault timeline
-	VaultTimelineInitiate = false;
-	*/
-}
-
-
-
-
-//Climbing
-/*
-void ACharacterBase::ForwardTracer()
-{
-	TArray<AActor*> none;
-	FHitResult Out;
-	FVector Start = GetActorLocation();
-	FVector ForwardVec = UKismetMathLibrary::GetForwardVector(GetActorRotation());
-	FVector End = FVector(ForwardVec.X * 150, ForwardVec.Y * 150, ForwardVec.Z) + Start;
-
-	//ask if TraceTypeQuery3 is a custom trace channel
-	bool HorizontalLineCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery3, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
-
-	if (HorizontalLineCheckerIsHit == true)
+	if (VaultmechanicDoOnce == true)
 	{
-		M_WallLocation = Out.Location;
-		M_WallNormal = Out.Normal;
+		PlayAnimMontage(VaultAnim, 1.f, NAME_None);
+
+		//starts zooming in the character timeline
+		ZoomingInTimelineInitiate = true;	
+
+		//first delay
+		GetWorld()->GetTimerManager().SetTimer(FirstVaultTimer, this, &ACharacterBase::ResetFirstVaultTimer, 0.3f, false);
+		
+		//stop the doonce function from executing
+		VaultmechanicDoOnce = false;
 	}
 }
 
-
-void ACharacterBase::HeightTracer()
+void ACharacterBase::ResetVaultDoOnce()
 {
-	TArray<AActor*> none;
-	FHitResult Out;
-	FVector Start = FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 500) + (UKismetMathLibrary::GetForwardVector(GetActorRotation()) * 70);
+	VaultmechanicDoOnce = true;
 
-	FVector End = FVector(Start.X, Start.Y, Start.Z - 500);
+}
 
-	//ask if TraceTypeQuery3 is a custom trace channel
-	bool VerticalLineCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery3, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Red, 5);
 
-	if (VerticalLineCheckerIsHit == true)
+void ACharacterBase::ResetFirstVaultTimer()
+{
+
+	//stop the zoom in timeline
+	ZoomingInTimelineInitiate = false;
+
+	//start the second timeline
+	ZoomingOutTimelineInitiate = true;
+
+	//disable collision
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+
+	//second delay
+	GetWorld()->GetTimerManager().SetTimer(SecondVaultTimer, this, &ACharacterBase::ResetSecondVaultTimer, 0.35f, false);
+
+
+	//start the last timeline
+	VaultingUpTimelineInitiate = true;
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(FirstVaultTimer);
+
+}
+
+void ACharacterBase::TimelineForZoomingIn()
+{
+	if (ZoomingInTimelineInitiate == true)
 	{
-		M_HeightLocation = Out.Location;
+		CameraBoom->TargetArmLength -= 5.0f;
+	}
+}
 
-		float val = GetMesh()->GetSocketLocation("PelvisSocket").Z - M_HeightLocation.Z;
-		float M_ClimbHeightRange = -50;
-		if (UKismetMathLibrary::InRange_FloatFloat(val, M_ClimbHeightRange, 0, true, true) == true)
+void ACharacterBase::TimelineForZoomingOut()
+{
+	if (ZoomingOutTimelineInitiate == true)
+	{
+		if (CameraBoom->TargetArmLength < 500.f)
 		{
-			if (M_IsClimbingLedge == false)
-			{
-				GrabLedge();
-			}
+			CameraBoom->TargetArmLength += 1.f;
+		}
+		else if(CameraBoom->TargetArmLength >= 500.f)
+		{
+			ZoomingOutTimelineInitiate = false;
 		}
 	}
-}
-
-void ACharacterBase::GrabLedge()
-{
-	UseControllerRotationYaw = false;
-	GetCharacterMovement()->StopMovementImmediately();
-	M_CanGrab = true;
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
-	M_Hanging = true;
-
-
-	float relativeLocationX = (UKismetMathLibrary::Multiply_VectorVector(M_WallNormal, FVector(22, 22, 0))).X + M_WallLocation.X;
-	float relativeLocationY = M_WallLocation.Y + (UKismetMathLibrary::Multiply_VectorVector(M_WallNormal, FVector(22, 22, 0))).Y;
-	float relativeLocationZ = M_HeightLocation.Z - 120.0f;
-
-
-	FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(M_WallNormal);
-
-	FRotator RelativeRotation = FRotator(Rotation.Roll, 0, Rotation.Yaw - 180);
-
-
-	//SETTING THE LOCATION AND ROTATION OF THE CHARACTER WHILE CLIMBING
-	//SetActorRelativeRotation(RelativeRotation,false, NULL, ETeleportType:: None);
-	SetActorRelativeLocation(FVector(relativeLocationX, relativeLocationY, relativeLocationZ), false, NULL, ETeleportType::None);
-
-	GetCharacterMovement()->StopMovementImmediately();
-
-	GetWorld()->GetTimerManager().SetTimer(ClimbUpDelay, this, &ACharacterBase::ResetClimbUpDelay, 0.1f, false);
 
 }
 
-
-void ACharacterBase::ResetClimbUpDelay()
+void ACharacterBase::TimelineForVaultingUp()
 {
-	DisableInput(NULL);
-	ClimbLedge();
-	GetWorld()->GetTimerManager().SetTimer(EnableInputDelay, this, &ACharacterBase::ResetEnableInputDelay, 1.0f, false);
-
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(ClimbUpDelay);
-}
-
-void ACharacterBase::ClimbLedge()
-{
-	if (M_IsClimbingLedge == false)
+	if (VaultingUpTimelineInitiate == true)
 	{
-		M_IsClimbingLedge = true;
-		M_CanClimb = true;
-		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
-		M_Hanging = false;
+		
+		FVector LaunchVeloc = Dash->GetForwardVector() * 20.0f;
+		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 20.0f), false, true);
 
 	}
 }
 
-void ACharacterBase::ResetEnableInputDelay()
+
+void ACharacterBase::ResetSecondVaultTimer()
 {
-	EnableInput(NULL);
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(EnableInputDelay);
-}
+
+	//last delay
+	GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, 0.25f, false);
 
 
 
-void ACharacterBase::ExitLedge()
-{
-	M_IsClimbingLedge = false;
-	M_CanClimb = false;
+	//final launch over the obstacle
+	FVector FinalLaunchVeloc = Dash->GetForwardVector() * VaultVelocity*0.001f;
+	LaunchCharacter(FVector(FinalLaunchVeloc.X, FinalLaunchVeloc.Y, 500.0f), false, false);
+
+	//enabling collision
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 
+	//supposed to disable should climb var but its useless
+
+	//reset the do once function
+	ResetVaultDoOnce();
+	
+	//stop the vault timeline
+	VaultTimelineInitiate = false;
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
 }
 
-
-void ACharacterBase::GetStandingPoint()
+void ACharacterBase::ResetThirdVaultTimer()
 {
-	FRotator RelRotation = FRotator(GetCapsuleComponent()->K2_GetComponentRotation().Roll, 0, GetCapsuleComponent()->K2_GetComponentRotation().Yaw);
+	//stop the second timeline
 
-	GetCapsuleComponent()->SetRelativeRotation(RelRotation, false, NULL, ETeleportType::None);
+	VaultingUpTimelineInitiate = false;
+
+
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
+}
+
+void ACharacterBase::EnableInputIfDisabled()
+{
+
+
+
+
 
 }
-*/
+
+
+
+
+
 
 //RAM
 void ACharacterBase::Ram()
@@ -1353,6 +1521,8 @@ void ACharacterBase::Ram()
 
 				//initiate the charging time line
 				ChargingTimelineInitiate = true;
+
+				TimelineDuration = 0;
 
 				//delay
 				GetWorld()->GetTimerManager().SetTimer(EndOfRamDelay, this, &ACharacterBase::ResetRamEndDelay, Ram_animationLength, false);
@@ -1396,14 +1566,17 @@ void ACharacterBase::TimelineForCharging()
 				//sends the other player flying
 				OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
 
-
-
 				//play sound
 				UWorld* WorldContextObject = GetWorld();
 				UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
 
 				//camera shake
 				UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+
+				//initiate the endofRam time line
+				RamEffects_TimelineInitiate = true;
+
+				
 			}
 
 
@@ -1411,10 +1584,11 @@ void ACharacterBase::TimelineForCharging()
 
 			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 			{
-				OtherHitPlayer->DisableInput(NULL);
+				
+				OtherHitPlayer->DisableInput(nullptr);
+				
 			}
-			//initiate the endofRam time line
-			RamEffects_TimelineInitiate = true;
+			
 		}
 	}
 
@@ -1422,10 +1596,13 @@ void ACharacterBase::TimelineForCharging()
 
 void ACharacterBase::TimelineEndOfRamEffects()
 {
+
+
+
 	if (RamEffects_TimelineInitiate == true)
 	{
 		TimelineDuration += 0.005f;
-
+		
 		if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 		{
 			if (OtherHitPlayer->GetCharacterMovement()->IsFalling() == false)
@@ -1433,23 +1610,50 @@ void ACharacterBase::TimelineEndOfRamEffects()
 
 				
 				initiateRamParticles++;
-				RamParticles(initiateRamParticles);
-				
+				//RamParticles(initiateRamParticles);
+				FVector head = FVector(OtherHitPlayer->GetMesh()->GetSocketLocation("head").X, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Y, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Z + 20.0f);
+
+				if (initiateRamParticles > 30)
+				{
+					FActorSpawnParameters param;
+					AActor* particleSpawner = GetWorld()->SpawnActor<AActor>(StunFromRam, head, FRotator(0, 0, 0), param);
+
+
+					particleSpawner->AttachToComponent(OtherHitPlayer->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, ("head"));
+
+					initiateRamParticles = 0;
+					
+					/*
+					//added from condition beneath
+					if (OtherHitPlayer != nullptr)
+					{
+						OtherHitPlayer->EnableInput(NULL);
+					}
+
+					TimelineDuration = 0;
+					RamEffects_TimelineInitiate = false;
+					*/
+				}
 					
 				
 			}
 		}
 
-		if (TimelineDuration >= 5)
+		if (TimelineDuration >= 1)
 		{
 			//Enabling Input in other player
+			
+			
+			
+			
 			if (OtherHitPlayer != nullptr)
 			{
-				OtherHitPlayer->EnableInput(NULL);
+				OtherHitPlayer->EnableInput(nullptr);
 			}
 
 			TimelineDuration = 0;
 			RamEffects_TimelineInitiate = false;
+			
 		}
 	}
 }
@@ -1457,7 +1661,7 @@ void ACharacterBase::TimelineEndOfRamEffects()
 
 void ACharacterBase::RamParticles(float num)
 {
-
+	/*
 	FVector head = FVector(OtherHitPlayer->GetMesh()->GetSocketLocation("head").X, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Y, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Z + 20.0f);
 
 	if (initiateRamParticles > 30)
@@ -1471,7 +1675,7 @@ void ACharacterBase::RamParticles(float num)
 		initiateRamParticles = 0;
 
 	}
-
+	*/
 
 }
 
