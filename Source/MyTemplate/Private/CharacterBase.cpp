@@ -482,7 +482,7 @@ void ACharacterBase::SlideColliderDoOnce()
 		VerticalCollision = false;
 		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
 		GetCapsuleComponent()->SetCapsuleSize(42, 96, true);
-		//line below SUBJECT TO CHANGE!!!!!
+		// SUBJECT TO CHANGE!!!!!
 		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 60.0f), false, 0, ETeleportType::None);
 
 		SlideDooNce = false;
@@ -568,7 +568,7 @@ void ACharacterBase::SlideCollider()
 			VerticalCollision = true;
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
 
-			//line below SUBJECT TO CHANGE!!!!!
+			//SUBJECT TO CHANGE!!!!!
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 60.0f), false, 0, ETeleportType::TeleportPhysics);
 			if (MoveForwards == true)
 			{
@@ -609,7 +609,7 @@ void ACharacterBase::SlideCollider()
 			VerticalCollision = true;
 			GetCapsuleComponent()->SetCapsuleSize(20.0f, 10.0f, true);
 
-			//line below SUBJECT TO CHANGE!!!!!
+			//SUBJECT TO CHANGE!!!!!
 			GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 60.0f), false, 0, ETeleportType::TeleportPhysics);
 
 			if (MoveForwards == true)
@@ -1094,8 +1094,11 @@ void ACharacterBase::GrappleAbility()
 			if (ForwardGrappleCheckerIsHit == true)
 			{
 				HookLocation = Out.Location;
-				OtherGrappledCharacter =Cast< ACharacterBase>(Out.Actor);
 
+				if (Out.Actor != nullptr)
+				{
+					OtherGrappledCharacter = Cast< ACharacterBase>(Out.Actor);
+				}
 
 				if (OtherGrappledCharacter != nullptr)
 				{
@@ -1412,7 +1415,7 @@ void ACharacterBase::TimelineForZoomingIn()
 {
 	if (ZoomingInTimelineInitiate == true)
 	{
-		CameraBoom->TargetArmLength -= 5.0f;
+		CameraBoom->TargetArmLength -= 3.8f;
 	}
 }
 
@@ -1437,8 +1440,8 @@ void ACharacterBase::TimelineForVaultingUp()
 	if (VaultingUpTimelineInitiate == true)
 	{
 		
-		FVector LaunchVeloc = Dash->GetForwardVector() * 20.0f;
-		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 20.0f), false, true);
+		FVector LaunchVeloc = Dash->GetForwardVector() * 20;
+		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 25.0f), false, true);
 
 	}
 }
@@ -1454,7 +1457,7 @@ void ACharacterBase::ResetSecondVaultTimer()
 
 	//final launch over the obstacle
 	FVector FinalLaunchVeloc = Dash->GetForwardVector() * VaultVelocity*0.001f;
-	LaunchCharacter(FVector(FinalLaunchVeloc.X, FinalLaunchVeloc.Y, 500.0f), false, false);
+	LaunchCharacter(FVector(FinalLaunchVeloc.X, FinalLaunchVeloc.Y, 500.0f), true, false);
 
 	//enabling collision
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -1607,16 +1610,7 @@ void ACharacterBase::TimelineEndOfRamEffects()
 
 					initiateRamParticles = 0;
 					
-					/*
-					//added from condition beneath
-					if (OtherHitPlayer != nullptr)
-					{
-						OtherHitPlayer->EnableInput(NULL);
-					}
-
-					TimelineDuration = 0;
-					RamEffects_TimelineInitiate = false;
-					*/
+					
 				}
 					
 				

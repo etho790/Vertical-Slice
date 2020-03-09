@@ -363,7 +363,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 				{
 					Player->Stamina -= 0.4f;
 					FVector DirectionOfLaunch = (GetClosestGrapplingPoint()->GetActorLocation() - PlayerLocation);
-					LaunchVel = FVector(DirectionOfLaunch.X/**0.15f*/, DirectionOfLaunch.Y /** 0.15f*/, DirectionOfLaunch.Z /** 0.15f*/);
+					LaunchVel = FVector(DirectionOfLaunch.X/*0.15f*/, DirectionOfLaunch.Y /** 0.15f*/, DirectionOfLaunch.Z /** 0.15f*/);
 
 					LaunchedToPoint = true;
 					
@@ -446,7 +446,7 @@ void UGrappleComponent::DetachFromGrapplingOnceHit()
 	GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
 
 	//Player->LaunchCharacter(LaunchVel /**15.f*/, true, true);
-	Player->LaunchCharacter(LaunchVel *0.01f, false, false);
+	Player->LaunchCharacter(LaunchVel *1.f, true, true);
 	PlayAnim = true;
 
 	LaunchedToPoint = false;
