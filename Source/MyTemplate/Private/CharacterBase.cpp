@@ -87,7 +87,7 @@ ACharacterBase::ACharacterBase()
 	GrappleHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
 	GrappleHook->SetupAttachment(RootComponent);
 
-
+	faceWallNormal = false;
 	ChargingTimelineInitiate = false;
 	initiateRamParticles = 0;
 	
@@ -1222,7 +1222,7 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 void ACharacterBase::TimelineForVaulting()
 {
-/*	
+	/*
 
 	if (VaultTimelineInitiate == true)
 	{
@@ -1243,7 +1243,7 @@ void ACharacterBase::TimelineForVaulting()
 
 				FVector WallLocation = Out.Location;
 				FVector WallNormal = Out.Normal;
-
+				ImpactWallNormal = Out.ImpactNormal;
 
 				//line from up to down 
 				FHitResult Out1;
@@ -1385,6 +1385,7 @@ void ACharacterBase::ResetVaultDoOnce()
 void ACharacterBase::ResetFirstVaultTimer()
 {
 	/*
+
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
 
@@ -1413,8 +1414,23 @@ void ACharacterBase::TimelineForZoomingIn()
 	if (ZoomingInTimelineInitiate == true)
 	{
 		CameraBoom->TargetArmLength -= 3.8f;
+		if (faceWallNormal == false)
+		{
+		
+		FRotator rot_0 = GetActorRotation();
+		FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
+		float YawVal = rot_1.Yaw + 180.f;
+		GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
+		
+		//turn the bool off
+		faceWallNormal = true;
+
+		}
 	}
+	
 	*/
+	
+	
 }
 
 void ACharacterBase::TimelineForZoomingOut()
@@ -1430,6 +1446,10 @@ void ACharacterBase::TimelineForZoomingOut()
 		{
 			ZoomingOutTimelineInitiate = false;
 		}
+
+		//turn bool on
+		faceWallNormal = false;
+
 	}
 	*/
 }
@@ -1442,7 +1462,14 @@ void ACharacterBase::TimelineForVaultingUp()
 		
 		FVector LaunchVeloc = Dash->GetForwardVector() * 20;
 		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 25.0f), false, true);
-
+		
+		if (faceWallNormal == false)
+		{
+			FRotator rot_0 = GetActorRotation();
+			FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
+			float YawVal = rot_1.Yaw + 180.f;
+			GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
+		}
 	}
 	*/
 }
@@ -1451,6 +1478,7 @@ void ACharacterBase::TimelineForVaultingUp()
 void ACharacterBase::ResetSecondVaultTimer()
 {
 	/*
+
 	//last delay
 	GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, 0.25f, false);
 
@@ -1475,6 +1503,7 @@ void ACharacterBase::ResetSecondVaultTimer()
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
 	*/
+	
 }
 
 void ACharacterBase::ResetThirdVaultTimer()
@@ -1640,24 +1669,4 @@ void ACharacterBase::TimelineEndOfRamEffects()
 	}
 }
 
-
-void ACharacterBase::RamParticles(float num)
-{
-	/*
-	FVector head = FVector(OtherHitPlayer->GetMesh()->GetSocketLocation("head").X, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Y, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Z + 20.0f);
-
-	if (initiateRamParticles > 30)
-	{
-		FActorSpawnParameters param;
-		AActor* particleSpawner =GetWorld()->SpawnActor<AActor>(StunFromRam, head, FRotator(0, 0, 0), param);
-
-		
-		particleSpawner->AttachToComponent(OtherHitPlayer->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, ("head"));
-		
-		initiateRamParticles = 0;
-
-	}
-	*/
-
-}
 

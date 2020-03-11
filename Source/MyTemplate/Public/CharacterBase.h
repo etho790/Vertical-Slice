@@ -335,8 +335,8 @@ public:
 	void ResetSecondVaultTimer();
 	void ResetThirdVaultTimer();
 
-	
-
+	bool faceWallNormal;
+	FVector ImpactWallNormal;
 
 	//Grapple Pull
 	UFUNCTION(BlueprintCallable)
@@ -362,7 +362,7 @@ public:
 	FTimerHandle EndOfRamDelay;
 	void ResetRamEndDelay();
 	float initiateRamParticles;
-	void RamParticles( float num);
+	
 	
 private:
 	bool SlideDooNce;
