@@ -225,6 +225,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool VaultTimelineInitiate;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool vaulting;
 
 	//christian GRAPPLE
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -345,6 +347,8 @@ public:
 
 	void GrappleAbility();
 	void TimelineForGrapplePulling();
+
+
 
 
 
