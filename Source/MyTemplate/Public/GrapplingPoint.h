@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "CharacterBase.h"
 #include "GrappleComponent.h"
+#include "Materials/MaterialInstance.h"
 
 #include "GrapplingPoint.generated.h"
 
@@ -23,7 +24,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "GamePlay")
 		UMaterialInstance* GrapplingMaterial = nullptr;
 
-	
+	UFUNCTION(BlueprintCallable)
+		void ChangeToBaseMat(float DeltaTime);
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,8 +42,9 @@ public:
 		USphereComponent* Collider;
 
 	ACharacterBase* Character;
+	
 
-	void ChangeToBaseMat();
+
 	void ChangeToGrapplingMat();
 
 	UFUNCTION()
@@ -49,5 +52,6 @@ public:
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-
+	float TimerBeforeColorChanges;
+	bool ColorChanged;
 };

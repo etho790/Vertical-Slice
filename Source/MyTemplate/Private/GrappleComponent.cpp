@@ -64,7 +64,7 @@ void UGrappleComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FindGrapplingPoints();
+	FindGrapplingPoints(DeltaTime);
 
 
 	
@@ -78,8 +78,11 @@ void UGrappleComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	
 }
 
-void UGrappleComponent::FindGrapplingPoints()
+void UGrappleComponent::FindGrapplingPoints(float DeltaTime)
 {
+
+
+
 	if (!bIsGrappling)
 	{
 		if (ensure(GrapplingPointBlueprint))
@@ -118,11 +121,21 @@ void UGrappleComponent::FindGrapplingPoints()
 
 void UGrappleComponent::ChangeColor(AGrapplingPoint* GrapplingPoint)
 {
-	GrapplingPoint->ChangeToBaseMat();
+	
+
+	
 	if (GetClosestGrapplingPoint())
 	{
-		GetClosestGrapplingPoint()->ChangeToGrapplingMat();
+		ACharacterBase* Player = Cast<ACharacterBase>(GetOwner());
+		if (!Player) { return; }
+		if (Player->ActorHasTag("P1")  || Player->ActorHasTag("P2") )
+		{
+			GetClosestGrapplingPoint()->ChangeToGrapplingMat();
+		}
+		
 	}
+
+
 }
 
 void UGrappleComponent::AddToGrapplingPoints(class AGrapplingPoint* GrapplingPoint)

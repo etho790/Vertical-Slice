@@ -14,6 +14,9 @@ AGrapplingPoint::AGrapplingPoint()
 
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Point);
+
+	//ADDED ENOCH!!!!!!!!!
+	TimerBeforeColorChanges = 0;
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +26,8 @@ void AGrapplingPoint::BeginPlay()
 
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &AGrapplingPoint::OnBeginOverlap);
 	Collider->OnComponentEndOverlap.AddDynamic(this, &AGrapplingPoint::OnOverlapEnd);
+
+		
 }
 
 // Called every frame
@@ -30,22 +35,36 @@ void AGrapplingPoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
+	ChangeToBaseMat(DeltaTime);
+	
 }
 
-void AGrapplingPoint::ChangeToBaseMat()
-{		//!!!!!!!!!!!!!MUST PUT THE COLOUR CHANGE IN THE CHARACTER CLASS
+void AGrapplingPoint::ChangeToBaseMat(float DeltaTime)
+{	
+	
 	if (BaseMaterial)
 	{
-		Point->SetMaterial(0, BaseMaterial);
+		if (ColorChanged == true)
+		{
+			TimerBeforeColorChanges += DeltaTime;
+			if (TimerBeforeColorChanges > 0.05f)
+			{
+				Point->SetMaterial(0, BaseMaterial);
+				ColorChanged = false;
+			}
+		}
 	}
 }
 
 void AGrapplingPoint::ChangeToGrapplingMat()
 {
-	//!!!!!!!!!!!!!MUST PUT THE COLOUR CHANGE IN THE CHARACTER CLASS
+	
 	if (GrapplingMaterial)
 	{
 		Point->SetMaterial(0, GrapplingMaterial);
+		ColorChanged = true;
+		TimerBeforeColorChanges = 0;
 	}
 }
 
