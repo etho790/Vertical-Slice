@@ -51,6 +51,7 @@ void UGrappleComponent::BeginPlay()
 	if (Player)
 	{
 		GrapplingHook->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "GrapplingHook");
+		GrapplingHook->SetMaterial(0, GrappleColor);
 	}
 
 	
@@ -442,7 +443,7 @@ void UGrappleComponent::ThrowGrapplingHook(float Value)
 {
 	if (GrapplingHook && GetClosestGrapplingPoint())
 	{
-		FVector NewLocation = FMath::Lerp<FVector, float>(GrapplingHook->GetComponentLocation(), GetClosestGrapplingPoint()->GetActorLocation(), Value);
+		FVector NewLocation = FMath::Lerp<FVector, float>(          (GrapplingHook->GetComponentLocation() + (GrapplingHook->GetOwner()->GetActorUpVector() * 15)+ (GrapplingHook->GetOwner()->GetActorForwardVector() * 35))              , GetClosestGrapplingPoint()->GetActorLocation(), Value);
 		GrapplingHook->SetWorldLocation(NewLocation);
 	}
 }

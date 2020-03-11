@@ -24,6 +24,9 @@ private:
 
 	UPROPERTY()
 		 UCableComponent* GrapplingHook;
+	UPROPERTY(EditDefaultsOnly, Category = "Material")
+		UMaterialInterface* GrappleColor = nullptr;
+
 
 	UPROPERTY()
 		class UTimelineComponent* ThrowGrapplingHookTimeline = nullptr;
