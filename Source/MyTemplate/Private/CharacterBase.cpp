@@ -214,6 +214,7 @@ void ACharacterBase::Tick(float DeltaTime)
 	TimelineForSliding();
 
 	//VAULTING TIMELINE
+
 	TimelineForVaulting();
 	TimelineForZoomingIn();
 	TimelineForZoomingOut();
@@ -1218,9 +1219,10 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 
 //Vaulting
+
 void ACharacterBase::TimelineForVaulting()
 {
-	
+/*	
 
 	if (VaultTimelineInitiate == true)
 	{
@@ -1260,16 +1262,7 @@ void ACharacterBase::TimelineForVaulting()
 				{
 					FVector WallHeight = Out1.Location;
 
-					/*
-					if ((WallHeight - WallLocation).Z > 60.0f)
-					{
-						ShouldClimb = true;
-					}
-					else
-					{
-						ShouldClimb = false;
-					}
-					*/
+					
 
 					FHitResult Out2;
 					FRotator rot_2 = UKismetMathLibrary::MakeRotFromX(WallNormal);
@@ -1340,13 +1333,13 @@ void ACharacterBase::TimelineForVaulting()
 
 
 	}
-
+	*/
 	
 }
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
-	
+	/*
 	if (WallThick == false)
 	{		
 		//do once vault
@@ -1359,11 +1352,12 @@ void ACharacterBase::VaultingFunctionInTimeline()
 	//	StopTheWallrunRaycast = false;
 
 	}
-	
+	*/
 }
 
 void ACharacterBase::VaultDoOnce()
 {
+	/*
 	if (VaultmechanicDoOnce == true)
 	{
 		PlayAnimMontage(VaultAnim, 1.f, NAME_None);
@@ -1377,18 +1371,20 @@ void ACharacterBase::VaultDoOnce()
 		//stop the doonce function from executing
 		VaultmechanicDoOnce = false;
 	}
+	*/
 }
 
 void ACharacterBase::ResetVaultDoOnce()
 {
+	/*
 	VaultmechanicDoOnce = true;
-
+	*/
 }
 
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
-
+	/*
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
 
@@ -1408,19 +1404,22 @@ void ACharacterBase::ResetFirstVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(FirstVaultTimer);
-
+	*/
 }
 
 void ACharacterBase::TimelineForZoomingIn()
 {
+	/*
 	if (ZoomingInTimelineInitiate == true)
 	{
 		CameraBoom->TargetArmLength -= 3.8f;
 	}
+	*/
 }
 
 void ACharacterBase::TimelineForZoomingOut()
 {
+	/*
 	if (ZoomingOutTimelineInitiate == true)
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
@@ -1432,11 +1431,12 @@ void ACharacterBase::TimelineForZoomingOut()
 			ZoomingOutTimelineInitiate = false;
 		}
 	}
-
+	*/
 }
 
 void ACharacterBase::TimelineForVaultingUp()
 {
+	/*
 	if (VaultingUpTimelineInitiate == true)
 	{
 		
@@ -1444,12 +1444,13 @@ void ACharacterBase::TimelineForVaultingUp()
 		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 25.0f), false, true);
 
 	}
+	*/
 }
 
 
 void ACharacterBase::ResetSecondVaultTimer()
 {
-
+	/*
 	//last delay
 	GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, 0.25f, false);
 
@@ -1473,10 +1474,12 @@ void ACharacterBase::ResetSecondVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
+	*/
 }
 
 void ACharacterBase::ResetThirdVaultTimer()
 {
+	/*
 	//stop the second timeline
 
 	VaultingUpTimelineInitiate = false;
@@ -1484,6 +1487,7 @@ void ACharacterBase::ResetThirdVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
+	*/
 }
 
 
