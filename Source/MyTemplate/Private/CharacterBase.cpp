@@ -1225,7 +1225,7 @@ void ACharacterBase::GrappleDelayPullResetter()
 void ACharacterBase::TimelineForVaulting()
 {
 	
-
+	
 	if (VaultTimelineInitiate == true)
 	{
 		//Horizontal_VaultChecker from the bottom straight forwards
@@ -1495,7 +1495,7 @@ void ACharacterBase::ResetSecondVaultTimer()
 
 
 	//final launch over the obstacle
-	FVector FinalLaunchVeloc = Dash->GetForwardVector() * VaultVelocity*0.001f;
+	FVector FinalLaunchVeloc = Dash->GetForwardVector() * VaultVelocity;//*0.001f;
 	LaunchCharacter(FVector(FinalLaunchVeloc.X, FinalLaunchVeloc.Y, 500.0f), true, false);
 
 	//enabling collision
