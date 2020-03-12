@@ -1091,7 +1091,7 @@ void ACharacterBase::GrappleAbility()
 			CollisionP.bReturnPhysicalMaterial = true;
 		
 			
-			bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 10, TraceTypeQuery2, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
+			bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery2, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
 
 			if (ForwardGrappleCheckerIsHit == true)
 			{
@@ -1147,21 +1147,22 @@ void ACharacterBase::TimelineForGrapplePulling()
 {
 	if (GrapplePullTimelineInitiate == true)
 	{
-		
-		if (OtherGrappledCharacter->M_Hanging == true)
+		if (OtherGrappledCharacter != nullptr)
 		{
-			ResetGrapple();
-		}
-		if (OtherGrappledCharacter->M_Hanging == false)
-		{
-			FVector grappleVeloc = FVector(Dash->GetForwardVector().X*-2000.f, Dash->GetForwardVector().Y*-2000.f,1500.f);
+			if (OtherGrappledCharacter->M_Hanging == true)
+			{
+				ResetGrapple();
+			}
+			if (OtherGrappledCharacter->M_Hanging == false)
+			{
+				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -2000.f, Dash->GetForwardVector().Y * -2000.f, 1500.f);
 
-			OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
+				OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
 
-			ResetGrapple();
-			GrapplePullTimelineInitiate = false;
+				ResetGrapple();
+				GrapplePullTimelineInitiate = false;
+			}
 		}
-		
 	}
 }
 
@@ -1462,7 +1463,7 @@ void ACharacterBase::TimelineForVaultingUp()
 	{
 		
 		FVector LaunchVeloc = Dash->GetForwardVector() * 20;
-		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 25.0f), false, true);
+		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 45.0f), false, true);
 		
 		if (faceWallNormalSecondTime == false)
 		{
@@ -1553,22 +1554,29 @@ void ACharacterBase::Ram()
 	{
 		if (Stamina > 0.3)
 		{
-			if (GetCharacterMovement()->IsFalling() == false)
+			FVector VelocityVector = GetVelocity();
+			CharacterVelocity = VelocityVector.Size();
+
+			if (CharacterVelocity >= 100)
 			{
-				float Ram_animationLength = 1.0f;
 
-				Stamina = Stamina - 0.5f;
-				PlayAnimMontage(RamAnim, Ram_animationLength, NAME_None);
-				RamUse = true;
+				if (GetCharacterMovement()->IsFalling() == false)
+				{
+					float Ram_animationLength = 1.0f;
 
-				//initiate the charging time line
-				ChargingTimelineInitiate = true;
+					Stamina = Stamina - 0.5f;
+					PlayAnimMontage(RamAnim, Ram_animationLength, NAME_None);
+					RamUse = true;
 
-				TimelineDuration = 0;
+					//initiate the charging time line
+					ChargingTimelineInitiate = true;
 
-				//delay
-				GetWorld()->GetTimerManager().SetTimer(EndOfRamDelay, this, &ACharacterBase::ResetRamEndDelay, Ram_animationLength, false);
+					TimelineDuration = 0;
 
+					//delay
+					GetWorld()->GetTimerManager().SetTimer(EndOfRamDelay, this, &ACharacterBase::ResetRamEndDelay, Ram_animationLength, false);
+
+				}
 			}
 		}
 	}

@@ -107,6 +107,7 @@ public:
 	float grappleAnimTime;
 	float GrappleTimerValue;
 
+	bool PushPlayerOnceDownUponCollision;
 
 	void DetachFromGrapplingOnceHit();
 };
