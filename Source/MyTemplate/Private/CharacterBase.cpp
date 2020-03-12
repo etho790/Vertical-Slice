@@ -87,7 +87,8 @@ ACharacterBase::ACharacterBase()
 	GrappleHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
 	GrappleHook->SetupAttachment(RootComponent);
 
-	faceWallNormal = false;
+	faceWallNormalFirstTime = false;
+	faceWallNormalSecondTime = false;
 	ChargingTimelineInitiate = false;
 	initiateRamParticles = 0;
 	
@@ -1222,7 +1223,7 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 void ACharacterBase::TimelineForVaulting()
 {
-	/*
+	
 
 	if (VaultTimelineInitiate == true)
 	{
@@ -1333,13 +1334,13 @@ void ACharacterBase::TimelineForVaulting()
 
 
 	}
-	*/
+	
 	
 }
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
-	/*
+	
 	if (WallThick == false)
 	{		
 		//do once vault
@@ -1352,12 +1353,12 @@ void ACharacterBase::VaultingFunctionInTimeline()
 	//	StopTheWallrunRaycast = false;
 
 	}
-	*/
+	
 }
 
 void ACharacterBase::VaultDoOnce()
 {
-	/*
+	
 	if (VaultmechanicDoOnce == true)
 	{
 		PlayAnimMontage(VaultAnim, 1.f, NAME_None);
@@ -1371,20 +1372,20 @@ void ACharacterBase::VaultDoOnce()
 		//stop the doonce function from executing
 		VaultmechanicDoOnce = false;
 	}
-	*/
+	
 }
 
 void ACharacterBase::ResetVaultDoOnce()
 {
-	/*
+	
 	VaultmechanicDoOnce = true;
-	*/
+	
 }
 
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
-	/*
+	
 
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
@@ -1405,16 +1406,16 @@ void ACharacterBase::ResetFirstVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(FirstVaultTimer);
-	*/
+	
 }
 
 void ACharacterBase::TimelineForZoomingIn()
 {
-	/*
+	
 	if (ZoomingInTimelineInitiate == true)
 	{
 		CameraBoom->TargetArmLength -= 3.8f;
-		if (faceWallNormal == false)
+		if (faceWallNormalFirstTime == false)
 		{
 		
 		FRotator rot_0 = GetActorRotation();
@@ -1423,19 +1424,20 @@ void ACharacterBase::TimelineForZoomingIn()
 		GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
 		
 		//turn the bool off
-		faceWallNormal = true;
-
+		faceWallNormalFirstTime = true;
+		//disable input
+		DisableInput(nullptr);
 		}
 	}
 	
-	*/
+	
 	
 	
 }
 
 void ACharacterBase::TimelineForZoomingOut()
 {
-	/*
+	
 	if (ZoomingOutTimelineInitiate == true)
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
@@ -1447,40 +1449,47 @@ void ACharacterBase::TimelineForZoomingOut()
 			ZoomingOutTimelineInitiate = false;
 		}
 
-		//turn bool on
-		faceWallNormal = false;
+		
 
 	}
-	*/
+	
 }
 
 void ACharacterBase::TimelineForVaultingUp()
 {
-	/*
+	
 	if (VaultingUpTimelineInitiate == true)
 	{
 		
 		FVector LaunchVeloc = Dash->GetForwardVector() * 20;
 		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 25.0f), false, true);
 		
-		if (faceWallNormal == false)
+		if (faceWallNormalSecondTime == false)
 		{
 			FRotator rot_0 = GetActorRotation();
 			FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
 			float YawVal = rot_1.Yaw + 180.f;
 			GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
+			
+			//turn the bool off
+			faceWallNormalSecondTime = true;
 		}
 	}
-	*/
+	
 }
 
 
 void ACharacterBase::ResetSecondVaultTimer()
 {
-	/*
+	
+	//enable Input
+	EnableInput(nullptr);
 
 	//last delay
 	GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, 0.25f, false);
+
+
+
 
 
 
@@ -1492,7 +1501,20 @@ void ACharacterBase::ResetSecondVaultTimer()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 
+
+	FRotator rot_0 = GetActorRotation();
+	FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
+	float YawVal = rot_1.Yaw + 180.f;
+	GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
+
+
 	//supposed to disable should climb var but its useless
+
+
+	//turn 1st bool that makes you face the wall normal on
+	faceWallNormalFirstTime = false;
+	//turn 2nd bool that makes you face the wall normal on
+	faceWallNormalSecondTime = false;
 
 	//reset the do once function
 	ResetVaultDoOnce();
@@ -1502,13 +1524,13 @@ void ACharacterBase::ResetSecondVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
-	*/
+	
 	
 }
 
 void ACharacterBase::ResetThirdVaultTimer()
 {
-	/*
+	
 	//stop the second timeline
 
 	VaultingUpTimelineInitiate = false;
@@ -1516,7 +1538,7 @@ void ACharacterBase::ResetThirdVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
-	*/
+	
 }
 
 

@@ -335,7 +335,8 @@ public:
 	void ResetSecondVaultTimer();
 	void ResetThirdVaultTimer();
 
-	bool faceWallNormal;
+	bool faceWallNormalFirstTime;
+	bool faceWallNormalSecondTime;
 	FVector ImpactWallNormal;
 
 	//Grapple Pull
