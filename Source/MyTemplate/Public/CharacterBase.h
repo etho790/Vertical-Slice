@@ -351,10 +351,6 @@ public:
 
 
 
-
-
-	
-
 	//Ram -Inate Ability
 	void Ram();
 	void TimelineForCharging();

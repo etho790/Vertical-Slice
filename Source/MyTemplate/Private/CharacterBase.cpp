@@ -779,14 +779,14 @@ void ACharacterBase::WallRunRaycast()
 		{
 			if (Out.Actor->ActorHasTag("RUNWALL") == true)
 			{
-				GetCharacterMovement()->GravityScale = 0.3;
+				//GetCharacterMovement()->GravityScale = 0.3;
 				CloseToTheWall = true;
 				LeftWall = true;
 
 			}
 			if (Out.Actor->ActorHasTag("RUNWALL") == false)
 			{
-				GetCharacterMovement()->GravityScale = 3.0f;
+				//GetCharacterMovement()->GravityScale = 3.0f;
 				CloseToTheWall = false;
 				LeftWall = false;
 				OnTheWall = false;
@@ -814,7 +814,7 @@ void ACharacterBase::WallRunRaycast()
 			{
 				if (Out1.Actor->ActorHasTag("RUNWALL") == true)
 				{
-					GetCharacterMovement()->GravityScale = 0.3;
+					//GetCharacterMovement()->GravityScale = 0.3;
 					CloseToTheWall = true;
 					RightWall = true;
 
@@ -822,7 +822,7 @@ void ACharacterBase::WallRunRaycast()
 				}
 				if (Out1.Actor->ActorHasTag("RUNWALL") == false)
 				{
-					GetCharacterMovement()->GravityScale = 3;
+					//GetCharacterMovement()->GravityScale = 3;
 					CloseToTheWall = false;
 					RightWall = false;
 					OnTheWall = false;
@@ -836,7 +836,7 @@ void ACharacterBase::WallRunRaycast()
 
 
 
-				GetCharacterMovement()->GravityScale = 3;
+				//GetCharacterMovement()->GravityScale = 3;
 				CloseToTheWall = false;
 				RightWall = false;
 				OnTheWall = false;
@@ -876,7 +876,7 @@ void ACharacterBase::TimelineForWallRunning()
 
 			FVector LaunchVelocity = FVector(0, 0, -250);
 			LaunchCharacter(LaunchVelocity, false, false);
-			GetCharacterMovement()->GravityScale = 3;
+			//GetCharacterMovement()->GravityScale = 3;
 		}
 	}
 
@@ -1224,7 +1224,7 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 void ACharacterBase::TimelineForVaulting()
 {
-	
+	/*
 	
 	if (VaultTimelineInitiate == true)
 	{
@@ -1336,12 +1336,13 @@ void ACharacterBase::TimelineForVaulting()
 
 	}
 	
-	
+	*/
 }
 
 void ACharacterBase::VaultingFunctionInTimeline()
 {
 	
+	/*
 	if (WallThick == false)
 	{		
 		//do once vault
@@ -1354,12 +1355,12 @@ void ACharacterBase::VaultingFunctionInTimeline()
 	//	StopTheWallrunRaycast = false;
 
 	}
-	
+	*/
 }
 
 void ACharacterBase::VaultDoOnce()
 {
-	
+	/*
 	if (VaultmechanicDoOnce == true)
 	{
 		PlayAnimMontage(VaultAnim, 1.f, NAME_None);
@@ -1373,20 +1374,20 @@ void ACharacterBase::VaultDoOnce()
 		//stop the doonce function from executing
 		VaultmechanicDoOnce = false;
 	}
-	
+	*/
 }
 
 void ACharacterBase::ResetVaultDoOnce()
 {
-	
+/*
 	VaultmechanicDoOnce = true;
-	
+	*/
 }
 
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
-	
+	/*
 
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
@@ -1407,12 +1408,12 @@ void ACharacterBase::ResetFirstVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(FirstVaultTimer);
-	
+	*/
 }
 
 void ACharacterBase::TimelineForZoomingIn()
 {
-	
+	/*
 	if (ZoomingInTimelineInitiate == true)
 	{
 		CameraBoom->TargetArmLength -= 3.8f;
@@ -1432,13 +1433,13 @@ void ACharacterBase::TimelineForZoomingIn()
 	}
 	
 	
-	
+	*/
 	
 }
 
 void ACharacterBase::TimelineForZoomingOut()
 {
-	
+	/*
 	if (ZoomingOutTimelineInitiate == true)
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
@@ -1453,12 +1454,12 @@ void ACharacterBase::TimelineForZoomingOut()
 		
 
 	}
-	
+	*/
 }
 
 void ACharacterBase::TimelineForVaultingUp()
 {
-	
+	/*
 	if (VaultingUpTimelineInitiate == true)
 	{
 		
@@ -1476,13 +1477,13 @@ void ACharacterBase::TimelineForVaultingUp()
 			faceWallNormalSecondTime = true;
 		}
 	}
-	
+	*/
 }
 
 
 void ACharacterBase::ResetSecondVaultTimer()
 {
-	
+	/*
 	//enable Input
 	EnableInput(nullptr);
 
@@ -1526,12 +1527,12 @@ void ACharacterBase::ResetSecondVaultTimer()
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
 	
-	
+	*/
 }
 
 void ACharacterBase::ResetThirdVaultTimer()
 {
-	
+	/*
 	//stop the second timeline
 
 	VaultingUpTimelineInitiate = false;
@@ -1539,7 +1540,7 @@ void ACharacterBase::ResetThirdVaultTimer()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
-	
+	*/
 }
 
 
