@@ -370,7 +370,8 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
-	
+	//stop the vault if any other mecahnics is playing
+	StopAnimMontage(VaultingAnim);
 
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
@@ -443,6 +444,8 @@ void ACharacterBase::Vertical_Collision()
 	
 	if (VerticalCollision == true)
 	{
+		
+
 
 		//initiate the timeline
 		SlidingTimelineInitiate = true;
@@ -473,8 +476,6 @@ void ACharacterBase::Vertical_Collision()
 
 
 
-
-//MIGHT HAVE TO FIX THIS
 
 void ACharacterBase::SlideColliderDoOnce()
 {
@@ -1077,6 +1078,9 @@ void ACharacterBase::DontJump()
 
 void ACharacterBase::GrappleAbility()
 {
+	//stop the vault if any other mecahnics is playing
+	StopAnimMontage(VaultingAnim);
+
 	if (M_Hanging == false)
 	{
 		if (Stamina > 0.4f)
@@ -1551,6 +1555,9 @@ void ACharacterBase::ResetThirdVaultTimer()
 //RAM
 void ACharacterBase::Ram()
 {
+	//stop the vault if any other mecahnics is playing
+	StopAnimMontage(VaultingAnim);
+
 	if (M_Hanging == false)
 	{
 		if (Stamina > 0.3)

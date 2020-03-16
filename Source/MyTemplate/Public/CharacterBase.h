@@ -148,6 +148,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
 		class UAnimMontage* GrappleAnim;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+		class UAnimMontage* VaultingAnim;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CameraShake, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<class UCameraShake> CamShake;
