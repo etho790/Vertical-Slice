@@ -88,6 +88,8 @@ ACharacterBase::ACharacterBase()
 	GrappleHook->SetupAttachment(RootComponent);
 
 	
+	InitialVaultUpwardsPush = 300;
+	VaultUpwardsPush = InitialVaultUpwardsPush;
 	
 	ChargingTimelineInitiate = false;
 	initiateRamParticles = 0;
@@ -449,6 +451,11 @@ void ACharacterBase::Vertical_Collision()
 	{
 		//STOPPING THE VAULTING ANIMATION!!!!!!!
 		StopAnimMontage(VaultingAnim);
+		vaultingUpwardsVeloc = false;
+		GetCharacterMovement()->GravityScale = 3.f;
+		//end of vault
+
+
 
 
 		//initiate the timeline
@@ -871,6 +878,8 @@ void ACharacterBase::TimelineForWallRunning()
 		//STOPPING THE VAULTING ANIMATION!!!!!!!
 		StopAnimMontage(VaultingAnim);
 		vaultingUpwardsVeloc = false;
+		GetCharacterMovement()->GravityScale = 3.f;
+		//end of vault
 
 		if (MoveForwards == true)
 		{
@@ -1163,7 +1172,9 @@ void ACharacterBase::TimelineForGrapplePulling()
 		//STOPPING THE VAULTING ANIMATION!!!!!!!
 		StopAnimMontage(VaultingAnim);
 		vaultingUpwardsVeloc = false;
-		
+		GetCharacterMovement()->GravityScale = 3.f;
+		//end of vault
+
 		if (OtherGrappledCharacter != nullptr)
 		{
 			if (OtherGrappledCharacter->M_Hanging == true)
@@ -1249,14 +1260,17 @@ void ACharacterBase::TimelineForVaulting()
 	if (VaultTimelineInitiate == true)
 	{
 		//Horizontal_VaultChecker from the bottom straight forwards
+	
 		FHitResult VaultHitResult;
 		FVector Start = GetActorLocation() + (GetActorRightVector()*-50.f);
 		FVector End = Start + (Dash->GetForwardVector() * 80);
 		FCollisionQueryParams  CollisionP;
+	
 
 		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
 
-		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, TraceTypeQuery1, CollisionP);
+		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, ECC_GameTraceChannel2, CollisionP);
+
 
 		if (LeftHand_VaultCheckerIsHit == true)
 		{
@@ -1304,7 +1318,7 @@ void ACharacterBase::DisablingVaultingUpwards()
 		if (Out.GetActor()->ActorHasTag("Vault") == true && canVault == false)
 		{
 			//STOPPING THE VAULTING ANIMATION!!!!!!!
-			StopAnimMontage(VaultingAnim);
+ 			StopAnimMontage(VaultingAnim);
 			vaultingUpwardsVeloc = false;
 			GetCharacterMovement()->GravityScale = 3.f;
 
@@ -1324,7 +1338,7 @@ void ACharacterBase::DisablingVaultingUpwards()
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
-	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->GravityScale = 0.f;
 
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
@@ -1346,7 +1360,7 @@ void ACharacterBase::TimelineForZoomingIn()
 	
 	if (ZoomingInTimelineInitiate == true)
 	{
-		CameraBoom->TargetArmLength -= 3.0f;
+		CameraBoom->TargetArmLength -= 2.0f;
 		
 	}
 	
@@ -1376,12 +1390,11 @@ void ACharacterBase::TimelineForZoomingOut()
 
 
 void ACharacterBase::ResetSecondVaultTimer()
-{
-	
+{	
 	//stop the vaulting
-
 	vaultingUpwardsVeloc = false;
 
+	VaultUpwardsPush = InitialVaultUpwardsPush;
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
@@ -1450,7 +1463,8 @@ void ACharacterBase::TimelineForCharging()
 		//STOPPING THE VAULTING ANIMATION!!!!!!!
 		StopAnimMontage(VaultingAnim);
 		vaultingUpwardsVeloc = false;
-
+		GetCharacterMovement()->GravityScale = 3.f;
+		//end of vault
 
 		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, -500);

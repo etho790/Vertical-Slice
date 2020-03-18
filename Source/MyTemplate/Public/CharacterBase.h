@@ -240,7 +240,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UCableComponent* GrappleHook;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float VaultUpwardsPush = 0.2f;
+		
+	float InitialVaultUpwardsPush;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		float HookDistance;
