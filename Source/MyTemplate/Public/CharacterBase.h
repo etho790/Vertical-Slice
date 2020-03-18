@@ -229,7 +229,7 @@ public:
 	bool VaultTimelineInitiate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool vaulting;
+		bool vaultingUpwardsVeloc;
 
 	//christian GRAPPLE
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -322,25 +322,16 @@ public:
 
 	//vault
 	void TimelineForVaulting();
-	void VaultingFunctionInTimeline();
-	
+	void DisablingVaultingUpwards();	
 	bool StopTheWallrunRaycast;
-	void VaultDoOnce();
-	void ResetVaultDoOnce();
+
 	void TimelineForZoomingIn();
 	void TimelineForZoomingOut();
-	void TimelineForVaultingUp();
-
 	FTimerHandle FirstVaultTimer;
-	FTimerHandle SecondVaultTimer;
-	FTimerHandle ThirdVaultTimer;
-	void ResetFirstVaultTimer();
+	FTimerHandle SecondVaultTimer;	
+	void ResetFirstVaultTimer();	
 	void ResetSecondVaultTimer();
-	void ResetThirdVaultTimer();
-
-	bool faceWallNormalFirstTime;
-	bool faceWallNormalSecondTime;
-	FVector ImpactWallNormal;
+	bool canVault;
 
 	//Grapple Pull
 	UFUNCTION(BlueprintCallable)

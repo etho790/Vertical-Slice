@@ -87,8 +87,8 @@ ACharacterBase::ACharacterBase()
 	GrappleHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
 	GrappleHook->SetupAttachment(RootComponent);
 
-	faceWallNormalFirstTime = false;
-	faceWallNormalSecondTime = false;
+	
+	
 	ChargingTimelineInitiate = false;
 	initiateRamParticles = 0;
 	
@@ -219,8 +219,7 @@ void ACharacterBase::Tick(float DeltaTime)
 	TimelineForVaulting();
 	TimelineForZoomingIn();
 	TimelineForZoomingOut();
-	TimelineForVaultingUp();
-
+	DisablingVaultingUpwards();
 
 	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
@@ -229,6 +228,9 @@ void ACharacterBase::Tick(float DeltaTime)
 	if (GetMovementComponent()->IsFalling() == false)
 	{
 		Landed();
+
+		//stop the vaulting timeline
+		VaultTimelineInitiate = false;
 	}
 	if (GetMovementComponent()->IsFalling() == true)
 	{
@@ -240,13 +242,15 @@ void ACharacterBase::Tick(float DeltaTime)
 			WallRunner();
 
 		}
+
+		//start the vaulting timeline
+		VaultTimelineInitiate = true;
 	}
 
 	//grapple 
 	TimelineForGrapplePulling();
 
-	//ram
-	
+	//ram	
 	TimelineForCharging();
 
 
@@ -370,8 +374,7 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
-	//stop the vault if any other mecahnics is playing
-	StopAnimMontage(VaultingAnim);
+	
 
 	FHitResult Out1;
 	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
@@ -444,7 +447,8 @@ void ACharacterBase::Vertical_Collision()
 	
 	if (VerticalCollision == true)
 	{
-		
+		//STOPPING THE VAULTING ANIMATION!!!!!!!
+		StopAnimMontage(VaultingAnim);
 
 
 		//initiate the timeline
@@ -754,8 +758,7 @@ void ACharacterBase::WallRunRaycast()
 {
 	//ONLY LETS THIS RAYCAST FUNCTION WORK IF NOT VAULTING !!!!!!!!!!!!!
 
-	//if (StopTheWallrunRaycast == false)
-	{
+	
 		TArray<AActor*> none;
 
 		//left raycast
@@ -857,7 +860,7 @@ void ACharacterBase::WallRunRaycast()
 				}
 			}
 		}
-	}
+	
 }
 
 void ACharacterBase::TimelineForWallRunning()
@@ -865,6 +868,10 @@ void ACharacterBase::TimelineForWallRunning()
 
 	if (WallRunTimelineInitiate == true)
 	{
+		//STOPPING THE VAULTING ANIMATION!!!!!!!
+		StopAnimMontage(VaultingAnim);
+		vaultingUpwardsVeloc = false;
+
 		if (MoveForwards == true)
 		{
 			FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
@@ -1078,8 +1085,7 @@ void ACharacterBase::DontJump()
 
 void ACharacterBase::GrappleAbility()
 {
-	//stop the vault if any other mecahnics is playing
-	StopAnimMontage(VaultingAnim);
+	
 
 	if (M_Hanging == false)
 	{
@@ -1149,8 +1155,15 @@ void ACharacterBase::GrappleAbility()
 
 void ACharacterBase::TimelineForGrapplePulling()
 {
+
 	if (GrapplePullTimelineInitiate == true)
 	{
+
+	
+		//STOPPING THE VAULTING ANIMATION!!!!!!!
+		StopAnimMontage(VaultingAnim);
+		vaultingUpwardsVeloc = false;
+		
 		if (OtherGrappledCharacter != nullptr)
 		{
 			if (OtherGrappledCharacter->M_Hanging == true)
@@ -1181,6 +1194,9 @@ void ACharacterBase::ResetGrapple()
 
 void ACharacterBase::ShootGrappleHook()
 {
+	
+
+
 	Stamina -= 0.4f;
 	//Delay
 	GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &ACharacterBase::GrappleVisibility, 0.3f, false);	
@@ -1228,222 +1244,117 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 void ACharacterBase::TimelineForVaulting()
 {
-	/*
+	
 	
 	if (VaultTimelineInitiate == true)
 	{
 		//Horizontal_VaultChecker from the bottom straight forwards
-		FHitResult Out;
-		FVector Start = GetActorLocation() - FVector(0, 0, 44);
-		FVector End = Start + (GetActorForwardVector() * 100);
+		FHitResult VaultHitResult;
+		FVector Start = GetActorLocation() + (GetActorRightVector()*-50.f);
+		FVector End = Start + (Dash->GetForwardVector() * 80);
 		FCollisionQueryParams  CollisionP;
 
-		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
 
-		bool Horizontal_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, TraceTypeQuery1, CollisionP);
 
-		if (Horizontal_VaultCheckerIsHit == true)
+		if (LeftHand_VaultCheckerIsHit == true)
 		{
-			if (Out.GetActor()->ActorHasTag("Vault") == true)
+			if (VaultHitResult.GetComponent()->ComponentHasTag("Vault") == true)
 			{
+				//can vault
+				canVault = true;
 
-				FVector WallLocation = Out.Location;
-				FVector WallNormal = Out.Normal;
-				ImpactWallNormal = Out.ImpactNormal;
+				PlayAnimMontage(VaultingAnim, 1.4f, NAME_None);
+				
+				//starts zooming in the character timeline
+				ZoomingInTimelineInitiate = true;
 
-				//line from up to down 
-				FHitResult Out1;
-				FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(WallNormal);
-				FVector ForwardVec_1 = UKismetMathLibrary::GetForwardVector(rot_1);
-
-				FVector Start1 = (ForwardVec_1 * -10) + WallLocation + FVector(0, 0, 200.0f);
-				FVector End1 = Start1 + FVector(0, 0, -200.0f);
-				FCollisionQueryParams  CollisionP1;
-
-				//DrawDebugLine(GetWorld(), Start1, End1, FColor::Green, true, 1, 0, 1);
-
-				bool WallHeightChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out1, Start1, End1, ECC_Visibility, CollisionP1);
-
-				if (WallHeightChecker_IsHit == true)
-				{
-					FVector WallHeight = Out1.Location;
-
-					
-
-					FHitResult Out2;
-					FRotator rot_2 = UKismetMathLibrary::MakeRotFromX(WallNormal);
-					FVector ForwardVec_2 = UKismetMathLibrary::GetForwardVector(rot_2);
-
-					FVector Start2 = (ForwardVec_2 * -50) + WallLocation + FVector(0, 0, 250.0f);
-					FVector End2 = Start2 + FVector(0, 0, -300.0f);
-					FCollisionQueryParams  CollisionP2;
-
-					//DrawDebugLine(GetWorld(), Start2, End2, FColor::Red, true, 1, 0, 1);
+				//first delay
+				GetWorld()->GetTimerManager().SetTimer(FirstVaultTimer, this, &ACharacterBase::ResetFirstVaultTimer, 0.3f, false);
 
 
-					bool WallThicknessChecker_IsHit = GetWorld()->LineTraceSingleByChannel(Out2, Start2, End2, ECC_Visibility, CollisionP2);
-
-					if (WallThicknessChecker_IsHit == true)
-					{
-						FVector OtherWallHigh = Out2.Location;
-
-						if ((WallHeight - OtherWallHigh).Z > 0)
-						{
-							WallThick = false;
-						}
-						else
-						{
-							WallThick = true;
-						}
-
-
-						//if (ShouldClimb == false)
-						//{
-							//StopTheWallrunRaycast = true;
-							VaultingFunctionInTimeline();
-							
-						//}
-
-					}
-					if (WallThicknessChecker_IsHit == false)
-					{
-						WallThick = false;
-
-
-
-						//if (ShouldClimb == false)
-						//{
-							//StopTheWallrunRaycast = true;
-							VaultingFunctionInTimeline();
-						//}
-
-					}
-
-
-
-
-				}
-
+				float VaultAnim = 0.833f;
+				//second delay
+				GetWorld()->GetTimerManager().SetTimer(SecondVaultTimer, this, &ACharacterBase::ResetSecondVaultTimer, VaultAnim, false);
 			}
-			if (Out.GetActor()->ActorHasTag("Vault") == false)
+			if (VaultHitResult.GetComponent()->ComponentHasTag("Vault") == false)
 			{
-				//stop the vault timeline
-				VaultTimelineInitiate = false;
+				canVault = false;
 			}
 		}
-		if (Horizontal_VaultCheckerIsHit == false)
-		{
-			//stop the vault timeline
-			VaultTimelineInitiate = false;
-		}
-
-
-	}
-	
-	*/
-}
-
-void ACharacterBase::VaultingFunctionInTimeline()
-{
-	
-	/*
-	if (WallThick == false)
-	{		
-		//do once vault
-		VaultDoOnce();
-					   		 
-	}
-
-	if (WallThick == true)
-	{
-	//	StopTheWallrunRaycast = false;
-
-	}
-	*/
-}
-
-void ACharacterBase::VaultDoOnce()
-{
-	/*
-	if (VaultmechanicDoOnce == true)
-	{
-		PlayAnimMontage(VaultAnim, 1.f, NAME_None);
-
-		//starts zooming in the character timeline
-		ZoomingInTimelineInitiate = true;	
-
-		//first delay
-		GetWorld()->GetTimerManager().SetTimer(FirstVaultTimer, this, &ACharacterBase::ResetFirstVaultTimer, 0.3f, false);
 		
-		//stop the doonce function from executing
-		VaultmechanicDoOnce = false;
 	}
-	*/
 }
 
-void ACharacterBase::ResetVaultDoOnce()
+void ACharacterBase::DisablingVaultingUpwards()
 {
-/*
-	VaultmechanicDoOnce = true;
-	*/
+
+	FHitResult Out;
+	FVector Start = GetActorLocation();
+	FVector End = Start +  (Dash->GetForwardVector() * 100);
+	FCollisionQueryParams  CollisionP;
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
+
+	bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+
+	if (VaultDisablingChecker == true)
+	{
+		if (Out.GetActor()->ActorHasTag("Vault") == true && canVault == false)
+		{
+			//STOPPING THE VAULTING ANIMATION!!!!!!!
+			StopAnimMontage(VaultingAnim);
+			vaultingUpwardsVeloc = false;
+			GetCharacterMovement()->GravityScale = 3.f;
+
+		}
+		else
+		{
+			//STOPPING THE VAULTING ANIMATION!!!!!!!
+			StopAnimMontage(VaultingAnim);
+			vaultingUpwardsVeloc = false;
+			GetCharacterMovement()->GravityScale = 3.f;
+
+		}
+	}
 }
+
 
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
-	/*
+	GetCharacterMovement()->GravityScale = 0;
 
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
 
+	
+
 	//start the second timeline
 	ZoomingOutTimelineInitiate = true;
 
-	//disable collision
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
-
-	//second delay
-	GetWorld()->GetTimerManager().SetTimer(SecondVaultTimer, this, &ACharacterBase::ResetSecondVaultTimer, 0.35f, false);
-
-
-	//start the last timeline
-	VaultingUpTimelineInitiate = true;
+	
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(FirstVaultTimer);
-	*/
+	
 }
 
 void ACharacterBase::TimelineForZoomingIn()
 {
-	/*
+	
 	if (ZoomingInTimelineInitiate == true)
 	{
-		CameraBoom->TargetArmLength -= 3.8f;
-		if (faceWallNormalFirstTime == false)
-		{
+		CameraBoom->TargetArmLength -= 3.0f;
 		
-		FRotator rot_0 = GetActorRotation();
-		FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
-		float YawVal = rot_1.Yaw + 180.f;
-		GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
-		
-		//turn the bool off
-		faceWallNormalFirstTime = true;
-		//disable input
-		DisableInput(nullptr);
-		}
 	}
-	
-	
-	*/
 	
 }
 
 void ACharacterBase::TimelineForZoomingOut()
 {
-	/*
+	
 	if (ZoomingOutTimelineInitiate == true)
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
@@ -1458,93 +1369,23 @@ void ACharacterBase::TimelineForZoomingOut()
 		
 
 	}
-	*/
+	
 }
 
-void ACharacterBase::TimelineForVaultingUp()
-{
-	/*
-	if (VaultingUpTimelineInitiate == true)
-	{
-		
-		FVector LaunchVeloc = Dash->GetForwardVector() * 20;
-		LaunchCharacter(FVector(LaunchVeloc.X, LaunchVeloc.Y, 45.0f), false, true);
-		
-		if (faceWallNormalSecondTime == false)
-		{
-			FRotator rot_0 = GetActorRotation();
-			FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
-			float YawVal = rot_1.Yaw + 180.f;
-			GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
-			
-			//turn the bool off
-			faceWallNormalSecondTime = true;
-		}
-	}
-	*/
-}
+
 
 
 void ACharacterBase::ResetSecondVaultTimer()
 {
-	/*
-	//enable Input
-	EnableInput(nullptr);
-
-	//last delay
-	GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, 0.25f, false);
-
-
-
-
-
-
-	//final launch over the obstacle
-	FVector FinalLaunchVeloc = Dash->GetForwardVector() * VaultVelocity;//*0.001f;
-	LaunchCharacter(FVector(FinalLaunchVeloc.X, FinalLaunchVeloc.Y, 500.0f), true, false);
-
-	//enabling collision
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-
-
-	FRotator rot_0 = GetActorRotation();
-	FRotator rot_1 = UKismetMathLibrary::MakeRotFromX(ImpactWallNormal);
-	float YawVal = rot_1.Yaw + 180.f;
-	GetController()->SetControlRotation(FRotator(rot_0.Pitch, YawVal, rot_0.Roll));
-
-
-	//supposed to disable should climb var but its useless
-
-
-	//turn 1st bool that makes you face the wall normal on
-	faceWallNormalFirstTime = false;
-	//turn 2nd bool that makes you face the wall normal on
-	faceWallNormalSecondTime = false;
-
-	//reset the do once function
-	ResetVaultDoOnce();
 	
-	//stop the vault timeline
-	VaultTimelineInitiate = false;
+	//stop the vaulting
+
+	vaultingUpwardsVeloc = false;
+
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
 	
-	*/
-}
-
-void ACharacterBase::ResetThirdVaultTimer()
-{
-	/*
-	//stop the second timeline
-
-	VaultingUpTimelineInitiate = false;
-
-
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
-	*/
 }
 
 
@@ -1555,8 +1396,7 @@ void ACharacterBase::ResetThirdVaultTimer()
 //RAM
 void ACharacterBase::Ram()
 {
-	//stop the vault if any other mecahnics is playing
-	StopAnimMontage(VaultingAnim);
+	
 
 	if (M_Hanging == false)
 	{
@@ -1607,6 +1447,11 @@ void ACharacterBase::TimelineForCharging()
 {
 	if (ChargingTimelineInitiate == true)
 	{
+		//STOPPING THE VAULTING ANIMATION!!!!!!!
+		StopAnimMontage(VaultingAnim);
+		vaultingUpwardsVeloc = false;
+
+
 		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, -500);
 		LaunchCharacter(LaunchVelocity, true, true);
