@@ -88,7 +88,7 @@ ACharacterBase::ACharacterBase()
 	GrappleHook->SetupAttachment(RootComponent);
 
 	
-	InitialVaultUpwardsPush = 300;
+	InitialVaultUpwardsPush = 500;
 	VaultUpwardsPush = InitialVaultUpwardsPush;
 	
 	ChargingTimelineInitiate = false;
@@ -567,10 +567,10 @@ void ACharacterBase::SlideCollider()
 	FVector Start3 = GetActorLocation() + GetActorForwardVector() * -100;
 	FVector End3 = Start3 + GetActorUpVector() * 100;
 
-	//DrawDebugLine(GetWorld(), Start3, End3, FColor::Red, false, 1, 0, 1);
+	//DrawDebugLine(GetWorld(), Start3, End3, FColor::Green, false, 1, 0, 1);
 
 
-	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 40, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Gray, FLinearColor::Red, 5);
+	bool VerticalBehindCheckerIsHit = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start3, End3, 40, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out3, true, FLinearColor::Green, FLinearColor::Red, 5);
 
 
 	if (VerticalCheckerIsHit == true)
@@ -1267,7 +1267,7 @@ void ACharacterBase::TimelineForVaulting()
 		FCollisionQueryParams  CollisionP;
 	
 
-		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
 
 		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, ECC_GameTraceChannel2, CollisionP);
 
@@ -1309,7 +1309,7 @@ void ACharacterBase::DisablingVaultingUpwards()
 	FVector End = Start +  (Dash->GetForwardVector() * 100);
 	FCollisionQueryParams  CollisionP;
 
-	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
+//	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
 
 	bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
@@ -1360,7 +1360,7 @@ void ACharacterBase::TimelineForZoomingIn()
 	
 	if (ZoomingInTimelineInitiate == true)
 	{
-		CameraBoom->TargetArmLength -= 2.0f;
+		CameraBoom->TargetArmLength -= 2.5f;
 		
 	}
 	
@@ -1373,7 +1373,7 @@ void ACharacterBase::TimelineForZoomingOut()
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
 		{
-			CameraBoom->TargetArmLength += 1.f;
+			CameraBoom->TargetArmLength += 1.2f;
 		}
 		else if(CameraBoom->TargetArmLength >= 500.f)
 		{
