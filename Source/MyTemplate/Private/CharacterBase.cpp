@@ -168,6 +168,8 @@ void ACharacterBase::BeginPlay()
 	Front->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlapForFrontBox);
 	Front->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEndForFrontBox);
 
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlapForCapsuleComponent);
+
 	Meshlocation = GetMesh()->GetRelativeTransform().GetLocation();
 
 	
@@ -195,11 +197,15 @@ void ACharacterBase::BeginPlay()
 	RamEffects_TimelineInitiate = false;
 
 
+
 	//CHANGE RIGHT AFTER GRAPPLES FIXED
 	GrappleTimer = 2.5f;
 	//StopTheWallrunRaycast = false;
 
 	HookDistance = 2000.0f;
+
+	//Respawn
+	RespawnCheckPoint = GetActorLocation();
 }
 
 // Called every frame
@@ -346,6 +352,19 @@ void ACharacterBase::HorizontalVelocity()
 
 
 
+
+void ACharacterBase::OnBeginOverlapForCapsuleComponent(UPrimitiveComponent * HitComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult & SweepResult)
+{
+	if (OtherActor != nullptr)
+	{
+		if (OtherActor->ActorHasTag("KillFloor") == true)
+		{
+			Respawn();
+
+		}
+	}
+
+}
 
 void ACharacterBase::StaminaBar()
 {
@@ -1453,6 +1472,22 @@ void ACharacterBase::ResetRamEndDelay()
 
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(EndOfRamDelay);
+}
+
+void ACharacterBase::Respawn()
+{
+	RespawnPlayer = Cast< ACharacterBase>(GetController()->GetPawn());
+	if (RespawnPlayer == GetController()->GetPawn())
+	{
+		FVector NewRespawnPoint = FVector(RespawnCheckPoint.X + 130, RespawnCheckPoint.Y, RespawnCheckPoint.Z);
+		SetActorLocation(NewRespawnPoint, false, nullptr, ETeleportType::None);
+		Stamina = 1.0f;
+		//RespawnPlayer->DisableInput(nullptr);
+		GetCharacterMovement()->StopMovementImmediately();
+		UseControllerRotationYaw = true;
+		//RespawnPlayer->EnableInput(nullptr);
+	}
+
 }
 
 

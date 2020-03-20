@@ -171,6 +171,9 @@ public:
 	UFUNCTION()
 		void OnOverlapEndForFrontBox(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	//COLLISION FUNCTIONFOR THE FRONT
+	UFUNCTION()
+		void OnBeginOverlapForCapsuleComponent(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
 	void StaminaBar();
 
@@ -190,23 +193,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool FastEnoughToSlide;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector M_WallLocation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector M_WallNormal;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector M_HeightLocation;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool M_IsClimbingLedge;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool UseControllerRotationYaw;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool M_CanGrab;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool M_CanClimb;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool RamUse;
@@ -227,6 +217,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool VaultTimelineInitiate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector RespawnCheckPoint;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool vaultingUpwardsVeloc;
@@ -357,7 +350,10 @@ public:
 	void ResetRamEndDelay();
 	float initiateRamParticles;
 	
-	
+
+	//RESPAWN
+	void Respawn();
+
 private:
 	bool SlideDooNce;
 	bool VaultmechanicDoOnce;
@@ -380,4 +376,6 @@ private:
 
 	ACharacterBase* OtherHitPlayer;
 	ACharacterBase *OtherGrappledCharacter;
+	ACharacterBase* RespawnPlayer;
+
 };
