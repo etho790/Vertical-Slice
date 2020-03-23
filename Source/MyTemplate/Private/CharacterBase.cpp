@@ -273,6 +273,19 @@ void ACharacterBase::Tick(float DeltaTime)
 
 }
 
+void ACharacterBase::ClosestToGoal()
+{
+	
+	TSubclassOf<ACharacterBase> classToFind;
+	classToFind = ACharacterBase::StaticClass();
+	TArray<AActor*> none;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), classToFind, none);
+	
+	
+
+
+}
+
 
 
 

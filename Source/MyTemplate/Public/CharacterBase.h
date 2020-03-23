@@ -98,7 +98,10 @@ public:
 		bool ShouldClimb;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool WallThick;
+		float DistanceToGoal;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<float> DistanceToGoalArray;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool CollisionsForSliding;
@@ -278,6 +281,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void ClosestToGoal();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
