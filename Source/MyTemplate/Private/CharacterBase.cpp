@@ -101,9 +101,9 @@ ACharacterBase::ACharacterBase()
 	
 	EndOfGame = false;
 
-
-
-
+	InitialStaminaUsage = 0.0009f;
+	StaminaUsage = InitialStaminaUsage;
+	InitialSpeed = 1200;
 }
 
 
@@ -392,7 +392,7 @@ void ACharacterBase::StaminaBar()
 
 	if (Stamina < 1)
 	{
-		Stamina = Stamina + 0.0009f;
+		Stamina = Stamina + StaminaUsage;
 	}
 
 

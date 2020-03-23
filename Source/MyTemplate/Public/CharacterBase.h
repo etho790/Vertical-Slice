@@ -98,7 +98,13 @@ public:
 		bool ShouldClimb;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float DistanceToGoal;
+		float StaminaUsage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InitialStaminaUsage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InitialSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<float> DistanceToGoalArray;
