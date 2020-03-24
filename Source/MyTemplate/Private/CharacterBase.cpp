@@ -276,11 +276,6 @@ void ACharacterBase::Tick(float DeltaTime)
 void ACharacterBase::ClosestToGoal()
 {
 	
-	TSubclassOf<ACharacterBase> classToFind;
-	classToFind = ACharacterBase::StaticClass();
-	TArray<AActor*> none;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), classToFind, none);
-	
 	
 
 
@@ -1284,7 +1279,6 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 
 //Vaulting
-
 void ACharacterBase::TimelineForVaulting()
 {
 	
@@ -1299,7 +1293,7 @@ void ACharacterBase::TimelineForVaulting()
 		FCollisionQueryParams  CollisionP;
 	
 
-		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
 
 		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, ECC_GameTraceChannel2, CollisionP);
 
@@ -1331,17 +1325,18 @@ void ACharacterBase::TimelineForVaulting()
 		}
 		
 	}
+	
 }
 
 void ACharacterBase::DisablingVaultingUpwards()
 {
-
+	
 	FHitResult Out;
 	FVector Start = GetActorLocation();
 	FVector End = Start +  (Dash->GetForwardVector() * 100);
 	FCollisionQueryParams  CollisionP;
 
-//	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
 
 	bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
@@ -1364,12 +1359,14 @@ void ACharacterBase::DisablingVaultingUpwards()
 
 		}
 	}
+	
 }
 
 
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
+	
 	GetCharacterMovement()->GravityScale = 0.f;
 
 	//stop the zoom in timeline
@@ -1423,6 +1420,7 @@ void ACharacterBase::TimelineForZoomingOut()
 
 void ACharacterBase::ResetSecondVaultTimer()
 {	
+	
 	//stop the vaulting
 	vaultingUpwardsVeloc = false;
 
