@@ -244,7 +244,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float VaultUpwardsPush = 0.2f;
-		
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float InitialVaultUpwardsPush;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

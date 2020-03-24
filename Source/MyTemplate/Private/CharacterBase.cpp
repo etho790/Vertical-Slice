@@ -162,8 +162,10 @@ void ACharacterBase::BeginPlay()
 	Super::BeginPlay();
 	BaseLookUpRate = 45.0f;
 	BaseTurnRate = 45.0f;
-	VaultChecker->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlap);
-	VaultChecker->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEnd);
+	
+						//old code
+	//VaultChecker->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlap);
+	//VaultChecker->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEnd);
 
 	Front->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnBeginOverlapForFrontBox);
 	Front->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnOverlapEndForFrontBox);
@@ -1088,14 +1090,13 @@ void ACharacterBase::CharcterJump()
 	}
 	if (CloseToTheWall == false)
 	{
-		if (VaultCollision == false)
-		{
+		
 			Jump();
 			OnTheWall = false;
 
 			//stop time line
 			WallRunTimelineInitiate = false;
-		}
+		
 
 
 	}
