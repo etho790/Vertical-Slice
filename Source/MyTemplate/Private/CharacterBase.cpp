@@ -1082,8 +1082,6 @@ void ACharacterBase::CharcterJump()
 				//stop time line
 				WallRunTimelineInitiate = false;
 
-
-
 			}
 
 		}
@@ -1332,14 +1330,20 @@ void ACharacterBase::TimelineForVaulting()
 void ACharacterBase::DisablingVaultingUpwards()
 {
 	
+
+	TArray<AActor*> none;
+
 	FHitResult Out;
-	FVector Start = GetActorLocation();
+	FVector Start = GetActorLocation() + (GetActorRightVector()*-50.f);
 	FVector End = Start +  (Dash->GetForwardVector() * 100);
 	FCollisionQueryParams  CollisionP;
 
 	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
 
-	bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+	//bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
+
+	bool VaultDisablingChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 10, TraceTypeQuery1, false, none, EDrawDebugTrace::ForDuration, Out, true, FLinearColor::Blue, FLinearColor::Blue, 0.5f);
+
 
 	if (VaultDisablingChecker == true)
 	{
@@ -1349,7 +1353,10 @@ void ACharacterBase::DisablingVaultingUpwards()
  			StopAnimMontage(VaultingAnim);
 			vaultingUpwardsVeloc = false;
 			GetCharacterMovement()->GravityScale = 3.f;
-
+			if (CameraBoom->TargetArmLength < 500.f)
+			{
+				CameraBoom->TargetArmLength += 2.f;
+			}
 		}
 		else
 		{
@@ -1357,7 +1364,10 @@ void ACharacterBase::DisablingVaultingUpwards()
 			StopAnimMontage(VaultingAnim);
 			vaultingUpwardsVeloc = false;
 			GetCharacterMovement()->GravityScale = 3.f;
-
+			if (CameraBoom->TargetArmLength < 500.f)
+			{
+				CameraBoom->TargetArmLength += 2.f;
+			}
 		}
 	}
 	
@@ -1403,7 +1413,7 @@ void ACharacterBase::TimelineForZoomingOut()
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
 		{
-			CameraBoom->TargetArmLength += 1.2f;
+			CameraBoom->TargetArmLength += 1.f;
 		}
 		else if(CameraBoom->TargetArmLength >= 500.f)
 		{
