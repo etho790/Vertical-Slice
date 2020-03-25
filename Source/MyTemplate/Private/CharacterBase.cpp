@@ -1292,7 +1292,7 @@ void ACharacterBase::TimelineForVaulting()
 		FCollisionQueryParams  CollisionP;
 	
 
-		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
 
 		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, ECC_GameTraceChannel2, CollisionP);
 
@@ -1335,14 +1335,14 @@ void ACharacterBase::DisablingVaultingUpwards()
 
 	FHitResult Out;
 	FVector Start = GetActorLocation() + (GetActorRightVector()*-50.f);
-	FVector End = Start +  (Dash->GetForwardVector() * 100);
+	FVector End = Start +  (Dash->GetForwardVector() * 250);
 	FCollisionQueryParams  CollisionP;
 
-	DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
 
 	//bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
-	bool VaultDisablingChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 10, TraceTypeQuery1, false, none, EDrawDebugTrace::ForDuration, Out, true, FLinearColor::Blue, FLinearColor::Blue, 0.5f);
+	bool VaultDisablingChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Blue, FLinearColor::Blue, 0.5f);
 
 
 	if (VaultDisablingChecker == true)
