@@ -98,7 +98,7 @@ ACharacterBase::ACharacterBase()
 	VaultmechanicDoOnce = true;
 	SlideDooNce = true;
 	PlayGrappleSoundOnce = true;
-	
+	SlideInitiatedDoOnce = true;
 	EndOfGame = false;
 
 	InitialStaminaUsage = 0.0009f;
@@ -405,38 +405,42 @@ void ACharacterBase::StaminaBar()
 
 void ACharacterBase::Slide()
 {
-	
-
-	FHitResult Out1;
-	FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
-	FVector End1 = Start1 + GetActorForwardVector() * 400;
-	FCollisionQueryParams  CollisionP1;
 
 
-	LeftShiftPressed = true;
-	ColliderCheckerMod = 200;
-	float VelocityVector = GetVelocity().Size();
+	//FHitResult Out1;
+	//FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
+	//FVector End1 = Start1 + GetActorForwardVector() * 400;
+	//FCollisionQueryParams  CollisionP1;
 
-	if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
+	if (SlideInitiatedDoOnce == true)
 	{
-
-		float AnimationDuration = 0.6f;
-		FastEnoughToSlide = true;
-
 		
-		PlayAnimMontage(IdleToSlide, AnimationDuration, NAME_None);
 
-		SlideCollider();
 
-		//delay
-		GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, AnimationDuration, false);
+		ColliderCheckerMod = 200;
+		float VelocityVector = GetVelocity().Size();
 
+		if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
+		{
+			SlideInitiatedDoOnce = false;
+
+			float AnimationDuration = 0.6f;
+			FastEnoughToSlide = true;
+
+
+			PlayAnimMontage(IdleToSlide, AnimationDuration, NAME_None);
+
+			SlideCollider();
+
+			//delay
+			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.8f, false);
+
+		}
+		else
+		{
+			FastEnoughToSlide = false;
+		}
 	}
-	else
-	{
-		FastEnoughToSlide = false;
-	}
-	
 }
 
 
@@ -445,8 +449,6 @@ void ACharacterBase::Slide()
 void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
 {
 	
-	LeftShiftPressed = false;
-	
 }
 
 
@@ -454,7 +456,8 @@ void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
 
 void ACharacterBase::ResetTimer()
 {
-	
+	SlideInitiatedDoOnce = true;
+
 	GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
 
 	//SUBJECT TO CHANGE!!!!!
@@ -493,7 +496,6 @@ void ACharacterBase::Vertical_Collision()
 
 	}
 
-
 	if (VerticalCollision == false)
 	{
 		//STOP the timeline
@@ -511,7 +513,7 @@ void ACharacterBase::Vertical_Collision()
 		}
 	}
 	
-
+	
 }
 
 
@@ -541,7 +543,7 @@ void ACharacterBase::ResetSlideColliderDoOnce()
 	SlideDooNce = true;
 	
 }
-//!!!!!!!!!!!!!!!!!!!!
+
 
 
 
@@ -676,7 +678,7 @@ void ACharacterBase::SlideCollider()
 	}
 
 	
-
+	
 }
 
 
@@ -721,7 +723,7 @@ void ACharacterBase::TimelineForSliding()
 		SlideCollider();
 	}
 	
-
+	
 }
 //WALLRUN ABILITY
 
@@ -1310,12 +1312,19 @@ void ACharacterBase::TimelineForVaulting()
 				ZoomingInTimelineInitiate = true;
 
 				//first delay
-				GetWorld()->GetTimerManager().SetTimer(FirstVaultTimer, this, &ACharacterBase::ResetFirstVaultTimer, 0.3f, false);
+				GetWorld()->GetTimerManager().SetTimer(FirstDelay, this, &ACharacterBase::ResetFirstVaultTimer, 0.1f, false);
+
+
+				//second delay
+				GetWorld()->GetTimerManager().SetTimer(SecondVaultTimer, this, &ACharacterBase::ResetSecondVaultTimer, 0.3f, false);
 
 
 				float VaultAnim = 0.833f;
-				//second delay
-				GetWorld()->GetTimerManager().SetTimer(SecondVaultTimer, this, &ACharacterBase::ResetSecondVaultTimer, VaultAnim, false);
+				//third delay
+				GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, VaultAnim, false);
+
+				
+
 			}
 			if (VaultHitResult.GetComponent()->ComponentHasTag("Vault") == false)
 			{
@@ -1342,7 +1351,7 @@ void ACharacterBase::DisablingVaultingUpwards()
 
 	//bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
 
-	bool VaultDisablingChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Blue, FLinearColor::Blue, 0.5f);
+	bool VaultDisablingChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 15, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Blue, FLinearColor::Blue, 0.5f);
 
 
 	if (VaultDisablingChecker == true)
@@ -1377,8 +1386,14 @@ void ACharacterBase::DisablingVaultingUpwards()
 
 void ACharacterBase::ResetFirstVaultTimer()
 {
-	
 	GetCharacterMovement()->GravityScale = 0.f;
+
+}
+
+void ACharacterBase::ResetSecondVaultTimer()
+{
+	
+	
 
 	//stop the zoom in timeline
 	ZoomingInTimelineInitiate = false;
@@ -1391,7 +1406,7 @@ void ACharacterBase::ResetFirstVaultTimer()
 	
 
 	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(FirstVaultTimer);
+	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
 	
 }
 
@@ -1400,7 +1415,7 @@ void ACharacterBase::TimelineForZoomingIn()
 	
 	if (ZoomingInTimelineInitiate == true)
 	{
-		CameraBoom->TargetArmLength -= 2.5f;
+		CameraBoom->TargetArmLength -= 2.f;
 		
 	}
 	
@@ -1413,7 +1428,7 @@ void ACharacterBase::TimelineForZoomingOut()
 	{
 		if (CameraBoom->TargetArmLength < 500.f)
 		{
-			CameraBoom->TargetArmLength += 1.f;
+			CameraBoom->TargetArmLength += 1.0f;
 		}
 		else if(CameraBoom->TargetArmLength >= 500.f)
 		{
@@ -1429,16 +1444,19 @@ void ACharacterBase::TimelineForZoomingOut()
 
 
 
-void ACharacterBase::ResetSecondVaultTimer()
+void ACharacterBase::ResetThirdVaultTimer()
 {	
 	
+	GetCharacterMovement()->GravityScale = 3.f;
+
 	//stop the vaulting
 	vaultingUpwardsVeloc = false;
 
 	VaultUpwardsPush = InitialVaultUpwardsPush;
 
+
 	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
+	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
 	
 }
 

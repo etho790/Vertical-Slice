@@ -113,7 +113,7 @@ public:
 		bool CollisionsForSliding;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool LeftShiftPressed;
+		bool SlideInitiatedDoOnce;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float  Stamina;
@@ -334,10 +334,12 @@ public:
 
 	void TimelineForZoomingIn();
 	void TimelineForZoomingOut();
-	FTimerHandle FirstVaultTimer;
-	FTimerHandle SecondVaultTimer;	
-	void ResetFirstVaultTimer();	
-	void ResetSecondVaultTimer();
+	FTimerHandle FirstDelay;
+	FTimerHandle SecondVaultTimer;
+	FTimerHandle ThirdVaultTimer;	
+	void ResetFirstVaultTimer();
+	void ResetSecondVaultTimer();	
+	void ResetThirdVaultTimer();
 	bool canVault;
 
 	//Grapple Pull
