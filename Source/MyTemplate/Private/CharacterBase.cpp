@@ -226,10 +226,10 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	//VAULTING TIMELINE
 
-	TimelineForVaulting();
-	TimelineForZoomingIn();
-	TimelineForZoomingOut();
-	DisablingVaultingUpwards();
+	//TimelineForVaulting();
+	//TimelineForZoomingIn();
+	//TimelineForZoomingOut();
+	//DisablingVaultingUpwards();
 
 	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
