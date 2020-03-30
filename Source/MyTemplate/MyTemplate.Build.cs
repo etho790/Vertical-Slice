@@ -8,7 +8,9 @@ public class MyTemplate : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "GameplayAbilities", "GameplayTags", "UMG", "Slate", "SlateCore", "CableComponent" });
-   
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "GameplayAbilities", "GameplayTags", "UMG", "Slate", "SlateCore", "CableComponent", "OnlineSubsystemUtils", "Steamworks", "Networking" });
+        DynamicallyLoadedModuleNames.Add("OnlineSubsystemSteam");
+
+        PrivateDependencyModuleNames.Add("OnlineSubsystem");
     }
 }

@@ -8,6 +8,7 @@ public class MyTemplateTarget : TargetRules
 	public MyTemplateTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		ExtraModuleNames.Add("MyTemplate");
+        bUsesSteam = true;
+        ExtraModuleNames.Add("MyTemplate");
 	}
 }
