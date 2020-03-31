@@ -8,6 +8,7 @@ public class MyTemplateEditorTarget : TargetRules
 	public MyTemplateEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
+        bUsesSteam = true;
 		ExtraModuleNames.Add("MyTemplate");
 	}
 }
