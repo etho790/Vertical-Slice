@@ -328,24 +328,22 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ACharacterBase::Moveforward(float axis)
 {
-	if (M_Hanging == false)
-	{
+	
 
 		AddMovementInput(GetActorForwardVector() * axis);
 
-	}
+	
 
 }
 
 void ACharacterBase::MoveRight(float axis)
 {
 
-	if (M_Hanging == false)
-	{
+	
 		AddMovementInput(GetActorRightVector() * axis);
 
 
-	}
+	
 }
 
 void ACharacterBase::HorizontalVelocity()
@@ -1124,21 +1122,23 @@ void ACharacterBase::GrappleAbility()
 {
 	
 
-	if (M_Hanging == false)
-	{
+	
 		if (Stamina > 0.4f)
 		{
 			TArray<AActor*> none;
 			//ForwardGrappleCheckerIsHit 
 			FHitResult Out;
-			FVector Start = GetActorLocation() + FollowCamera->GetForwardVector()*100 ;
+			FVector Start = FollowCamera->GetComponentLocation() + FollowCamera->GetForwardVector()*400 ;
 			FVector End = Start + (FollowCamera->GetForwardVector()*HookDistance);
 			FCollisionQueryParams  CollisionP;
 			CollisionP.bTraceComplex = false;
 			CollisionP.bReturnPhysicalMaterial = true;
 		
 			
-			bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 20, TraceTypeQuery2, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
+			//bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 4, TraceTypeQuery2, false, none, EDrawDebugTrace::ForDuration, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
+
+			bool ForwardGrappleCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_GameTraceChannel3, CollisionP);
+			DrawDebugLine(GetWorld(), Start, End, FColor::Green, true, 1, 0, 1);
 
 			if (ForwardGrappleCheckerIsHit == true)
 			{
@@ -1186,7 +1186,7 @@ void ACharacterBase::GrappleAbility()
 				GrappleComponent->Grapple();
 			}
 		}
-	}
+	
 
 }
 
@@ -1205,19 +1205,14 @@ void ACharacterBase::TimelineForGrapplePulling()
 
 		if (OtherGrappledCharacter != nullptr)
 		{
-			if (OtherGrappledCharacter->M_Hanging == true)
-			{
-				ResetGrapple();
-			}
-			if (OtherGrappledCharacter->M_Hanging == false)
-			{
+			
 				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -2000.f, Dash->GetForwardVector().Y * -2000.f, 1500.f);
 
 				OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
 
 				ResetGrapple();
 				GrapplePullTimelineInitiate = false;
-			}
+			
 		}
 	}
 }
@@ -1233,8 +1228,6 @@ void ACharacterBase::ResetGrapple()
 
 void ACharacterBase::ShootGrappleHook()
 {
-	
-
 
 	Stamina -= 0.4f;
 	//Delay
@@ -1470,8 +1463,7 @@ void ACharacterBase::Ram()
 {
 	
 
-	if (M_Hanging == false)
-	{
+	
 		if (Stamina > 0.3)
 		{
 			FVector VelocityVector = GetVelocity();
@@ -1499,7 +1491,7 @@ void ACharacterBase::Ram()
 				}
 			}
 		}
-	}
+	
 }
 
 

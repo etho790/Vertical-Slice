@@ -256,7 +256,7 @@ AGrapplingPoint* UGrappleComponent::GetClosestGrapplingPoint() const
 	return nullptr;
 }
 
-//THROWING THE GRAPPLE
+//THROWING THE GRAPPLE TO THE GRAPPLEPOINT
 void UGrappleComponent::Grapple()
 {
 
@@ -273,7 +273,6 @@ void UGrappleComponent::Grapple()
 	if (Player->Stamina > 0.4)
 	{
 		
-		//DrawDebugLine(GetWorld(), Start1, End1, FColor::Red, false, 1, 0, 1);
 		if (GrapplingPoint != nullptr)
 		{
 
