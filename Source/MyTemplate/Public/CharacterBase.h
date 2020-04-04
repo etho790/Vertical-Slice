@@ -367,6 +367,9 @@ public:
 	//RESPAWN
 	void Respawn();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ACharacterBase* LeadingPlayer;
+
 private:
 	bool SlideDooNce;
 	bool VaultmechanicDoOnce;
@@ -386,6 +389,8 @@ private:
 
 	bool ResettheLeftRaycast;
 	bool ResettheRightRaycast;
+
+
 
 	ACharacterBase* OtherHitPlayer;
 	ACharacterBase *OtherGrappledCharacter;
