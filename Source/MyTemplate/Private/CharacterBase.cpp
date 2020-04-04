@@ -1138,7 +1138,7 @@ void ACharacterBase::GrappleAbility()
 			//bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 4, TraceTypeQuery2, false, none, EDrawDebugTrace::ForDuration, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
 
 			bool ForwardGrappleCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_GameTraceChannel3, CollisionP);
-			DrawDebugLine(GetWorld(), Start, End, FColor::Green, true, 1, 0, 1);
+			//DrawDebugLine(GetWorld(), Start, End, FColor::Green, true, 1, 0, 1);
 
 			if (ForwardGrappleCheckerIsHit == true)
 			{
