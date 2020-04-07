@@ -272,6 +272,8 @@ public:
 	FTimerHandle GrappleDelayForPull;
 	void GrappleDelayPullResetter();
 
+	float StunIncrementer;
+	float LeadingPlayersStunIncrementer;
 
 protected:
 	// Called when the game starts or when spawned

@@ -104,6 +104,8 @@ ACharacterBase::ACharacterBase()
 	InitialStaminaUsage = 0.0009f;
 	StaminaUsage = InitialStaminaUsage;
 	InitialSpeed = 1200;
+	StunIncrementer = 0.005f;
+	LeadingPlayersStunIncrementer = 0.007f;
 }
 
 
@@ -130,7 +132,7 @@ void ACharacterBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
 void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
 	
-
+	
 	if (OtherActor->IsA(ACharacterBase::StaticClass()))
 	{
 		if (OtherActor != this)
@@ -142,6 +144,8 @@ void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedCom
 			}
 		}
 	}	
+
+	
 	 //RAMING INTO OTHER PLAYER AND SEND THEM FLYING
 
 	
@@ -318,7 +322,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
 		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
 		
-		//PlayerInputComponent->BindAction("Grapple", IE_Pressed, GrappleComponent, &UGrappleComponent::Grapple);
+		
 		PlayerInputComponent->BindAction("Grapple", IE_Pressed, this, &ACharacterBase::GrappleAbility);
 		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACharacterBase::Ram);
 	}
@@ -939,9 +943,6 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 		MoveForwards = false;
 
 
-
-
-
 		if (CloseToTheWall == true)
 		{
 			if (LeftWall == true)
@@ -1001,7 +1002,7 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 
 
 	//HITTING THE OTHERPLAYER TO SEND THEM FLYING
-
+	
 	if (OtherActor->IsA(ACharacterBase::StaticClass()))
 	{
 		if (OtherActor != this)
@@ -1024,6 +1025,7 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 
 
 	}
+
 }
 
 
@@ -1206,12 +1208,26 @@ void ACharacterBase::TimelineForGrapplePulling()
 		if (OtherGrappledCharacter != nullptr)
 		{
 			
+			if (OtherGrappledCharacter != LeadingPlayer)
+			{
 				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -2000.f, Dash->GetForwardVector().Y * -2000.f, 1500.f);
 
 				OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
 
 				ResetGrapple();
 				GrapplePullTimelineInitiate = false;
+			}
+			else
+			{
+				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -1000.f, Dash->GetForwardVector().Y * -1000.f, 1500.f);
+
+				OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
+
+				ResetGrapple();
+				GrapplePullTimelineInitiate = false;
+
+			}
+				
 			
 		}
 	}
@@ -1222,7 +1238,7 @@ void ACharacterBase::TimelineForGrapplePulling()
 void ACharacterBase::ResetGrapple()
 {	
 	ShowVisibilityOfGrappleHook = false;
-	//CanGrappleHook = true;
+	
 	PlayGrappleSoundOnce = true;	
 }
 
@@ -1506,21 +1522,6 @@ void ACharacterBase::ResetRamEndDelay()
 	GetWorld()->GetTimerManager().ClearTimer(EndOfRamDelay);
 }
 
-void ACharacterBase::Respawn()
-{
-	RespawnPlayer = Cast< ACharacterBase>(GetController()->GetPawn());
-	if (RespawnPlayer == GetController()->GetPawn())
-	{
-		FVector NewRespawnPoint = FVector(RespawnCheckPoint.X + 130, RespawnCheckPoint.Y, RespawnCheckPoint.Z);
-		SetActorLocation(NewRespawnPoint, false, nullptr, ETeleportType::None);
-		Stamina = 1.0f;
-		//RespawnPlayer->DisableInput(nullptr);
-		GetCharacterMovement()->StopMovementImmediately();
-		UseControllerRotationYaw = true;
-		//RespawnPlayer->EnableInput(nullptr);
-	}
-
-}
 
 
 void ACharacterBase::TimelineForCharging()
@@ -1541,26 +1542,47 @@ void ACharacterBase::TimelineForCharging()
 		if (HitTheOtherPlayer == true)
 		{
 
-			FVector ForwardVelocity = Dash->GetForwardVector() * 3500;
-			FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
+			
 
 			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 			{
+				if (OtherHitPlayer != LeadingPlayer)
+				{
+					FVector ForwardVelocity = Dash->GetForwardVector() * 2500;
+					FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
 
-				//sends the other player flying
-				OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
+					//sends the other player flying
+					OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
 
-				//play sound
-				UWorld* WorldContextObject = GetWorld();
-				UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
+					//play sound
+					UWorld* WorldContextObject = GetWorld();
+					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
 
-				//camera shake
-				UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+					//camera shake
+					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
 
-				//initiate the endofRam time line
-				RamEffects_TimelineInitiate = true;
+					//initiate the endofRam time line
+					RamEffects_TimelineInitiate = true;
+				}
+				else
+				{
+					FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
+					FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
 
-				
+					//sends the other player flying
+					OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
+
+					//play sound
+					UWorld* WorldContextObject = GetWorld();
+					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
+
+					//camera shake
+					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+
+					//initiate the endofRam time line
+					RamEffects_TimelineInitiate = true;
+
+				}
 			}
 
 
@@ -1585,8 +1607,15 @@ void ACharacterBase::TimelineEndOfRamEffects()
 
 	if (RamEffects_TimelineInitiate == true)
 	{
-		TimelineDuration += 0.005f;
-		
+		if (OtherHitPlayer != LeadingPlayer)
+		{
+			TimelineDuration += StunIncrementer;
+		}
+		else  
+		{
+			TimelineDuration += LeadingPlayersStunIncrementer;
+		}
+
 		if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 		{
 			if (OtherHitPlayer->GetCharacterMovement()->IsFalling() == false)
@@ -1634,3 +1663,19 @@ void ACharacterBase::TimelineEndOfRamEffects()
 }
 
 
+
+void ACharacterBase::Respawn()
+{
+	RespawnPlayer = Cast< ACharacterBase>(GetController()->GetPawn());
+	if (RespawnPlayer == GetController()->GetPawn())
+	{
+		FVector NewRespawnPoint = FVector(RespawnCheckPoint.X + 130, RespawnCheckPoint.Y, RespawnCheckPoint.Z);
+		SetActorLocation(NewRespawnPoint, false, nullptr, ETeleportType::None);
+		Stamina = 1.0f;
+		//RespawnPlayer->DisableInput(nullptr);
+		GetCharacterMovement()->StopMovementImmediately();
+		UseControllerRotationYaw = true;
+		//RespawnPlayer->EnableInput(nullptr);
+	}
+
+}
