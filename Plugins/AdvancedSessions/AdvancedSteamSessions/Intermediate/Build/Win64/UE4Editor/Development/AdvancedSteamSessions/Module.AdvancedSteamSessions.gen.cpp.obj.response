@@ -28,7 +28,7 @@
 /wd4838
 /we4668
 /I .
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
 /I ..\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem\Source
@@ -515,15 +515,15 @@
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\ClothingSystemRuntimeInterface
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I Runtime\ClothingSystemRuntimeInterface
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSteamSessions
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSteamSessions
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
 /I ..\Plugins\Online\OnlineSubsystemSteam\Source\Private
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
-/I R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
+/I R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
 /I ThirdParty\Steamworks\Steamv142\sdk\public
 /I ..\Plugins\Online\OnlineSubsystemSteam\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemSteam
 /I ..\Plugins\Online\OnlineSubsystemSteam
@@ -559,12 +559,12 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"R:\GitKraken\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
-/Yu"R:\GitKraken\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
-/Fp"R:\GitKraken\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.pch"
-"R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp"
-/FI"R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
-/Fo"R:\GitKraken\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
+/FI"R:\GitKraken\vertis02\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
+/Yu"R:\GitKraken\vertis02\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
+/Fp"R:\GitKraken\vertis02\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.pch"
+"R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp"
+/FI"R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
+/Fo"R:\GitKraken\vertis02\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
 /TP
 /GR-
 /W4
