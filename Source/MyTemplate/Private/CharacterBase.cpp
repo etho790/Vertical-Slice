@@ -1149,6 +1149,8 @@ void ACharacterBase::GrappleAbility()
 				if (Out.Actor != nullptr)
 				{
 					OtherGrappledCharacter = Cast< ACharacterBase>(Out.Actor);
+					//target
+					OtherGrappledTarget = Cast< ATargetCharacters>(Out.Actor);
 				}
 
 				if (OtherGrappledCharacter != nullptr)
@@ -1175,11 +1177,30 @@ void ACharacterBase::GrappleAbility()
 					}
 
 				}
-				if (OtherGrappledCharacter ==nullptr)
+
+
+
+				//For the training target on the training map
+				if (OtherGrappledCharacter == nullptr)
+				{
+					if (OtherGrappledTarget != nullptr)
+					{
+						HookLocation = OtherGrappledTarget->GetMesh()->GetSocketLocation("Pelvis");
+
+						ShootGrappleHook();
+
+						PlayAnimMontage(GrappleAnim, 1.f, NAME_None);
+
+						//Delay
+						GetWorld()->GetTimerManager().SetTimer(GrappleDelayForPull, this, &ACharacterBase::GrappleDelayPullResetter, 0.55f, false);
+
+					}
+				}
+
+				if (OtherGrappledCharacter ==nullptr && OtherGrappledTarget == nullptr)
 				{
 					//switch to the grapple to waypoint
 					GrappleComponent->Grapple();
-
 
 				}
 			}
@@ -1229,6 +1250,21 @@ void ACharacterBase::TimelineForGrapplePulling()
 			}
 				
 			
+		}
+
+		//FOR THE TRAINING TARGETS FOR THE TRAINING MAP
+		if (OtherGrappledCharacter == nullptr)
+		{
+			if (OtherGrappledTarget != nullptr)
+			{
+				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -1000.f, Dash->GetForwardVector().Y * -1000.f, 1500.f);
+
+				OtherGrappledTarget->LaunchCharacter(grappleVeloc, true, true);
+
+				ResetGrapple();
+				GrapplePullTimelineInitiate = false;
+			}
+
 		}
 	}
 }

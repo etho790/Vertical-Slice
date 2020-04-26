@@ -6,6 +6,7 @@
 #include "TimerManager.h"
 #include "GameFramework/Character.h"
 
+#include "TargetCharacters.h"
 #include "Animation/AnimInstance.h"
 #include "Components/TimelineComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -398,4 +399,6 @@ private:
 	ACharacterBase *OtherGrappledCharacter;
 	ACharacterBase* RespawnPlayer;
 
+	ATargetCharacters*  OtherGrappledTarget;
+	ATargetCharacters* OtherHitTarget;
 };
