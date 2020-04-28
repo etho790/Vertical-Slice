@@ -69,6 +69,15 @@ public:
 	UFUNCTION()
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float TimeUntilRespawns;
+	float InitialTimeUntilRespawns;
+	void Respawner();
 
+	UPROPERTY(EditAnywhere)
+		TSubclassOf< APowerupArtifacts> spawn;
+
+
+	bool ArtifactPickedUp;
 	ACharacterBase* Character;
 };

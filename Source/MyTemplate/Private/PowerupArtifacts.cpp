@@ -31,7 +31,7 @@ APowerupArtifacts::APowerupArtifacts()
 	Character = nullptr;
 	PrimaryActorTick.bCanEverTick = true;
 
-
+	ArtifactPickedUp = false;
 	//artifact = FindObject<UEnum>(ANY_PACKAGE, TEXT("PickupType"), true);
 }
 
@@ -41,6 +41,8 @@ void APowerupArtifacts::BeginPlay()
 	Super::BeginPlay();
 	//colliding with the pickup
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &APowerupArtifacts::OnBeginOverlap);
+
+	InitialTimeUntilRespawns = TimeUntilRespawns;
 
 	if (Artifact_Type == 1)
 	{
@@ -83,7 +85,33 @@ void APowerupArtifacts::Tick(float DeltaTime)
 
 
 	AddActorLocalRotation(rotation, false, nullptr, ETeleportType::None);
+
+	Respawner();
 }
+
+
+
+void APowerupArtifacts::Respawner()
+{
+	if (ArtifactPickedUp == true)
+	{
+		TimeUntilRespawns = TimeUntilRespawns - 1;
+		if (TimeUntilRespawns <= 0)
+		{
+
+			UWorld* world = GetWorld();
+
+			world->SpawnActor<APowerupArtifacts>(spawn, GetActorLocation(), GetActorRotation());
+
+
+			K2_DestroyActor();
+
+		}
+	}
+
+
+}
+
 
 void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
 {
@@ -105,7 +133,14 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			
 			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, 1.0f, 1.0f, 0, NULL, NULL);
 
-			K2_DestroyActor();
+			//picked up artifact
+			ArtifactPickedUp = true;
+
+			if (Character->HasPickedUpPowerup == false)
+			{
+				Particle->SetVisibility(false, false);
+				Mesh->SetStaticMesh(NULL);
+			}
 
 		}
 	}
@@ -122,7 +157,14 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			
 			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, 1.0f, 1.0f, 0, NULL, NULL);
 
-			K2_DestroyActor();
+			//picked up artifact
+			ArtifactPickedUp = true;
+
+			if (Character->HasPickedUpPowerup == false)
+			{
+				Particle->SetVisibility(false, false);
+				Mesh->SetStaticMesh(NULL);
+			}
 
 		}
 
@@ -142,7 +184,14 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			
 			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, 1.0f, 1.0f, 0, NULL, NULL);
 
-			K2_DestroyActor();
+			//picked up artifact
+			ArtifactPickedUp = true;
+
+			if (Character->HasPickedUpPowerup == false)
+			{
+				Particle->SetVisibility(false, false);
+				Mesh->SetStaticMesh(NULL);
+			}
 
 		}
 
