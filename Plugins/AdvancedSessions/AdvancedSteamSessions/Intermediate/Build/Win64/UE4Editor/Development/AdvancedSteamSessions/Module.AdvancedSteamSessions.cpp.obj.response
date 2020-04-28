@@ -28,7 +28,7 @@
 /wd4838
 /we4668
 /I .
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
 /I ..\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem\Source
@@ -515,15 +515,15 @@
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\ClothingSystemRuntimeInterface
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I Runtime\ClothingSystemRuntimeInterface
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSteamSessions
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSteamSessions
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
 /I ..\Plugins\Online\OnlineSubsystemSteam\Source\Private
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
-/I C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
+/I R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
 /I ThirdParty\Steamworks\Steamv142\sdk\public
 /I ..\Plugins\Online\OnlineSubsystemSteam\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemSteam
 /I ..\Plugins\Online\OnlineSubsystemSteam
@@ -553,17 +553,18 @@
 /I ThirdParty\PhysX3\APEX_1.4\shared\general\RenderDebug\public
 /I ThirdParty\PhysX3\APEX_1.4\shared\general\PairFilter\include
 /I ThirdParty\PhysX3\APEX_1.4\shared\internal\include
-/I "A:\Program Files\VisualStudio\VC\Tools\MSVC\14.16.27023\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"
-/FI"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
-/Yu"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
-/Fp"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.pch"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp"
-/FI"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
-/Fo"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
+/I R:\VisualStudio\IDE2017\VC\Tools\MSVC\14.16.27023\INCLUDE
+/I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
+/FI"R:\GitKraken\Vertis03\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
+/Yu"R:\GitKraken\Vertis03\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
+/Fp"R:\GitKraken\Vertis03\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.pch"
+"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp"
+/FI"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
+/Fo"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
 /TP
 /GR-
 /W4
