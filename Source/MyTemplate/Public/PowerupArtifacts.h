@@ -49,8 +49,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		USphereComponent * Collider;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
-		UParticleSystem* AttachedVfx;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
+	//	UParticleSystem* AttachedVfx;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
 		UParticleSystem* PickedUpVfx;

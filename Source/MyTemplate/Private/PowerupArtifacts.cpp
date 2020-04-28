@@ -22,8 +22,8 @@ APowerupArtifacts::APowerupArtifacts()
 	Collider->SetupAttachment(Particle);
 
 
-	UWorld* WorldContextObject = GetWorld();
-	UGameplayStatics::SpawnEmitterAttached(AttachedVfx, Mesh, NAME_None, FVector(0, 0, 0), FRotator(0, 0, 0), EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::None);
+	//UWorld* WorldContextObject = GetWorld();
+	//UGameplayStatics::SpawnEmitterAttached(AttachedVfx, Mesh, NAME_None, FVector(0, 0, 0), FRotator(0, 0, 0), EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::None);
 
 	StartingPosition = GetActorLocation();
 	StartingRotation = UKismetMathLibrary::UKismetMathLibrary::Conv_RotatorToVector(GetActorRotation());
@@ -101,6 +101,8 @@ void APowerupArtifacts::Respawner()
 
 			UWorld* world = GetWorld();
 
+			UWorld* WorldContextObject = GetWorld();
+			UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), FVector(5,5,5), true, EPSCPoolMethod::None);
 			world->SpawnActor<APowerupArtifacts>(spawn, GetActorLocation(), GetActorRotation());
 
 
