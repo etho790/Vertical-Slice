@@ -6,9 +6,9 @@
 /NAME:"UE4Editor-AdvancedSteamSessions-0001.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"R:\GitKraken\Vertis03\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.obj"
-"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
-"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
-"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Default.rc2.res"
-/OUT:"R:\GitKraken\Vertis03\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\UE4Editor-AdvancedSteamSessions-0001.lib"
+"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.obj"
+"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
+"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
+"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Default.rc2.res"
+/OUT:"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\UE4Editor-AdvancedSteamSessions-0001.lib"
 /INCLUDE:IMPLEMENT_MODULE_AdvancedSteamSessions

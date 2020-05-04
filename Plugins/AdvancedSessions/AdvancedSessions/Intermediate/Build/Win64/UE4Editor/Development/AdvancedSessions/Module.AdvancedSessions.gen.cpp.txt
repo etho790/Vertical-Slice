@@ -1,197 +1,197 @@
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Definitions.AdvancedSessions.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedExternalUILibrary.gen.cpp
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
+D:\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
+D:\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/AdvancedExternalUILibrary.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\source\advancedsessions\classes\BlueprintDataDefinitions.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Classes\GameFramework/PlayerState.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\PlayerState.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineSessionInterface.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemTypes.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemNames.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemPackage.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineDelegateMacros.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSessionSettings.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineKeyValuePair.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemPackage.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemPackage.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystem.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemModule.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemImpl.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemPackage.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineSubsystemUtils.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\source\onlinesubsystemutils\public\OnlineSubsystemUtilsModule.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineIdentityInterface.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineIdentityErrors.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineError.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineErrorMacros.inl
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Online.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineChatInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineFriendsInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineEventsInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlinePartyInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineExternalUIInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineMessageInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/VoiceInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineSubsystemPackage.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineTitleFileInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineAchievementsInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\OnlineStats.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlinePresenceInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineEntitlementsInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineUserCloudInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineUserInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystem\source\public\Interfaces/OnlineStatsInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\source\onlinesubsystemutils\public\VoipListenerSynthComponent.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\Components/SynthComponent.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Classes\Components/AudioComponent.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\AudioComponent.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Classes\Sound/SoundWaveProcedural.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\SoundWaveProcedural.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\AudioMixer\SynthComponent.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\source\onlinesubsystemutils\public\VoicePacketBuffer.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Public\Net/VoiceDataCommon.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Public\Net/VoiceConfig.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/EnvelopeFollower.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Classes\Sound/AudioSettings.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\AudioSettings.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\VoiceConfig.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/DynamicsProcessor.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/Delay.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/WaveTableOsc.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/EQ.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/Filter.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/ModulationMatrix.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/BiQuadFilter.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\VoipListenerSynthComponent.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\OnlineSubsystemUtilsClasses.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/AchievementBlueprintLibrary.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\AchievementBlueprintLibrary.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/AchievementQueryCallbackProxy.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Public\Net/OnlineBlueprintCallProxyBase.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\OnlineBlueprintCallProxyBase.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\AchievementQueryCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/AchievementWriteCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\AchievementWriteCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/ConnectionCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\ConnectionCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/CreateSessionCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\CreateSessionCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/DestroySessionCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\DestroySessionCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/EndMatchCallbackProxy.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineTurnBasedInterface.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem\OnlineTurnBasedInterface.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\EndMatchCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/EndTurnCallbackProxy.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/TurnBasedMatchInterface.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem\TurnBasedMatchInterface.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\EndTurnCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/FindSessionsCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\FindSessionsCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/FindTurnBasedMatchCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\FindTurnBasedMatchCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/InAppPurchaseCallbackProxy.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineStoreInterface.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem\OnlineStoreInterface.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\InAppPurchaseCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/InAppPurchaseQueryCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\InAppPurchaseQueryCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/InAppPurchaseRestoreCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\InAppPurchaseRestoreCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/IpConnection.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\IpConnection.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/IpNetDriver.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Core\Public\Containers/CircularQueue.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\IpNetDriver.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/JoinSessionCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\JoinSessionCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LeaderboardBlueprintLibrary.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\LeaderboardBlueprintLibrary.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LeaderboardFlushCallbackProxy.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineLeaderboardInterface.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\LeaderboardFlushCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LeaderboardQueryCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\LeaderboardQueryCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LogoutCallbackProxy.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Classes\Kismet/BlueprintAsyncActionBase.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\BlueprintAsyncActionBase.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\LogoutCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/TestBeaconClient.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineBeaconClient.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\source\onlinesubsystemutils\public\OnlineBeacon.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\OnlineBeacon.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\OnlineBeaconClient.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\TestBeaconClient.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/TestBeaconHost.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineBeaconHostObject.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\OnlineBeaconHostObject.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\TestBeaconHost.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/OnlineSessionClient.h
-D:\Program Files (x86)\UE_4.23\Engine\Source\Runtime\Engine\Classes\GameFramework/OnlineSession.h
-D:\Program Files (x86)\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\OnlineSession.generated.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\OnlineSessionClient.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/QuitMatchCallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\QuitMatchCallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/ShowLoginUICallbackProxy.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\ShowLoginUICallbackProxy.generated.h
-D:\Program Files (x86)\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/TurnBasedBlueprintLibrary.h
-d:\program files (x86)\ue_4.23\engine\plugins\online\onlinesubsystemutils\intermediate\build\win64\ue4editor\inc\onlinesubsystemutils\TurnBasedBlueprintLibrary.generated.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\BlueprintDataDefinitions.generated.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedExternalUILibrary.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes\BlueprintDataDefinitions.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Classes\GameFramework/PlayerState.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\PlayerState.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineSessionInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemTypes.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemNames.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemPackage.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineDelegateMacros.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSessionSettings.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineKeyValuePair.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemPackage.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemPackage.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystem.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemModule.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemImpl.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemPackage.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineSubsystemUtils.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineSubsystemUtilsModule.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineIdentityInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineIdentityErrors.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineError.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineErrorMacros.inl
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Online.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineChatInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineFriendsInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineEventsInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlinePartyInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineExternalUIInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineMessageInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/VoiceInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineSubsystemPackage.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineTitleFileInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineAchievementsInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\OnlineStats.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlinePresenceInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineEntitlementsInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineUserCloudInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineUserInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineStatsInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\VoipListenerSynthComponent.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\Components/SynthComponent.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Classes\Components/AudioComponent.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\AudioComponent.generated.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Classes\Sound/SoundWaveProcedural.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\SoundWaveProcedural.generated.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\AudioMixer\SynthComponent.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\VoicePacketBuffer.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Public\Net/VoiceDataCommon.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Public\Net/VoiceConfig.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/EnvelopeFollower.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Classes\Sound/AudioSettings.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\AudioSettings.generated.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\VoiceConfig.generated.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/DynamicsProcessor.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/Delay.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/WaveTableOsc.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/EQ.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/Filter.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/ModulationMatrix.h
+D:\UE_4.23\Engine\Source\Runtime\AudioMixer\Public\DSP/BiQuadFilter.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\VoipListenerSynthComponent.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\OnlineSubsystemUtilsClasses.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/AchievementBlueprintLibrary.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\AchievementBlueprintLibrary.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/AchievementQueryCallbackProxy.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Public\Net/OnlineBlueprintCallProxyBase.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\OnlineBlueprintCallProxyBase.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\AchievementQueryCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/AchievementWriteCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\AchievementWriteCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/ConnectionCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\ConnectionCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/CreateSessionCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\CreateSessionCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/DestroySessionCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\DestroySessionCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/EndMatchCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineTurnBasedInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem\OnlineTurnBasedInterface.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\EndMatchCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/EndTurnCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/TurnBasedMatchInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem\TurnBasedMatchInterface.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\EndTurnCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/FindSessionsCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\FindSessionsCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/FindTurnBasedMatchCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\FindTurnBasedMatchCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/InAppPurchaseCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineStoreInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem\OnlineStoreInterface.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\InAppPurchaseCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/InAppPurchaseQueryCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\InAppPurchaseQueryCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/InAppPurchaseRestoreCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\InAppPurchaseRestoreCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/IpConnection.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\IpConnection.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/IpNetDriver.h
+D:\UE_4.23\Engine\Source\Runtime\Core\Public\Containers/CircularQueue.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\IpNetDriver.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/JoinSessionCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\JoinSessionCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LeaderboardBlueprintLibrary.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\LeaderboardBlueprintLibrary.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LeaderboardFlushCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystem\Source\Public\Interfaces/OnlineLeaderboardInterface.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\LeaderboardFlushCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LeaderboardQueryCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\LeaderboardQueryCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/LogoutCallbackProxy.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Classes\Kismet/BlueprintAsyncActionBase.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\BlueprintAsyncActionBase.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\LogoutCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/TestBeaconClient.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineBeaconClient.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineBeacon.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\OnlineBeacon.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\OnlineBeaconClient.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\TestBeaconClient.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/TestBeaconHost.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils\Public\OnlineBeaconHostObject.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\OnlineBeaconHostObject.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\TestBeaconHost.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/OnlineSessionClient.h
+D:\UE_4.23\Engine\Source\Runtime\Engine\Classes\GameFramework/OnlineSession.h
+D:\UE_4.23\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\OnlineSession.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\OnlineSessionClient.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/QuitMatchCallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\QuitMatchCallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/ShowLoginUICallbackProxy.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\ShowLoginUICallbackProxy.generated.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Source\OnlineSubsystemUtils/Classes/TurnBasedBlueprintLibrary.h
+D:\UE_4.23\Engine\Plugins\Online\OnlineSubsystemUtils\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemUtils\TurnBasedBlueprintLibrary.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\BlueprintDataDefinitions.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedExternalUILibrary.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedFriendsGameInstance.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/AdvancedFriendsGameInstance.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\source\advancedsessions\classes\AdvancedFriendsInterface.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedFriendsInterface.generated.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedFriendsGameInstance.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes\AdvancedFriendsInterface.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedFriendsInterface.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedFriendsGameInstance.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedFriendsInterface.gen.cpp
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedFriendsLibrary.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/AdvancedFriendsLibrary.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedFriendsLibrary.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedFriendsLibrary.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedIdentityLibrary.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/AdvancedIdentityLibrary.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedIdentityLibrary.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedIdentityLibrary.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedSessions.init.gen.cpp
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedSessionsLibrary.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/AdvancedSessionsLibrary.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedSessionsLibrary.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedSessionsLibrary.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/AdvancedVoiceLibrary.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/AdvancedVoiceLibrary.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\AdvancedVoiceLibrary.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\AdvancedVoiceLibrary.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/BlueprintDataDefinitions.gen.cpp
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/CancelFindSessionsCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/CancelFindSessionsCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\CancelFindSessionsCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\CancelFindSessionsCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/CreateSessionCallbackProxyAdvanced.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/CreateSessionCallbackProxyAdvanced.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\CreateSessionCallbackProxyAdvanced.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\CreateSessionCallbackProxyAdvanced.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/EndSessionCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/EndSessionCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\EndSessionCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\EndSessionCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/FindFriendSessionCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/FindFriendSessionCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\FindFriendSessionCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\FindFriendSessionCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/FindSessionsCallbackProxyAdvanced.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/FindSessionsCallbackProxyAdvanced.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\FindSessionsCallbackProxyAdvanced.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\FindSessionsCallbackProxyAdvanced.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/GetFriendsCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/GetFriendsCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\GetFriendsCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\GetFriendsCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/GetRecentPlayersCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/GetRecentPlayersCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\GetRecentPlayersCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\GetRecentPlayersCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/GetUserPrivilegeCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/GetUserPrivilegeCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\GetUserPrivilegeCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\GetUserPrivilegeCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/LoginUserCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/LoginUserCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\LoginUserCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\LoginUserCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/LogoutUserCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/LogoutUserCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\LogoutUserCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\LogoutUserCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/SendFriendInviteCallbackProxy.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/SendFriendInviteCallbackProxy.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\SendFriendInviteCallbackProxy.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\SendFriendInviteCallbackProxy.generated.h
 D:/Vertical-Slice/Plugins/AdvancedSessions/AdvancedSessions/Intermediate/Build/Win64/UE4Editor/Inc/AdvancedSessions/UpdateSessionCallbackProxyAdvanced.gen.cpp
 D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions/Classes/UpdateSessionCallbackProxyAdvanced.h
-d:\vertical-slice\plugins\advancedsessions\advancedsessions\intermediate\build\win64\ue4editor\inc\advancedsessions\UpdateSessionCallbackProxyAdvanced.generated.h
+D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions\UpdateSessionCallbackProxyAdvanced.generated.h
