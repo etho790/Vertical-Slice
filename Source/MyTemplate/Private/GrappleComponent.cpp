@@ -5,6 +5,7 @@
 #include "GrapplingPoint.h"
 #include "CharacterBase.h"
 
+#include "MenuSettingOptions.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -372,7 +373,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 						
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
-					UGameplayStatics::PlaySound2D(WorldContextObject, Player->GrappleSound, 1.0f, 1.0f, 0, NULL, NULL);
+					UGameplayStatics::PlaySound2D(WorldContextObject, Player->GrappleSound, Player->MenuOption->volumeMultiplier, Player->MenuOption->volumeMultiplier, 0, NULL, NULL);
 					PlayAnim = false;
 				}
 
