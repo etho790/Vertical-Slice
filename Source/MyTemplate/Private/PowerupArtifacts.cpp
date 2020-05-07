@@ -2,6 +2,8 @@
 
 
 #include "PowerupArtifacts.h"
+#include "MenuSettingOptions.h" 
+
 #include "..\Public\PowerupArtifacts.h"
 
 
@@ -21,9 +23,8 @@ APowerupArtifacts::APowerupArtifacts()
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Particle);
 
-
-	//UWorld* WorldContextObject = GetWorld();
-	//UGameplayStatics::SpawnEmitterAttached(AttachedVfx, Mesh, NAME_None, FVector(0, 0, 0), FRotator(0, 0, 0), EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::None);
+	//MenuOptions
+	//MenuOption = CreateDefaultSubobject<UMenuSettingOptions>(TEXT("MenuSetting"));
 
 	StartingPosition = GetActorLocation();
 	StartingRotation = UKismetMathLibrary::UKismetMathLibrary::Conv_RotatorToVector(GetActorRotation());
@@ -133,7 +134,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//play sound
 			
-			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, 1.0f, 1.0f, 0, NULL, NULL);
+			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, Character->MenuOption->volumeMultiplier, Character->MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 			//picked up artifact
 			ArtifactPickedUp = true;
@@ -157,7 +158,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//play sound
 			
-			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, 1.0f, 1.0f, 0, NULL, NULL);
+			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, Character->MenuOption->volumeMultiplier, Character->MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 			//picked up artifact
 			ArtifactPickedUp = true;
@@ -184,7 +185,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//play sound
 			
-			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, 1.0f, 1.0f, 0, NULL, NULL);
+			UGameplayStatics::PlaySound2D(WorldContextObject, DestructionSound, Character->MenuOption->volumeMultiplier, Character->MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 			//picked up artifact
 			ArtifactPickedUp = true;

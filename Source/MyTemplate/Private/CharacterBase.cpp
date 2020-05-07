@@ -13,6 +13,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GrappleComponent.h"
+#include "MenuSettingOptions.h"
 
 #include "Components/SceneComponent.h"
 
@@ -80,6 +81,9 @@ ACharacterBase::ACharacterBase()
 	Front->SetBoxExtent(FVector(30.f, 32.f, 32.f));
 	Front->SetRelativeLocation(FVector(60.0f, 10, 30.f));
 	Front->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.f));
+
+	//MenuOptions
+	MenuOption = CreateDefaultSubobject<UMenuSettingOptions>(TEXT("MenuSetting"));
 
 	//CHRISTIAN
 	GrappleComponent = CreateDefaultSubobject<UGrappleComponent>(TEXT("GrappleComponent"));
@@ -1330,7 +1334,7 @@ void ACharacterBase::DoOncePlayGrappleSound()
 	{
 		//play sound
 		UWorld* WorldContextObject = GetWorld();
-		UGameplayStatics::PlaySound2D(WorldContextObject, GrapplePullSound, 5.0f, 1.0f, 0, NULL, NULL);
+		UGameplayStatics::PlaySound2D(WorldContextObject, GrapplePullSound, MenuOption->volumeMultiplier, MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 		PlayGrappleSoundOnce = false;
 	}
@@ -1615,10 +1619,10 @@ void ACharacterBase::TimelineForCharging()
 
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
-					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
+					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, MenuOption->volumeMultiplier, MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 					//camera shake
-					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, MenuOption->OuterRadius, 1.0f, false);
 
 					//initiate the endofRam time line
 					RamEffects_TimelineInitiate = true;
@@ -1633,10 +1637,10 @@ void ACharacterBase::TimelineForCharging()
 
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
-					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
+					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, MenuOption->volumeMultiplier, MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 					//camera shake
-					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), MenuOption->OuterRadius, MenuOption->OuterRadius, 1.0f, false);
 
 					//initiate the endofRam time line
 					RamEffects_TimelineInitiate = true;
@@ -1666,10 +1670,10 @@ void ACharacterBase::TimelineForCharging()
 
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
-					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, 1.0f, 1.0f, 0, NULL, NULL);
+					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, MenuOption->volumeMultiplier, MenuOption->volumeMultiplier, 0, NULL, NULL);
 
 					//camera shake
-					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, 100, 1.0f, false);
+					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, MenuOption->OuterRadius, 1.0f, false);
 
 					//initiate the endofRam time line
 					RamEffects_TimelineInitiate = true;

@@ -59,6 +59,10 @@ public:
 		class USoundBase* DestructionSound;
 	
 
+	//MenuOptions
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UMenuSettingOptions* MenuOption;
+
 	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TypeofArtifact, meta = (AllowPrivateAccess = "true"))

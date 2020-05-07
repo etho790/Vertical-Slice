@@ -53,7 +53,9 @@ private:
 	// Is the hooked finished moving to the hit location?
 	bool bHookedFinished;
 
-
+	//MenuOptions
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class UMenuSettingOptions* MenuOption;
 
 
 protected:

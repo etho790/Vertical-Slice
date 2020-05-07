@@ -25,6 +25,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "CableComponent.h"
+#include "MenuSettingOptions.h"
 
 #include "CharacterBase.generated.h"
 
@@ -240,6 +241,13 @@ public:
 
 	float GrappleTimer;
 	
+
+	//MenuOptions
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UMenuSettingOptions* MenuOption;
+
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UCableComponent* GrappleHook;
 
