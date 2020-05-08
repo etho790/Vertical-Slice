@@ -248,17 +248,14 @@ void ACharacterBase::Tick(float DeltaTime)
 	//Timeline like functions
 	TimelineForSliding();
 
-	//VAULTING TIMELINE
+	
 
-	//TimelineForVaulting();
-	//TimelineForZoomingIn();
-	//TimelineForZoomingOut();
-	//DisablingVaultingUpwards();
 
 	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
 	//WALLRUNNING
 	WallRunRaycast();
+	
 	if (GetMovementComponent()->IsFalling() == false)
 	{
 		Landed();
@@ -480,7 +477,7 @@ void ACharacterBase::ResetTimer()
 {
 	SlideInitiatedDoOnce = true;
 
-	GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
+	GetCapsuleComponent()->SetCapsuleSize(70, 96.0f, true);
 
 	//SUBJECT TO CHANGE!!!!!
 	GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
@@ -503,14 +500,7 @@ void ACharacterBase::Vertical_Collision()
 	
 	if (VerticalCollision == true)
 	{
-		//STOPPING THE VAULTING ANIMATION!!!!!!!
-		StopAnimMontage(VaultingAnim);
-		vaultingUpwardsVeloc = false;
-		GetCharacterMovement()->GravityScale = 3.f;
-		//end of vault
-
-
-
+		
 
 		//initiate the timeline
 		SlidingTimelineInitiate = true;
@@ -524,7 +514,7 @@ void ACharacterBase::Vertical_Collision()
 		SlidingTimelineInitiate = false;
 
 
-		GetCapsuleComponent()->SetCapsuleSize(42.0f, 96.0f, true);
+		GetCapsuleComponent()->SetCapsuleSize(70, 96.0f, true);
 
 
 		//SUBJECT TO CHANGE!!!!!
@@ -548,7 +538,7 @@ void ACharacterBase::SlideColliderDoOnce()
 	{
 		VerticalCollision = false;
 		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
-		GetCapsuleComponent()->SetCapsuleSize(42, 96, true);
+		GetCapsuleComponent()->SetCapsuleSize(70, 96, true);
 		// SUBJECT TO CHANGE!!!!!
 		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 65.0f), false, 0, ETeleportType::None);
 
@@ -751,11 +741,6 @@ void ACharacterBase::TimelineForSliding()
 
 
 
-
-
-
-
-
 void ACharacterBase::ResetLeftRaycast()
 {
 
@@ -813,12 +798,11 @@ void ACharacterBase::WallRunner()
 
 }
 
-//HAVENT ADDED IN THE TIMELINE NOR PUT THIS IN THE TICK FUNCTION
+
 void ACharacterBase::WallRunRaycast()
 {
 	//ONLY LETS THIS RAYCAST FUNCTION WORK IF NOT VAULTING !!!!!!!!!!!!!
 
-	
 		TArray<AActor*> none;
 
 		//left raycast
@@ -928,28 +912,22 @@ void ACharacterBase::TimelineForWallRunning()
 
 	if (WallRunTimelineInitiate == true)
 	{
-		//STOPPING THE VAULTING ANIMATION!!!!!!!
-		StopAnimMontage(VaultingAnim);
-		vaultingUpwardsVeloc = false;
-		GetCharacterMovement()->GravityScale = 3.f;
-		//end of vault
+		
 
 		if (MoveForwards == true)
 		{
 			FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 			FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 0);
 			LaunchCharacter(LaunchVelocity, true, true);
-
 		}
 		if (MoveForwards == false)
 		{
 
-			FVector LaunchVelocity = FVector(0, 0, -250);
+			FVector LaunchVelocity = FVector(0, 0, -150);
 			LaunchCharacter(LaunchVelocity, false, false);
 			//GetCharacterMovement()->GravityScale = 3;
 		}
 	}
-
 }
 
 
@@ -1249,12 +1227,7 @@ void ACharacterBase::TimelineForGrapplePulling()
 	{
 
 	
-		//STOPPING THE VAULTING ANIMATION!!!!!!!
-		StopAnimMontage(VaultingAnim);
-		vaultingUpwardsVeloc = false;
-		GetCharacterMovement()->GravityScale = 3.f;
-		//end of vault
-
+		
 		if (OtherGrappledCharacter != nullptr)
 		{
 			
@@ -1354,6 +1327,7 @@ void ACharacterBase::GrappleDelayPullResetter()
 
 
 //Vaulting
+/*
 void ACharacterBase::TimelineForVaulting()
 {
 	
@@ -1534,7 +1508,7 @@ void ACharacterBase::ResetThirdVaultTimer()
 	
 }
 
-
+*/
 
 
 
@@ -1593,11 +1567,7 @@ void ACharacterBase::TimelineForCharging()
 {
 	if (ChargingTimelineInitiate == true)
 	{
-		//STOPPING THE VAULTING ANIMATION!!!!!!!
-		StopAnimMontage(VaultingAnim);
-		vaultingUpwardsVeloc = false;
-		GetCharacterMovement()->GravityScale = 3.f;
-		//end of vault
+		
 
 		FVector ForwardVelocity = Dash->GetForwardVector() * 1000;
 		FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, -500);

@@ -143,8 +143,7 @@ public:
 	UFUNCTION()
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
-		class UAnimMontage* VaultAnim;
+	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
 		class UAnimMontage* RamAnim;
@@ -339,6 +338,7 @@ public:
 	void TimelineForWallRunning();
 
 	//vault
+	/*
 	void TimelineForVaulting();
 	void DisablingVaultingUpwards();	
 	bool StopTheWallrunRaycast;
@@ -352,6 +352,7 @@ public:
 	void ResetSecondVaultTimer();	
 	void ResetThirdVaultTimer();
 	bool canVault;
+	*/
 
 	//Grapple Pull
 	UFUNCTION(BlueprintCallable)
