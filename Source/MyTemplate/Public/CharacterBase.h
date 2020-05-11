@@ -159,7 +159,7 @@ public:
 		class UAnimMontage* GrappleAnim;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
-		class UAnimMontage* VaultingAnim;
+		class UAnimMontage* ClimbAnim;
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CameraShake, meta = (AllowPrivateAccess = "true"))
@@ -337,22 +337,6 @@ public:
 		void WallRunRaycast();
 	void TimelineForWallRunning();
 
-	//vault
-	/*
-	void TimelineForVaulting();
-	void DisablingVaultingUpwards();	
-	bool StopTheWallrunRaycast;
-
-	void TimelineForZoomingIn();
-	void TimelineForZoomingOut();
-	FTimerHandle FirstDelay;
-	FTimerHandle SecondVaultTimer;
-	FTimerHandle ThirdVaultTimer;	
-	void ResetFirstVaultTimer();
-	void ResetSecondVaultTimer();	
-	void ResetThirdVaultTimer();
-	bool canVault;
-	*/
 
 	//Grapple Pull
 	UFUNCTION(BlueprintCallable)

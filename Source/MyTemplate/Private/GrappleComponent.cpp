@@ -336,12 +336,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 
 	AGrapplingPoint* Target = GetClosestGrapplingPoint();
 	
-	//STOPPING THE VAULTING ANIMATION!!!!!!!
-	Player->StopAnimMontage(Player->VaultingAnim);
-	Player->vaultingUpwardsVeloc = false;
-	Player->GetCharacterMovement()->GravityScale = 3.f;
-	//end of vault
-
+	
 	//UE_LOG(LogTemp, Warning, TEXT("MyCharacter's grappletimer is %f"), GrappleTimer);
 
 	if (Target && GrapplingHook)

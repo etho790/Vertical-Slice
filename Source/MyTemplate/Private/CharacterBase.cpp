@@ -252,13 +252,14 @@ void ACharacterBase::Tick(float DeltaTime)
 
 
 	//WALLRUNNING TIMELINE
-	TimelineForWallRunning();
-	//WALLRUNNING
-	WallRunRaycast();
+	//TimelineForWallRunning();
+
+	//WallRunRaycast();
 	
 	if (GetMovementComponent()->IsFalling() == false)
 	{
-		Landed();
+		//ENABLE!!!!!!!!!!!!!!!!
+		//Landed();
 
 		//stop the vaulting timeline
 		VaultTimelineInitiate = false;
@@ -270,7 +271,8 @@ void ACharacterBase::Tick(float DeltaTime)
 
 		//if (CharacterVelocity >= 100)
 		{
-			WallRunner();
+			//ENABLE!!!!!!!!!!!!!!!!
+			//WallRunner();
 
 		}
 
@@ -737,6 +739,8 @@ void ACharacterBase::TimelineForSliding()
 	
 	
 }
+
+
 //WALLRUN ABILITY
 
 
@@ -772,12 +776,13 @@ void ACharacterBase::ResetRightRaycast()
 void ACharacterBase::Landed()
 {
 	//GetCharacterMovement()->GravityScale = 3;
+	
 	LeftWall = false;
 	RightWall = false;
 	OnTheWall = false;
 	//stop time line
 	WallRunTimelineInitiate = false;
-
+	
 }
 
 
@@ -801,7 +806,7 @@ void ACharacterBase::WallRunner()
 
 void ACharacterBase::WallRunRaycast()
 {
-	//ONLY LETS THIS RAYCAST FUNCTION WORK IF NOT VAULTING !!!!!!!!!!!!!
+	
 
 		TArray<AActor*> none;
 
@@ -935,7 +940,7 @@ void ACharacterBase::TimelineForWallRunning()
 //OVERLAP FOR WALLRUNNING 
 void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
 {
-
+	/*
 	if (OtherActor->ActorHasTag("RUNWALL") == false)
 	{
 		MoveForwards = false;
@@ -997,7 +1002,7 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 			}
 		}
 	}
-
+	*/
 
 	//HITTING THE OTHERPLAYER TO SEND THEM FLYING
 	
@@ -1041,7 +1046,7 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 //JUMP!!!!!!!!!!!!!!!
 void ACharacterBase::CharcterJump()
 {
-
+	/*
 	if (CloseToTheWall == true)
 	{
 		if (LeftWall == true)
@@ -1107,6 +1112,7 @@ void ACharacterBase::CharcterJump()
 
 
 	}
+	*/
 	//START THE VAULT TIMELINE!!!!!!!!!!!!
 
 	VaultTimelineInitiate = true;
@@ -1323,192 +1329,6 @@ void ACharacterBase::GrappleDelayPullResetter()
 	   
 }
 
-
-
-
-//Vaulting
-/*
-void ACharacterBase::TimelineForVaulting()
-{
-	
-	
-	if (VaultTimelineInitiate == true)
-	{
-		//Horizontal_VaultChecker from the bottom straight forwards
-	
-		FHitResult VaultHitResult;
-		FVector Start = GetActorLocation() + (GetActorRightVector()*-50.f);
-		FVector End = Start + (Dash->GetForwardVector() * 80);
-		FCollisionQueryParams  CollisionP;
-	
-
-		//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1, 0, 1);
-
-		bool LeftHand_VaultCheckerIsHit = GetWorld()->LineTraceSingleByChannel(VaultHitResult, Start, End, ECC_GameTraceChannel2, CollisionP);
-
-
-		if (LeftHand_VaultCheckerIsHit == true)
-		{
-			if (VaultHitResult.GetComponent()->ComponentHasTag("Vault") == true)
-			{
-				//can vault
-				canVault = true;
-
-				PlayAnimMontage(VaultingAnim, 1.4f, NAME_None);
-				
-				//starts zooming in the character timeline
-				ZoomingInTimelineInitiate = true;
-
-				//first delay
-				GetWorld()->GetTimerManager().SetTimer(FirstDelay, this, &ACharacterBase::ResetFirstVaultTimer, 0.1f, false);
-
-
-				//second delay
-				GetWorld()->GetTimerManager().SetTimer(SecondVaultTimer, this, &ACharacterBase::ResetSecondVaultTimer, 0.3f, false);
-
-
-				float VaultAnim = 0.833f;
-				//third delay
-				GetWorld()->GetTimerManager().SetTimer(ThirdVaultTimer, this, &ACharacterBase::ResetThirdVaultTimer, VaultAnim, false);
-
-				
-
-			}
-			if (VaultHitResult.GetComponent()->ComponentHasTag("Vault") == false)
-			{
-				canVault = false;
-			}
-		}
-		
-	}
-	
-}
-
-void ACharacterBase::DisablingVaultingUpwards()
-{
-	
-
-	TArray<AActor*> none;
-
-	FHitResult Out;
-	FVector Start = GetActorLocation() + (GetActorRightVector()*-50.f);
-	FVector End = Start +  (Dash->GetForwardVector() * 250);
-	FCollisionQueryParams  CollisionP;
-
-	//DrawDebugLine(GetWorld(), Start, End, FColor::Blue, false, 1, 0, 1);
-
-	//bool VaultDisablingChecker = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_Visibility, CollisionP);
-
-	bool VaultDisablingChecker = UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 15, TraceTypeQuery1, false, none, EDrawDebugTrace::None, Out, true, FLinearColor::Blue, FLinearColor::Blue, 0.5f);
-
-
-	if (VaultDisablingChecker == true)
-	{
-		if (Out.GetActor()->ActorHasTag("Vault") == true && canVault == false)
-		{
-			//STOPPING THE VAULTING ANIMATION!!!!!!!
- 			StopAnimMontage(VaultingAnim);
-			vaultingUpwardsVeloc = false;
-			GetCharacterMovement()->GravityScale = 3.f;
-			if (CameraBoom->TargetArmLength < 500.f)
-			{
-				CameraBoom->TargetArmLength += 2.f;
-			}
-		}
-		else
-		{
-			//STOPPING THE VAULTING ANIMATION!!!!!!!
-			StopAnimMontage(VaultingAnim);
-			vaultingUpwardsVeloc = false;
-			GetCharacterMovement()->GravityScale = 3.f;
-			if (CameraBoom->TargetArmLength < 500.f)
-			{
-				CameraBoom->TargetArmLength += 2.f;
-			}
-		}
-	}
-	
-}
-
-
-
-void ACharacterBase::ResetFirstVaultTimer()
-{
-	GetCharacterMovement()->GravityScale = 0.f;
-
-}
-
-void ACharacterBase::ResetSecondVaultTimer()
-{
-	
-	
-
-	//stop the zoom in timeline
-	ZoomingInTimelineInitiate = false;
-
-	
-
-	//start the second timeline
-	ZoomingOutTimelineInitiate = true;
-
-	
-
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(SecondVaultTimer);
-	
-}
-
-void ACharacterBase::TimelineForZoomingIn()
-{
-	
-	if (ZoomingInTimelineInitiate == true)
-	{
-		CameraBoom->TargetArmLength -= 2.f;
-		
-	}
-	
-}
-
-void ACharacterBase::TimelineForZoomingOut()
-{
-	
-	if (ZoomingOutTimelineInitiate == true)
-	{
-		if (CameraBoom->TargetArmLength < 500.f)
-		{
-			CameraBoom->TargetArmLength += 1.0f;
-		}
-		else if(CameraBoom->TargetArmLength >= 500.f)
-		{
-			ZoomingOutTimelineInitiate = false;
-		}
-
-		
-
-	}
-	
-}
-
-
-
-
-void ACharacterBase::ResetThirdVaultTimer()
-{	
-	
-	GetCharacterMovement()->GravityScale = 3.f;
-
-	//stop the vaulting
-	vaultingUpwardsVeloc = false;
-
-	VaultUpwardsPush = InitialVaultUpwardsPush;
-
-
-	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(ThirdVaultTimer);
-	
-}
-
-*/
 
 
 
