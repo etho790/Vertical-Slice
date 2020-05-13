@@ -252,32 +252,28 @@ void ACharacterBase::Tick(float DeltaTime)
 
 
 	//WALLRUNNING TIMELINE
-	//TimelineForWallRunning();
+	TimelineForWallRunning();
 
-	//WallRunRaycast();
+	WallRunRaycast();
 	
 	if (GetMovementComponent()->IsFalling() == false)
 	{
-		//ENABLE!!!!!!!!!!!!!!!!
-		//Landed();
+		
+		Landed();
 
-		//stop the vaulting timeline
-		VaultTimelineInitiate = false;
 	}
 	if (GetMovementComponent()->IsFalling() == true)
 	{
 		FVector VelocityVector = GetVelocity();
 		CharacterVelocity = VelocityVector.Size();
 
-		//if (CharacterVelocity >= 100)
+		if (CharacterVelocity >= 400)
 		{
 			//ENABLE!!!!!!!!!!!!!!!!
-			//WallRunner();
+			WallRunner();
 
 		}
 
-		//start the vaulting timeline
-		VaultTimelineInitiate = true;
 	}
 
 	//grapple 
@@ -775,7 +771,7 @@ void ACharacterBase::ResetRightRaycast()
 
 void ACharacterBase::Landed()
 {
-	//GetCharacterMovement()->GravityScale = 3;
+	GetCharacterMovement()->GravityScale = 3;
 	
 	LeftWall = false;
 	RightWall = false;
@@ -788,26 +784,24 @@ void ACharacterBase::Landed()
 
 void ACharacterBase::WallRunner()
 {
-
-	if (CloseToTheWall == true)
+	if (GetCurrentMontage() != ClimbAnim)
 	{
-		OnTheWall = true;
-		//initiate the wall run time line
-		WallRunTimelineInitiate = true;
-	}
-	else if (CloseToTheWall == false)
-	{
-		OnTheWall = false;
+		if (CloseToTheWall == true)
+		{
+			OnTheWall = true;
+		}
+		else if (CloseToTheWall == false)
+		{
+			OnTheWall = false;
 
-	}
+		}
+	}	
 
 }
 
 
 void ACharacterBase::WallRunRaycast()
 {
-	
-
 		TArray<AActor*> none;
 
 		//left raycast
@@ -832,14 +826,25 @@ void ACharacterBase::WallRunRaycast()
 		{
 			if (Out.Actor->ActorHasTag("RUNWALL") == true)
 			{
-				//GetCharacterMovement()->GravityScale = 0.3;
+				
 				CloseToTheWall = true;
 				LeftWall = true;
 
+				if (GetCurrentMontage() != ClimbAnim)
+				{
+					FVector VelocityVector = GetVelocity();
+					CharacterVelocity = VelocityVector.Size();
+
+					if (CharacterVelocity >= 800)
+					{
+						GetCharacterMovement()->GravityScale = 0.3;
+						WallRunTimelineInitiate = true;
+					}
+				}
 			}
 			if (Out.Actor->ActorHasTag("RUNWALL") == false)
 			{
-				//GetCharacterMovement()->GravityScale = 3.0f;
+				GetCharacterMovement()->GravityScale = 3.0f;
 				CloseToTheWall = false;
 				LeftWall = false;
 				OnTheWall = false;
@@ -870,12 +875,22 @@ void ACharacterBase::WallRunRaycast()
 					//GetCharacterMovement()->GravityScale = 0.3;
 					CloseToTheWall = true;
 					RightWall = true;
+					if (GetCurrentMontage() != ClimbAnim)
+					{
+						FVector VelocityVector = GetVelocity();
+						CharacterVelocity = VelocityVector.Size();
 
+						if (CharacterVelocity >= 800)
+						{
+							GetCharacterMovement()->GravityScale = 0.3;
+							WallRunTimelineInitiate = true;
+						}
+					}
 
 				}
 				if (Out1.Actor->ActorHasTag("RUNWALL") == false)
 				{
-					//GetCharacterMovement()->GravityScale = 3;
+					GetCharacterMovement()->GravityScale = 3;
 					CloseToTheWall = false;
 					RightWall = false;
 					OnTheWall = false;
@@ -889,7 +904,7 @@ void ACharacterBase::WallRunRaycast()
 
 
 
-				//GetCharacterMovement()->GravityScale = 3;
+				GetCharacterMovement()->GravityScale = 3;
 				CloseToTheWall = false;
 				RightWall = false;
 				OnTheWall = false;
@@ -909,7 +924,6 @@ void ACharacterBase::WallRunRaycast()
 				}
 			}
 		}
-	
 }
 
 void ACharacterBase::TimelineForWallRunning()
@@ -928,7 +942,7 @@ void ACharacterBase::TimelineForWallRunning()
 		if (MoveForwards == false)
 		{
 
-			FVector LaunchVelocity = FVector(0, 0, -150);
+			FVector LaunchVelocity = FVector(0, 0, -50);
 			LaunchCharacter(LaunchVelocity, false, false);
 			//GetCharacterMovement()->GravityScale = 3;
 		}
@@ -936,74 +950,10 @@ void ACharacterBase::TimelineForWallRunning()
 }
 
 
-//HERE!!!!!!!!!!!!
-//OVERLAP FOR WALLRUNNING 
+
 void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
 {
-	/*
-	if (OtherActor->ActorHasTag("RUNWALL") == false)
-	{
-		MoveForwards = false;
-
-
-		if (CloseToTheWall == true)
-		{
-			if (LeftWall == true)
-			{
-
-				FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
-				FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * forward_WallJumpVel) + (Left->GetForwardVector().X * Side_WallJumpVel), (Dash->GetForwardVector().Y * forward_WallJumpVel) + (Left->GetForwardVector().Y * Side_WallJumpVel), 0);
-
-				LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
-
-				Leftwall_RaycastLengthChecker = 0;
-				LeftWall = false;
-				RightWall = false;
-				CloseToTheWall = false;
-
-				//stop time line
-				WallRunTimelineInitiate = false;
-
-
-
-			}
-			if (LeftWall == false)
-			{
-				if (RightWall == true)
-				{
-
-					FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
-					FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * forward_WallJumpVel) + (Right->GetForwardVector().X * Side_WallJumpVel), (Dash->GetForwardVector().Y * forward_WallJumpVel) + (Right->GetForwardVector().Y * Side_WallJumpVel), 0);
-
-					LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
-
-					Rightwall_RaycastLengthChecker = 0;
-					LeftWall = false;
-					RightWall = false;
-					CloseToTheWall = false;
-
-					//stop time line
-					WallRunTimelineInitiate = false;
-
-				}
-				if (RightWall == false)
-				{
-					LeftWall = false;
-					RightWall = false;
-					CloseToTheWall = false;
-
-					//stop time line
-					WallRunTimelineInitiate = false;
-
-
-
-				}
-
-			}
-		}
-	}
-	*/
-
+	
 	//HITTING THE OTHERPLAYER TO SEND THEM FLYING
 	
 	if (OtherActor->IsA(ACharacterBase::StaticClass()))
@@ -1046,59 +996,70 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 //JUMP!!!!!!!!!!!!!!!
 void ACharacterBase::CharcterJump()
 {
-	/*
+	
 	if (CloseToTheWall == true)
 	{
-		if (LeftWall == true)
+		Jump();
+
+		if (GetCharacterMovement()->IsFalling() == true)
 		{
-
-			FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
-			FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * forward_WallJumpVel) + (Left->GetForwardVector().X * Side_WallJumpVel), (Dash->GetForwardVector().Y * forward_WallJumpVel) + (Left->GetForwardVector().Y * Side_WallJumpVel), 0);
-
-			LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
-
-			Leftwall_RaycastLengthChecker = 0;
-			LeftWall = false;
-			RightWall = false;
-			CloseToTheWall = false;
-
-			//stop time line
-			WallRunTimelineInitiate = false;
-
-
-
-		}
-		if (LeftWall == false)
-		{
-			if (RightWall == true)
+			if (MoveForwards == true)
 			{
+				if (LeftWall == true)
+				{
 
-				FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
-				FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * forward_WallJumpVel) + (Right->GetForwardVector().X * Side_WallJumpVel), (Dash->GetForwardVector().Y * forward_WallJumpVel) + (Right->GetForwardVector().Y * Side_WallJumpVel), 0);
+					FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
+					FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * forward_WallJumpVel) + (Left->GetForwardVector().X * Side_WallJumpVel), (Dash->GetForwardVector().Y * forward_WallJumpVel) + (Left->GetForwardVector().Y * Side_WallJumpVel), 0);
 
-				LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
+					LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
 
-				Rightwall_RaycastLengthChecker = 0;
-				LeftWall = false;
-				RightWall = false;
-				CloseToTheWall = false;
+					Leftwall_RaycastLengthChecker = 0;
+					LeftWall = false;
+					RightWall = false;
+					CloseToTheWall = false;
 
-				//stop time line
-				WallRunTimelineInitiate = false;
+					//stop time line
+					WallRunTimelineInitiate = false;
+
+
+
+				}
+				if (LeftWall == false)
+				{
+					if (RightWall == true)
+					{
+
+						FVector LaunchUpwardsVelocity = FVector(0, 0, 1000);
+						FVector JumpoffWallVeclocity = FVector((Dash->GetForwardVector().X * forward_WallJumpVel) + (Right->GetForwardVector().X * Side_WallJumpVel), (Dash->GetForwardVector().Y * forward_WallJumpVel) + (Right->GetForwardVector().Y * Side_WallJumpVel), 0);
+
+						LaunchCharacter(LaunchUpwardsVelocity + JumpoffWallVeclocity, true, true);
+
+						Rightwall_RaycastLengthChecker = 0;
+						LeftWall = false;
+						RightWall = false;
+						CloseToTheWall = false;
+
+						//stop time line
+						WallRunTimelineInitiate = false;
+
+					}
+					if (RightWall == false)
+					{
+						LeftWall = false;
+						RightWall = false;
+						CloseToTheWall = false;
+
+						//stop time line
+						WallRunTimelineInitiate = false;
+
+					}
+
+				}
+
 
 			}
-			if (RightWall == false)
-			{
-				LeftWall = false;
-				RightWall = false;
-				CloseToTheWall = false;
-
-				//stop time line
-				WallRunTimelineInitiate = false;
-
-			}
-
 		}
+				
 	}
 	if (CloseToTheWall == false)
 	{
@@ -1112,10 +1073,8 @@ void ACharacterBase::CharcterJump()
 
 
 	}
-	*/
-	//START THE VAULT TIMELINE!!!!!!!!!!!!
-
-	VaultTimelineInitiate = true;
+	
+	
 
 
 
