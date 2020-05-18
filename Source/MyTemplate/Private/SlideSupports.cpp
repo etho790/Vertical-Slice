@@ -21,28 +21,28 @@ ASlideSupports::ASlideSupports()
 void ASlideSupports::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("Your message"));
+	
 	Character = Cast< ACharacterBase>(OtherActor);
 	if (Character != nullptr)
 	{
 		Character->VerticalCollision = true;
 		SlideNow = false;
 	}
-
+	
 
 	
 }
 
 void ASlideSupports::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Your message"));
+	
 	Character = Cast< ACharacterBase>(OtherActor);
 	if (Character != nullptr)
 	{
 		Character->VerticalCollision = true;
 		SlideNow = true;
 	}
-
+	
 	
 	
 
@@ -66,6 +66,7 @@ void ASlideSupports::Tick(float DeltaTime)
 
 void ASlideSupports::SlidingTimeline()
 {
+
 	if (SlideNow == true)
 	{
 		if (Character == nullptr)
@@ -75,9 +76,11 @@ void ASlideSupports::SlidingTimeline()
 
 		Character->SlideInitiator();
 		Character->SlideCollider();
-
+		
+		
 		//launch velocity
-		FVector BounchVel = Character->GetActorForwardVector() + Arrow->GetForwardVector() * ArrowForwardVelocity;
+		FVector localSpacedForwardVector = UKismetMathLibrary::InverseTransformDirection(Arrow->GetRelativeTransform(), Arrow->GetForwardVector());
+		FVector BounchVel = Character->GetActorForwardVector() + UKismetMathLibrary::InverseTransformDirection(Arrow->GetRelativeTransform(), Arrow->GetForwardVector()) *ArrowForwardVelocity;
 
 		FVector BounchEnhancedVel = BounchVel * BounceVelocity;
 		Character->LaunchCharacter(BounchEnhancedVel, false, false);
