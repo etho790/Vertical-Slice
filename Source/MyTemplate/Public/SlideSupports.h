@@ -37,11 +37,13 @@ public:
 		void OnBeginOverlap(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 otherBodyIndex, bool bfromSweep, const FHitResult& SweepResult);
 
 
-	UPROPERTY(EditInstanceOnly,  BlueprintReadWrite)
-		float  BounceVelocity;
+
 
 	UPROPERTY(EditInstanceOnly,  BlueprintReadWrite)
 		float  ArrowForwardVelocity;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+		bool SlideNow;
 
 protected:
 	// Called when the game starts or when spawned
@@ -56,6 +58,6 @@ public:
 
 private:
 	void SlidingTimeline();
-	bool SlideNow;
 
+	
 };

@@ -61,7 +61,7 @@ void ASlideSupports::BeginPlay()
 void ASlideSupports::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	SlidingTimeline();
+	
 }
 
 void ASlideSupports::SlidingTimeline()
@@ -79,11 +79,11 @@ void ASlideSupports::SlidingTimeline()
 		
 		
 		//launch velocity
-		FVector localSpacedForwardVector = UKismetMathLibrary::InverseTransformDirection(Arrow->GetRelativeTransform(), Arrow->GetForwardVector());
+		//FVector localSpacedForwardVector = UKismetMathLibrary::InverseTransformDirection(Arrow->GetRelativeTransform(), Arrow->GetForwardVector());
 		FVector BounchVel = Character->GetActorForwardVector() + UKismetMathLibrary::InverseTransformDirection(Arrow->GetRelativeTransform(), Arrow->GetForwardVector()) *ArrowForwardVelocity;
 
-		FVector BounchEnhancedVel = BounchVel * BounceVelocity;
-		Character->LaunchCharacter(BounchEnhancedVel, false, false);
+	
+		Character->LaunchCharacter(BounchVel, false, false);
 	}
 
 }
