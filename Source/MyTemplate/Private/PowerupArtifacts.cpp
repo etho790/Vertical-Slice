@@ -103,7 +103,8 @@ void APowerupArtifacts::Respawner()
 			UWorld* world = GetWorld();
 
 			UWorld* WorldContextObject = GetWorld();
-			UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), FVector(5,5,5), true, EPSCPoolMethod::None);
+			//UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), FVector(5,5,5), true, EPSCPoolMethod::None);
+			
 			world->SpawnActor<APowerupArtifacts>(spawn, GetActorLocation(), GetActorRotation());
 
 
@@ -130,6 +131,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			Character->HomingMissilePicked = true;
 			//emitter vfx
 			UWorld* WorldContextObject = GetWorld();
+			
 			UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), true);
 
 			//play sound
@@ -154,6 +156,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			Character->FlashBombPicked = true;
 			//emitter vfx
 			UWorld* WorldContextObject = GetWorld();
+			
 			UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), true);
 
 			//play sound
@@ -181,6 +184,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			Character->ThirdPickup = true;
 			//emitter vfx
 			UWorld* WorldContextObject = GetWorld();
+			
 			UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), true);
 
 			//play sound

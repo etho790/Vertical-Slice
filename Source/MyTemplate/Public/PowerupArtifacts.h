@@ -11,6 +11,7 @@
 #include "CharacterBase.h"
 #include "TypeOfArtifact.h"
 
+
 #include "PowerupArtifacts.generated.h"
 
 
@@ -49,8 +50,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		USphereComponent * Collider;
 
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
-	//	UParticleSystem* AttachedVfx;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Particles, meta = (AllowPrivateAccess = "true"))
 		UParticleSystem* PickedUpVfx;
@@ -81,7 +80,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf< APowerupArtifacts> spawn;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool ArtifactPickedUp;
 	ACharacterBase* Character;
 };
