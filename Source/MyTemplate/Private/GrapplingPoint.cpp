@@ -9,7 +9,7 @@ AGrapplingPoint::AGrapplingPoint()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Point = CreateDefaultSubobject<UStaticMeshComponent>("Point");
-	Point->SetCollisionProfileName(TEXT("NoCollision"));
+	//Point->SetCollisionProfileName(TEXT("NoCollision"));
 
 
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
