@@ -279,7 +279,7 @@ void UGrappleComponent::Grapple()
 
 			bool IsBlocked = GetWorld()->LineTraceSingleByChannel(Out1, ControllerForwardVector, GrapplingPoint->GetActorLocation() , ECC_Visibility, CollisionP1);
 
-			DrawDebugLine(GetWorld(), ControllerForwardVector, GrapplingPoint->GetActorLocation(), FColor::Green, true, 1, 0, 1);
+			//DrawDebugLine(GetWorld(), ControllerForwardVector, GrapplingPoint->GetActorLocation(), FColor::Green, true, 1, 0, 1);
 
 			if (IsBlocked == true)
 			{

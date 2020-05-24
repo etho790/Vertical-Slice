@@ -358,7 +358,7 @@ public:
 	FTimerHandle EndOfRamDelay;
 	void ResetRamEndDelay();
 	float initiateRamParticles;
-	
+
 
 	//RESPAWN
 	void Respawn();

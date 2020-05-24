@@ -11,6 +11,8 @@ ATargetCharacters::ATargetCharacters()
 
 }
 
+
+
 // Called when the game starts or when spawned
 void ATargetCharacters::BeginPlay()
 {
@@ -23,7 +25,7 @@ void ATargetCharacters::BeginPlay()
 void ATargetCharacters::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input

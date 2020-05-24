@@ -148,6 +148,7 @@ void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedCom
 			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 			{									//ADDED THIS CONDITION
 				HitTheOtherPlayer = false;
+				OtherHitPlayer = nullptr;
 			}
 		}
 	}	
@@ -161,7 +162,7 @@ void ACharacterBase::OnOverlapEndForFrontBox(UPrimitiveComponent * OverlappedCom
 		if (OtherHitTarget != nullptr)
 		{
 			HitTheOtherPlayer = false;
-
+			OtherHitTarget = nullptr;
 		}
 
 	}
@@ -961,6 +962,7 @@ void ACharacterBase::OnBeginOverlapForFrontBox(UPrimitiveComponent* HitComp, AAc
 		if (OtherActor != this)
 		{
 			OtherHitPlayer = Cast< ACharacterBase>(OtherActor);
+
 			if (OtherHitPlayer != nullptr &&  OtherHitPlayer != this)
 			{
 				HitTheOtherPlayer = true;
@@ -1355,11 +1357,17 @@ void ACharacterBase::TimelineForCharging()
 
 		if (HitTheOtherPlayer == true)
 		{
+			
 
 			if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
 			{
-				if (OtherHitPlayer != LeadingPlayer)
+				//for training level for players
+				if (LeadingPlayer == nullptr)
 				{
+					//initiate the endofRam time line
+					OtherHitPlayer->RamEffects_TimelineInitiate = true;
+
+
 					FVector ForwardVelocity = Dash->GetForwardVector() * 2500;
 					FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
 
@@ -1373,11 +1381,36 @@ void ACharacterBase::TimelineForCharging()
 					//camera shake
 					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, MenuOption->OuterRadius, 1.0f, false);
 
-					//initiate the endofRam time line
-					RamEffects_TimelineInitiate = true;
 				}
-				else
+
+
+				//for main level
+				if (OtherHitPlayer != LeadingPlayer && LeadingPlayer!=nullptr)
 				{
+					//initiate the endofRam time line
+					OtherHitPlayer->RamEffects_TimelineInitiate = true;
+
+
+					FVector ForwardVelocity = Dash->GetForwardVector() * 2500;
+					FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
+
+					//sends the other player flying
+					OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
+
+					//play sound
+					UWorld* WorldContextObject = GetWorld();
+					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, MenuOption->volumeMultiplier, MenuOption->volumeMultiplier, 0, NULL, NULL);
+
+					//camera shake
+					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, MenuOption->OuterRadius, 1.0f, false);
+
+					
+				}
+				else if (OtherHitPlayer== LeadingPlayer && LeadingPlayer != nullptr)
+				{
+					//initiate the endofRam time line
+					OtherHitPlayer->RamEffects_TimelineInitiate = true;
+
 					FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
 					FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
 
@@ -1391,8 +1424,7 @@ void ACharacterBase::TimelineForCharging()
 					//camera shake
 					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), MenuOption->OuterRadius, MenuOption->OuterRadius, 1.0f, false);
 
-					//initiate the endofRam time line
-					RamEffects_TimelineInitiate = true;
+					
 
 				}
 			}
@@ -1407,6 +1439,8 @@ void ACharacterBase::TimelineForCharging()
 				
 			}
 			
+
+			//target getting hit
 			if (OtherHitPlayer == nullptr)
 			{
 				if (OtherHitTarget != nullptr)
@@ -1424,8 +1458,7 @@ void ACharacterBase::TimelineForCharging()
 					//camera shake
 					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), 0, MenuOption->OuterRadius, 1.0f, false);
 
-					//initiate the endofRam time line
-					RamEffects_TimelineInitiate = true;
+					
 				}
 			}
 		}
@@ -1437,41 +1470,38 @@ void ACharacterBase::TimelineEndOfRamEffects()
 {
 
 
-
+	//only players hit by the ram will enter this function
 	if (RamEffects_TimelineInitiate == true)
 	{
 		//TARGETPLAYER!!!!!!!!
-		if (OtherHitTarget != nullptr)
-		{
+		
+		
 			TimelineDuration += StunIncrementer;
 
-			if (OtherHitTarget->GetCharacterMovement()->IsFalling() == false)
+			
+		if (GetCharacterMovement()->IsFalling() == false)
+		{
+
+			initiateRamParticles++;				
+			
+			FVector head = FVector(GetMesh()->GetSocketLocation("head").X, GetMesh()->GetSocketLocation("head").Y,GetMesh()->GetSocketLocation("head").Z + 20.0f);
+
+			if (initiateRamParticles > 30)
 			{
+				FActorSpawnParameters param;
+				AActor* particleSpawner = GetWorld()->SpawnActor<AActor>(StunFromRam, head, FRotator(0, 0, 0), param);
+				
+				particleSpawner->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,("head"));
 
-
-				initiateRamParticles++;
-				//RamParticles(initiateRamParticles);
-				FVector head = FVector(OtherHitTarget->GetMesh()->GetSocketLocation("head").X, OtherHitTarget->GetMesh()->GetSocketLocation("head").Y, OtherHitTarget->GetMesh()->GetSocketLocation("head").Z + 20.0f);
-
-				if (initiateRamParticles > 30)
-				{
-					FActorSpawnParameters param;
-					AActor* particleSpawner = GetWorld()->SpawnActor<AActor>(StunFromRam, head, FRotator(0, 0, 0), param);
-
-
-					particleSpawner->AttachToComponent(OtherHitTarget->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, ("head"));
-
-					initiateRamParticles = 0;
-
-
-				}
-
+				initiateRamParticles = 0;
 
 			}
-					   
-		}
 
-		if (OtherHitPlayer != LeadingPlayer)
+
+		}					   
+
+	
+		if (this != LeadingPlayer)
 		{
 			TimelineDuration += StunIncrementer;
 		}
@@ -1479,44 +1509,15 @@ void ACharacterBase::TimelineEndOfRamEffects()
 		{
 			TimelineDuration += LeadingPlayersStunIncrementer;
 		}
-
-		if (OtherHitPlayer != nullptr && OtherHitPlayer != this)
-		{
-			if (OtherHitPlayer->GetCharacterMovement()->IsFalling() == false)
-			{
-
 				
-				initiateRamParticles++;
-				//RamParticles(initiateRamParticles);
-				FVector head = FVector(OtherHitPlayer->GetMesh()->GetSocketLocation("head").X, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Y, OtherHitPlayer->GetMesh()->GetSocketLocation("head").Z + 20.0f);
-
-				if (initiateRamParticles > 30)
-				{
-					FActorSpawnParameters param;
-					AActor* particleSpawner = GetWorld()->SpawnActor<AActor>(StunFromRam, head, FRotator(0, 0, 0), param);
-
-
-					particleSpawner->AttachToComponent(OtherHitPlayer->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, ("head"));
-
-					initiateRamParticles = 0;
-					
-					
-				}
-					
-				
-			}
-		}
-
 		if (TimelineDuration >= 1)
 		{
-			//Enabling Input in other player
+			//Enabling Input in other player			
 			
 			
-			
-			
-			if (OtherHitPlayer != nullptr)
+			if (this != nullptr)
 			{
-				OtherHitPlayer->EnableInput(nullptr);
+				EnableInput(nullptr);
 			}
 
 			TimelineDuration = 0;

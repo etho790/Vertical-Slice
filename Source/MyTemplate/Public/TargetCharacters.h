@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 #include "TargetCharacters.generated.h"
 
 UCLASS()
@@ -15,9 +17,14 @@ public:
 	// Sets default values for this character's properties
 	ATargetCharacters();
 
+	bool RamEffects_TimelineInitiate;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector RespawnCheckPoint;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
