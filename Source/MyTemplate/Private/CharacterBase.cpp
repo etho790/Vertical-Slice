@@ -207,8 +207,8 @@ void ACharacterBase::BeginPlay()
 	Right->SetRelativeScale3D(FVector(0.4f, 1.5f, 2.0f));
 	//Right->SetRelativeLocation(FVector(0.000021, -64, 30));
 
-	Leftwall_RaycastLengthChecker = -100.0f;
-	Rightwall_RaycastLengthChecker = 100.0f;
+	Leftwall_RaycastLengthChecker = -110.0f;
+	Rightwall_RaycastLengthChecker = 110.0f;
 
 	//starts with this bool so that once the delay function is hit it goes right into it, this is for the Leftwall_RaycastLengthChecker and Rightwall_RaycastLengthChecker
 	ResettheRightRaycast = true;
