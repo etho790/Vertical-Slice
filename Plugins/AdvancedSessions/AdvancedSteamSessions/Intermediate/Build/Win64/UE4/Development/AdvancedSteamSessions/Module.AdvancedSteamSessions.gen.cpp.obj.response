@@ -26,7 +26,7 @@
 /wd4838
 /we4668
 /I .
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
 /I ..\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4\Inc\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem\Source
@@ -288,15 +288,15 @@
 /I ..\Intermediate\Build\Win64\UE4\Inc\AnimationCore
 /I Runtime\AnimationCore\Public
 /I Runtime\AnimationCore
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Inc\AdvancedSteamSessions
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Inc\AdvancedSteamSessions
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
 /I ..\Plugins\Online\OnlineSubsystemSteam\Source\Private
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4\Inc\AdvancedSessions
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4\Inc\AdvancedSessions
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
+/I D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
 /I ThirdParty\Steamworks\Steamv142\sdk\public
 /I ..\Plugins\Online\OnlineSubsystemSteam\Intermediate\Build\Win64\UE4\Inc\OnlineSubsystemSteam
 /I ..\Plugins\Online\OnlineSubsystemSteam
@@ -314,19 +314,19 @@
 /I ThirdParty\PhysX3\PhysX_3.4\Include\common
 /I ThirdParty\PhysX3\PhysX_3.4\Include\extensions
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\INCLUDE"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\winrt"
+/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\INCLUDE"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
 /D_HAS_EXCEPTIONS=0
 /D_HAS_EXCEPTIONS=0
-/FI"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplate\Development\Engine\SharedPCH.Engine.h"
-/Yu"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplate\Development\Engine\SharedPCH.Engine.h"
-/Fp"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplate\Development\Engine\SharedPCH.Engine.h.pch"
-"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp"
-/FI"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
-/Fo"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
+/FI"D:\Vertical-Slice\Vertical-Slice\Intermediate\Build\Win64\MyTemplate\Development\Engine\SharedPCH.Engine.h"
+/Yu"D:\Vertical-Slice\Vertical-Slice\Intermediate\Build\Win64\MyTemplate\Development\Engine\SharedPCH.Engine.h"
+/Fp"D:\Vertical-Slice\Vertical-Slice\Intermediate\Build\Win64\MyTemplate\Development\Engine\SharedPCH.Engine.h.pch"
+"D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp"
+/FI"D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
+/Fo"D:\Vertical-Slice\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
 /TP
 /GR-
 /W4
