@@ -25,7 +25,7 @@ void ASlideSupports::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* O
 	Character = Cast< ACharacterBase>(OtherActor);
 	if (Character != nullptr)
 	{
-		Character->VerticalCollision = true;
+		//Character->VerticalCollision = true;
 		SlideNow = false;
 	}
 	
@@ -39,7 +39,7 @@ void ASlideSupports::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherA
 	Character = Cast< ACharacterBase>(OtherActor);
 	if (Character != nullptr)
 	{
-		Character->VerticalCollision = true;
+		//Character->VerticalCollision = true;
 		SlideNow = true;
 	}
 	
@@ -64,6 +64,7 @@ void ASlideSupports::Tick(float DeltaTime)
 	
 }
 
+/*
 void ASlideSupports::SlidingTimeline()
 {
 
@@ -88,3 +89,4 @@ void ASlideSupports::SlidingTimeline()
 
 }
 
+*/
