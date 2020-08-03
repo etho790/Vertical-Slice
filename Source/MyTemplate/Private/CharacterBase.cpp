@@ -1194,29 +1194,18 @@ void ACharacterBase::TimelineForGrapplePulling()
 	{
 
 	
-		
+		//FOR THE ANY CHARACTER IN THE MAIN GAME
 		if (OtherGrappledCharacter != nullptr)
 		{
 			
-			if (OtherGrappledCharacter != LeadingPlayer)
-			{
+			
 				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -2000.f, Dash->GetForwardVector().Y * -2000.f, 1500.f);
 
 				OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
 
 				ResetGrapple();
 				GrapplePullTimelineInitiate = false;
-			}
-			else
-			{
-				FVector grappleVeloc = FVector(Dash->GetForwardVector().X * -1000.f, Dash->GetForwardVector().Y * -1000.f, 1500.f);
-
-				OtherGrappledCharacter->LaunchCharacter(grappleVeloc, true, true);
-
-				ResetGrapple();
-				GrapplePullTimelineInitiate = false;
-
-			}
+			
 				
 			
 		}
@@ -1385,7 +1374,7 @@ void ACharacterBase::TimelineForCharging()
 
 
 				//for main level
-				if (OtherHitPlayer != LeadingPlayer && LeadingPlayer!=nullptr)
+				if ( LeadingPlayer!=nullptr)
 				{
 					//initiate the endofRam time line
 					OtherHitPlayer->RamEffects_TimelineInitiate = true;
@@ -1406,27 +1395,7 @@ void ACharacterBase::TimelineForCharging()
 
 					
 				}
-				else if (OtherHitPlayer== LeadingPlayer && LeadingPlayer != nullptr)
-				{
-					//initiate the endofRam time line
-					OtherHitPlayer->RamEffects_TimelineInitiate = true;
-
-					FVector ForwardVelocity = Dash->GetForwardVector() * 2000;
-					FVector LaunchVelocity = FVector(ForwardVelocity.X, ForwardVelocity.Y, 1000);
-
-					//sends the other player flying
-					OtherHitPlayer->LaunchCharacter(LaunchVelocity, true, true);
-
-					//play sound
-					UWorld* WorldContextObject = GetWorld();
-					UGameplayStatics::PlaySound2D(WorldContextObject, RamSound, MenuOption->volumeMultiplier, MenuOption->volumeMultiplier, 0, NULL, NULL);
-
-					//camera shake
-					UGameplayStatics::PlayWorldCameraShake(WorldContextObject, CamShake, FollowCamera->GetComponentLocation(), MenuOption->OuterRadius, MenuOption->OuterRadius, 1.0f, false);
-
-					
-
-				}
+			
 			}
 
 
@@ -1473,9 +1442,7 @@ void ACharacterBase::TimelineEndOfRamEffects()
 	//only players hit by the ram will enter this function
 	if (RamEffects_TimelineInitiate == true)
 	{
-		//TARGETPLAYER!!!!!!!!
-		
-		
+		//TARGETPLAYER!!!!!!!!		
 			TimelineDuration += StunIncrementer;
 
 			
