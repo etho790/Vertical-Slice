@@ -76,11 +76,11 @@ void AGrapplingPoint::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Other
 	if (Character != nullptr)
 	{
 	
-		{
+		
 			Character->GrappleComponent->DetachFromGrapplingOnceHit();
 			Character->GrappleComponent->GrappleTimer = 0;
 			
-		}
+		
 	}
 }
 
@@ -90,10 +90,7 @@ void AGrapplingPoint::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* 
 	Character = Cast< ACharacterBase>(OtherActor);
 	if (Character != nullptr)
 	{
-		//Character->GrappleComponent->DetachFromGrappling();
-		//PushPlayerOnceDownUponCollision = false;
 		
-		//Character->GrappleComponent->GrappleTimer = 0;
 	}
 
 
