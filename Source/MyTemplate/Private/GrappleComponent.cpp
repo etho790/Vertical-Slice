@@ -303,10 +303,7 @@ void UGrappleComponent::Grapple()
 					}
 				}
 			}
-			//else
-			//{
-			//
-			//}
+		
 
 		}
 	}

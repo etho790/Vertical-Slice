@@ -23,9 +23,7 @@ APowerupArtifacts::APowerupArtifacts()
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Particle);
 
-	//MenuOptions
-	//MenuOption = CreateDefaultSubobject<UMenuSettingOptions>(TEXT("MenuSetting"));
-
+	
 	StartingPosition = GetActorLocation();
 	StartingRotation = UKismetMathLibrary::UKismetMathLibrary::Conv_RotatorToVector(GetActorRotation());
 
@@ -33,7 +31,7 @@ APowerupArtifacts::APowerupArtifacts()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ArtifactPickedUp = false;
-	//artifact = FindObject<UEnum>(ANY_PACKAGE, TEXT("PickupType"), true);
+	
 }
 
 // Called when the game starts or when spawned
@@ -94,6 +92,8 @@ void APowerupArtifacts::Tick(float DeltaTime)
 
 void APowerupArtifacts::Respawner()
 {
+	
+	/*
 	if (ArtifactPickedUp == true)
 	{
 		TimeUntilRespawns = TimeUntilRespawns - 1;
@@ -103,16 +103,15 @@ void APowerupArtifacts::Respawner()
 			UWorld* world = GetWorld();
 
 			UWorld* WorldContextObject = GetWorld();
-			//UGameplayStatics::SpawnEmitterAtLocation(WorldContextObject, PickedUpVfx, Mesh->GetComponentLocation(), FRotator(0, 0, 0), FVector(5,5,5), true, EPSCPoolMethod::None);
 			
-			world->SpawnActor<APowerupArtifacts>(spawn, GetActorLocation(), GetActorRotation());
-
+			
+		
 
 			K2_DestroyActor();
 
 		}
 	}
-
+	*/
 
 }
 
@@ -141,11 +140,12 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			//picked up artifact
 			ArtifactPickedUp = true;
 
+			/*
 			if (Character->HasPickedUpPowerup == false)
 			{
 				Particle->SetVisibility(false, false);
 				Mesh->SetStaticMesh(NULL);
-			}
+			}*/
 
 		}
 	}
@@ -165,12 +165,12 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//picked up artifact
 			ArtifactPickedUp = true;
-
+			/*
 			if (Character->HasPickedUpPowerup == false)
 			{
 				Particle->SetVisibility(false, false);
 				Mesh->SetStaticMesh(NULL);
-			}
+			}*/
 
 		}
 
@@ -193,13 +193,13 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//picked up artifact
 			ArtifactPickedUp = true;
-
+			/*
 			if (Character->HasPickedUpPowerup == false)
 			{
 				Particle->SetVisibility(false, false);
 				Mesh->SetStaticMesh(NULL);
 			}
-
+			*/
 		}
 
 	}
