@@ -85,7 +85,7 @@ void APowerupArtifacts::Tick(float DeltaTime)
 
 	AddActorLocalRotation(rotation, false, nullptr, ETeleportType::None);
 
-	Respawner();
+	
 }
 
 
@@ -140,12 +140,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 			//picked up artifact
 			ArtifactPickedUp = true;
 
-			/*
-			if (Character->HasPickedUpPowerup == false)
-			{
-				Particle->SetVisibility(false, false);
-				Mesh->SetStaticMesh(NULL);
-			}*/
+			
 
 		}
 	}
@@ -165,12 +160,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//picked up artifact
 			ArtifactPickedUp = true;
-			/*
-			if (Character->HasPickedUpPowerup == false)
-			{
-				Particle->SetVisibility(false, false);
-				Mesh->SetStaticMesh(NULL);
-			}*/
+			
 
 		}
 
@@ -193,13 +183,7 @@ void APowerupArtifacts::OnBeginOverlap(UPrimitiveComponent* HitComp, AActor* Oth
 
 			//picked up artifact
 			ArtifactPickedUp = true;
-			/*
-			if (Character->HasPickedUpPowerup == false)
-			{
-				Particle->SetVisibility(false, false);
-				Mesh->SetStaticMesh(NULL);
-			}
-			*/
+			
 		}
 
 	}
