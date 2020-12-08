@@ -373,6 +373,7 @@ public:
 
 
 	//RESPAWN
+	UFUNCTION(BlueprintCallable)
 	void Respawn();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
