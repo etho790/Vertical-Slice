@@ -8,10 +8,14 @@ AGrapplingPoint::AGrapplingPoint()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	Scene = CreateDefaultSubobject<USceneComponent>("Scene");
+
+	
 	Point = CreateDefaultSubobject<UStaticMeshComponent>("Point");
-	//Point->SetCollisionProfileName(TEXT("NoCollision"));
+	Point->SetupAttachment(Scene);
 
 
+	
 	Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Collider"));
 	Collider->SetupAttachment(Point);
 

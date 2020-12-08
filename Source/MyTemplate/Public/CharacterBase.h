@@ -283,11 +283,17 @@ public:
 	float StunIncrementer;
 	float LeadingPlayersStunIncrementer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool SlideChecker;
+
+
+float InitialWalkSpeed;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
+	//void ResetSlideNotifyTimer();
 	void ResetTimer();
 
 	void ResetLeftRaycast();
@@ -298,6 +304,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+//splitscreen
+	UFUNCTION(BlueprintCallable, Category = "Splitscreen")
+	static void OnToggleSplitScreen(AActor* context, bool bstatus);
+
+
+	
 	void ClosestToGoal();
 
 	// Called to bind functionality to input
@@ -313,7 +325,7 @@ public:
 
 	//SLIDE	
 	void Slide();
-	void DontSlide();
+	
 	void Vertical_Collision();
 	void SlideColliderDoOnce();
 	void ResetSlideColliderDoOnce();
@@ -323,7 +335,7 @@ public:
 		void SlideInitiator();
 	void TimelineForSliding();
 	FTimerHandle SlideTimer;
-
+	FTimerHandle SlideAnimNotifyTimer;
 	//WALL RUNNING
 	float forward_WallJumpVel;
 	float Side_WallJumpVel;

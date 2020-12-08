@@ -87,11 +87,12 @@ ACharacterBase::ACharacterBase()
 
 	//CHRISTIAN
 	GrappleComponent = CreateDefaultSubobject<UGrappleComponent>(TEXT("GrappleComponent"));
-	
-	GrappleHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
-	GrappleHook->SetupAttachment(RootComponent);
 
+	//THIS IS THE VISUAL GRAPPLING HOOK, BUT FOR SOME REASON THE NAME GIVEN ie; GrapplingHook DOES NOT MATCH THE ONE ON UNREAL WHICH IS  "GRAPPLEHOOK"
+	GrappleHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
+	GrappleHook->SetupAttachment(GetMesh());
 	
+
 	InitialVaultUpwardsPush = 500;
 	VaultUpwardsPush = InitialVaultUpwardsPush;
 	
@@ -110,6 +111,9 @@ ACharacterBase::ACharacterBase()
 	InitialSpeed = 1200;
 	StunIncrementer = 0.005f;
 	LeadingPlayersStunIncrementer = 0.007f;
+
+
+	
 }
 
 
@@ -233,24 +237,25 @@ void ACharacterBase::BeginPlay()
 
 	//Respawn
 	RespawnCheckPoint = GetActorLocation();
+
+
+	InitialWalkSpeed=GetCharacterMovement()->MaxWalkSpeed;
 }
 
 // Called every frame
 void ACharacterBase::Tick(float DeltaTime)
 {
+	FString s = UKismetSystemLibrary::GetDisplayName(this);
+	UE_LOG(LogTemp, Warning, TEXT("%s, has a speed of %f"), *s, GetCharacterMovement()->MaxWalkSpeed);
+	
+	
 	Super::Tick(DeltaTime);
 		
 	StaminaBar();
 
 	HorizontalVelocity();
 	
-	//SLIDING
-	Vertical_Collision();		
-	//Timeline like functions
-	TimelineForSliding();
-
-	
-
+		
 
 	//WALLRUNNING TIMELINE
 	TimelineForWallRunning();
@@ -284,28 +289,57 @@ void ACharacterBase::Tick(float DeltaTime)
 	TimelineForCharging();
 
 
-	if (OtherHitPlayer == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Your message"));
 
+/*
+	//SLIDING
+	Vertical_Collision();
+
+	//Timeline like functions
+	TimelineForSliding();
+	
+	//SLIDE EXTRA CODE 	
+	if (VerticalCollision == true)
+	{
+		SlideInitiator();
+		SlideCollider();
+
+
+		FVector LaunchVelocity = FVector((Dash->GetForwardVector() * 200).X, (Dash->GetForwardVector() * 200).Y, -250.0);
+		LaunchCharacter(LaunchVelocity, false, true);
 	}
+	if (SlideChecker == true)
+	{
+		if (VerticalCollision == true)
+		{
+			SlideCollider();
+			FVector LaunchVelocity = FVector((Dash->GetForwardVector() * 50).X, (Dash->GetForwardVector() * 50).Y, -250.0);
+			LaunchCharacter(LaunchVelocity, false, true);
+
+		}
+		if (VerticalCollision == false)
+		{
+			SlideCollider();
+			FVector LaunchVelocity = FVector((Dash->GetForwardVector() * 5).X, (Dash->GetForwardVector() * 5).Y, -250.0);
+			LaunchCharacter(LaunchVelocity, false, true);
+
+		}
+	}
+	*/
+
 
 	TimelineEndOfRamEffects();
 
-
+	
+	//UE_LOG(LogTemp, Warning, TEXT("MyCharacter's AN is %f"), GrappleComponent->GrappleTimer);
 }
 
-void ACharacterBase::ClosestToGoal()
+void ACharacterBase::OnToggleSplitScreen(AActor* context, bool bstatus)
 {
-	
-	
-
-
+	if(context)
+	{
+		context->GetWorld()->GetGameViewport()->SetDisableSplitscreenOverride(bstatus);
+	}
 }
-
-
-
-
 
 
 // Called to bind functionality to input
@@ -336,8 +370,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacterBase::DontJump);
 
 		PlayerInputComponent->BindAction("Slide", IE_Pressed, this, &ACharacterBase::Slide);
-		PlayerInputComponent->BindAction("Slide", IE_Released, this, &ACharacterBase::DontSlide);
-		
 		
 		PlayerInputComponent->BindAction("Grapple", IE_Pressed, this, &ACharacterBase::GrappleAbility);
 		PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ACharacterBase::Ram);
@@ -420,38 +452,34 @@ void ACharacterBase::StaminaBar()
 // SLIDE!!!!!!!!!!!!!!!!
 
 
-
+//EVERY TIME YOU SLIDE THIS FUNCTION IS CALLED!!!!!!
 void ACharacterBase::Slide()
 {
 
 
-	//FHitResult Out1;
-	//FVector Start1 = GetActorLocation() + FVector(0, 0, 44);
-	//FVector End1 = Start1 + GetActorForwardVector() * 400;
-	//FCollisionQueryParams  CollisionP1;
-
+/*
 	if (SlideInitiatedDoOnce == true)
 	{
 		
-
-
 		ColliderCheckerMod = 200;
 		float VelocityVector = GetVelocity().Size();
 
 		if (GetMovementComponent()->IsFalling() == false && VelocityVector >= 100)
 		{
-			SlideInitiatedDoOnce = false;
-
-			float AnimationDuration = 0.6f;
 			FastEnoughToSlide = true;
 
+			float AnimationDuration = 0.6f;
+		
 
 			PlayAnimMontage(IdleToSlide, AnimationDuration, NAME_None);
 
 			SlideCollider();
 
-			//delay
+			//delay To return the mesh as normal once the slide animation is played our as per the 0.8f seconds
 			GetWorld()->GetTimerManager().SetTimer(SlideTimer, this, &ACharacterBase::ResetTimer, 0.8f, false);
+
+			SlideInitiatedDoOnce = false;
+			
 
 		}
 		else
@@ -459,16 +487,8 @@ void ACharacterBase::Slide()
 			FastEnoughToSlide = false;
 		}
 	}
+	*/
 }
-
-
-
-
-void ACharacterBase::DontSlide()	//WHEN LIFE THE SLIDE SHIFT KEY
-{
-	
-}
-
 
 
 
@@ -481,29 +501,18 @@ void ACharacterBase::ResetTimer()
 	//SUBJECT TO CHANGE!!!!!
 	GetMesh()->SetRelativeLocation(FVector(Meshlocation.X, Meshlocation.Y, Meshlocation.Z), false, 0, ETeleportType::None);
 
-
 	//RESET THE TIMER
-	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);
-	
+	GetWorld()->GetTimerManager().ClearTimer(SlideTimer);	
 }
-
-
-
-
 
 
 
 void ACharacterBase::Vertical_Collision()
 {
-
-	
 	if (VerticalCollision == true)
 	{
-		
-
 		//initiate the timeline
 		SlidingTimelineInitiate = true;
-
 
 	}
 
@@ -527,40 +536,13 @@ void ACharacterBase::Vertical_Collision()
 	
 }
 
-
-
-
-void ACharacterBase::SlideColliderDoOnce()
-{
-	
-	if (SlideDooNce == true)
-	{
-		VerticalCollision = false;
-		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
-		GetCapsuleComponent()->SetCapsuleSize(70, 96, true);
-		// SUBJECT TO CHANGE!!!!!
-		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X - 60.0f, Meshlocation.Y, Meshlocation.Z + 65.0f), false, 0, ETeleportType::None);
-
-		SlideDooNce = false;
-	}
-	
-}
-
-
-
 void ACharacterBase::ResetSlideColliderDoOnce()
-{
-	
-	SlideDooNce = true;
-	
+{	
+	SlideDooNce = true;	
 }
-
-
-
 
 void ACharacterBase::SlideCollider()
 {
-	
 	TArray<AActor*> none;
 
 	//horizontal raycast
@@ -688,8 +670,20 @@ void ACharacterBase::SlideCollider()
 		SlideColliderDoOnce();
 	}
 
-	
-	
+}
+
+void ACharacterBase::SlideColliderDoOnce()
+{	
+	if (SlideDooNce == true)
+	{
+		VerticalCollision = false;
+		AddMovementInput(Dash->GetForwardVector(), 1.0f, true);
+		GetCapsuleComponent()->SetCapsuleSize(70, 96, true);
+		// SUBJECT TO CHANGE!!!!!
+		GetMesh()->SetRelativeLocation(FVector(Meshlocation.X /*- 60.0f*/, Meshlocation.Y, Meshlocation.Z /*+ 65.0f*/), false, 0, ETeleportType::None);
+
+		SlideDooNce = false;
+	}	
 }
 
 
@@ -724,24 +718,16 @@ void ACharacterBase::SlideInitiator()
 	
 }
 
-
-
 void ACharacterBase::TimelineForSliding()
-{
-	
+{	
 	if (SlidingTimelineInitiate == true)
 	{
 		SlideCollider();
-	}
-	
-	
+	}	
 }
 
 
 //WALLRUN ABILITY
-
-
-
 void ACharacterBase::ResetLeftRaycast()
 {
 
@@ -1129,8 +1115,10 @@ void ACharacterBase::GrappleAbility()
 
 				if (OtherGrappledCharacter != nullptr)
 				{
+					//if we arent the character thats being grappled 
 					if (OtherGrappledCharacter != this)
 					{
+						//latch on to the pelvis
 						HookLocation = OtherGrappledCharacter->GetMesh()->GetSocketLocation("Pelvis");
 
 						ShootGrappleHook();
@@ -1289,8 +1277,9 @@ void ACharacterBase::Ram()
 	
 
 	
-		if (Stamina > 0.3)
+		if (Stamina > 0.3 && GetCurrentMontage()!=IdleToSlide && VerticalCollision == false) //making sure you cant ram while sliding
 		{
+			
 			FVector VelocityVector = GetVelocity();
 			CharacterVelocity = VelocityVector.Size();
 
@@ -1299,11 +1288,14 @@ void ACharacterBase::Ram()
 
 				if (GetCharacterMovement()->IsFalling() == false)
 				{
-					float Ram_animationLength = 1.0f;
+					float Ram_animationLength = 1.25f;
 
 					Stamina = Stamina - 0.5f;
 					PlayAnimMontage(RamAnim, Ram_animationLength, NAME_None);
 					RamUse = true;
+
+					//temporarily increasing the speed of the character
+					GetCharacterMovement()->MaxWalkSpeed =1800;
 
 					//initiate the charging time line
 					ChargingTimelineInitiate = true;
@@ -1327,6 +1319,10 @@ void ACharacterBase::ResetRamEndDelay()
 	ChargingTimelineInitiate = false;
 
 
+	//reset the max walk speed and finish the animation
+	GetCharacterMovement()->MaxWalkSpeed = InitialWalkSpeed;
+	StopAnimMontage(GetCurrentMontage());
+	
 	//RESET THE TIMER
 	GetWorld()->GetTimerManager().ClearTimer(EndOfRamDelay);
 }

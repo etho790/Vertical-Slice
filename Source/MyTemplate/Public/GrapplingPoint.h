@@ -17,7 +17,10 @@ class MYTEMPLATE_API AGrapplingPoint : public AActor
 private:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Point = nullptr;
-
+//ADDED
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent *Scene =  nullptr;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "GamePlay")
 		UMaterialInstance* BaseMaterial = nullptr;
 	

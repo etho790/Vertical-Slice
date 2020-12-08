@@ -104,7 +104,10 @@ public:
 	bool PlayAnim;
 	
 	FVector PlayerLocation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float GrappleTimer;
+
 	bool GrappleNow;
 	float grappleAnimTime;
 	float GrappleTimerValue;
