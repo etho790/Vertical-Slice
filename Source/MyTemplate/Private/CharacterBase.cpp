@@ -330,7 +330,6 @@ void ACharacterBase::Tick(float DeltaTime)
 	TimelineEndOfRamEffects();
 
 	
-	//UE_LOG(LogTemp, Warning, TEXT("MyCharacter's AN is %f"), GrappleComponent->GrappleTimer);
 }
 
 void ACharacterBase::OnToggleSplitScreen(AActor* context, bool bstatus)
@@ -1097,8 +1096,7 @@ void ACharacterBase::GrappleAbility()
 			CollisionP.bReturnPhysicalMaterial = true;
 		
 			
-			//bool ForwardGrappleCheckerIsHit =UKismetSystemLibrary::SphereTraceSingle(GetWorld(), Start, End, 4, TraceTypeQuery2, false, none, EDrawDebugTrace::ForDuration, Out, true, FLinearColor::Red, FLinearColor::Green, 5);
-
+			//LINE TRACE THAT HITS THE CHARACTER TARGET
 			bool ForwardGrappleCheckerIsHit = GetWorld()->LineTraceSingleByChannel(Out, Start, End, ECC_GameTraceChannel3, CollisionP);
 			//DrawDebugLine(GetWorld(), Start, End, FColor::Green, true, 1, 0, 1);
 
@@ -1126,7 +1124,7 @@ void ACharacterBase::GrappleAbility()
 						PlayAnimMontage(GrappleAnim, 1.f, NAME_None);
 
 						//Delay
-						GetWorld()->GetTimerManager().SetTimer(GrappleDelayForPull, this, &ACharacterBase::GrappleDelayPullResetter, 0.55f, false);
+						GetWorld()->GetTimerManager().SetTimer(GrappleDelayForPull, this, &ACharacterBase::GrappleDelayPullResetter, 0.7f, false);
 
 
 					}
@@ -1154,7 +1152,7 @@ void ACharacterBase::GrappleAbility()
 						PlayAnimMontage(GrappleAnim, 1.f, NAME_None);
 
 						//Delay
-						GetWorld()->GetTimerManager().SetTimer(GrappleDelayForPull, this, &ACharacterBase::GrappleDelayPullResetter, 0.55f, false);
+						GetWorld()->GetTimerManager().SetTimer(GrappleDelayForPull, this, &ACharacterBase::GrappleDelayPullResetter, 0.7f, false);
 
 					}
 				}
@@ -1168,6 +1166,7 @@ void ACharacterBase::GrappleAbility()
 			}
 			else if (ForwardGrappleCheckerIsHit == false)
 			{
+				//switch to the grapple to waypoint
 				GrappleComponent->Grapple();
 			}
 		}
@@ -1500,10 +1499,10 @@ void ACharacterBase::Respawn()
 		FVector NewRespawnPoint = FVector(RespawnCheckPoint.X + 130, RespawnCheckPoint.Y, RespawnCheckPoint.Z);
 		SetActorLocation(NewRespawnPoint, false, nullptr, ETeleportType::None);
 		Stamina = 1.0f;
-		//RespawnPlayer->DisableInput(nullptr);
+		
 		GetCharacterMovement()->StopMovementImmediately();
 		UseControllerRotationYaw = true;
-		//RespawnPlayer->EnableInput(nullptr);
+		
 	}
 
-}
+}                                                                                                                                                                               
