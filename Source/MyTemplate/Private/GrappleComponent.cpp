@@ -25,8 +25,9 @@ UGrappleComponent::UGrappleComponent()
 	GrapplingHook = CreateDefaultSubobject<UCableComponent>(TEXT("GrapplingHook"));
 	GrapplingHook->bVisible = false;
 	GrapplingHook->EndLocation = FVector::ZeroVector;
-	//GrapplingHook->CableLength = 50.0f;
-	//GrapplingHook->NumSegments = 20.0f;
+
+	
+	
 	ThrowGrapplingHookTimeline = CreateDefaultSubobject<UTimelineComponent>("ThrowGrapplingHookTimeline");
 	GrappleActorMoveTimeline = CreateDefaultSubobject<UTimelineComponent>("GrappleActorMoveTimeline");
 
@@ -52,9 +53,10 @@ void UGrappleComponent::BeginPlay()
 	if (Player)
 	{
 		GrapplingHook->AttachToComponent(Player->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "GrapplingHook");
-		GrapplingHook->SetMaterial(0.f, GrappleColor);
+		GrapplingHook->SetMaterial(0.0f, GrappleColor);
 		//added
 		GrapplingHook->SetAttachEndTo(Player, "Mesh", "R_palm");
+		GrapplingHook->CableWidth = 7.0f;
 	}
 
 	
@@ -191,12 +193,7 @@ void UGrappleComponent::RemoveFromGrapplingPoints(class AGrapplingPoint* Grappli
 		Angles.RemoveAt(Index);
 	}
 
-	//if (Distance >= MaxGrapplingDistance)
-	//{
-	//	int32 Index = GrapplingPoints.Find(GrapplingPoint);
-	//	GrapplingPoints.RemoveAt(Index);
-	//	Angles.RemoveAt(Index);
-	//}
+	
 }
 
 bool UGrappleComponent::CheckIfTooFar(class AGrapplingPoint* GrapplingPoint)
@@ -275,7 +272,7 @@ void UGrappleComponent::Grapple()
 
 					if (GrapplingPoint)
 					{
-						GrapplingHook->SetVisibility(true);
+						
 
 
 						if (ensure(ThrowTimeCurve))
@@ -296,7 +293,7 @@ void UGrappleComponent::Grapple()
 
 							// launch the player when the grappling hook is at target location
 							FOnTimelineEvent TimelineFinished;
-							//TimelineFinished.BindUFunction(this, FName("LaunchCharacterTowardsTarget"));
+							
 							ThrowGrapplingHookTimeline->SetTimelineFinishedFunc(TimelineFinished);
 
 							bIsGrappling = true;
@@ -310,6 +307,11 @@ void UGrappleComponent::Grapple()
 		}
 	}
 }
+
+
+
+	
+
 
 
 void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
@@ -342,14 +344,16 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 				
 				GrappleTimer = GrappleTimer - tick* 1.5f;		//this variable just decrements and is a condition that prevents the player from flying in case the player hasnt reached the grapple point
 
-
 				
 				if (PlayAnim == true) //PlayAnim is for Animation playing Happens once and immediately false after triggered
 				{
 					grappleAnimTime = 0.3f;
 																//made it faster
-					Player->PlayAnimMontage(Player->GrappleAnim, 1.65f, NAME_None);
-						
+					Player->PlayAnimMontage(Player->GrappleAnim, 2.f, NAME_None);
+
+					//Delay
+					GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &UGrappleComponent::GrappleVisibility, 0.2f, false);	
+					
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
 					UGameplayStatics::PlaySound2D(WorldContextObject, Player->GrappleSound, Player->MenuOption->volumeMultiplier, Player->MenuOption->volumeMultiplier, 0.f, NULL, NULL);
@@ -375,7 +379,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 				
 				//grapple now is only true after the animation time is set to 0 and GrappleNow=true in the GrappleShootNow function
 				
-				if (/*GrappleNow ==true*/ grappleAnimTime<=0.0f  && GrappleTimer > 0.f)
+				if (grappleAnimTime<=0.0f  && GrappleTimer > 0.f)
 				{
 					Player->LaunchCharacter(LaunchVel *2.f , true, true);
 				
@@ -391,7 +395,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 					GrapplingHook->SetVisibility(false);
 					bIsGrappling = false;
 					
-					GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
+					GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("Rope1"));
 
 					PlayAnim = true;
 				
@@ -412,6 +416,16 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 
 }
 
+
+ void UGrappleComponent::GrappleVisibility()
+{
+	GrapplingHook->SetVisibility(true);
+	//RESET THE TIMER
+	GetWorld()->GetTimerManager().ClearTimer(GrappleDelayForVisiblity);
+}
+
+
+
 void UGrappleComponent::ThrowGrapplingHook(float Value)
 {
 	if (GrapplingHook && GetClosestGrapplingPoint())
@@ -430,7 +444,7 @@ void UGrappleComponent::DetachFromGrapplingOnceHit()
 
 	GrapplingHook->SetVisibility(false);
 	bIsGrappling = false;
-	GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("GrapplingHook"));
+	GrapplingHook->SetWorldLocation(Player->GetMesh()->GetSocketLocation("Rope1"));
 
 	PlayAnim = true;
 

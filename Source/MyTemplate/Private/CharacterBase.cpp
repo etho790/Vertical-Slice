@@ -203,7 +203,9 @@ void ACharacterBase::BeginPlay()
 
 	Meshlocation = GetMesh()->GetRelativeTransform().GetLocation();
 
-	
+	//Grapplehook
+	GrappleHook->SetAttachEndTo(NULL, "Mesh", "R_palm");
+	GrappleHook->CableWidth = 7.0f;
 	
 	//SETTING THE SCALES OF THE LEFT WALL AND RIGHT WALL COLLIDER
 	Left->SetRelativeScale3D(FVector(0.4f, 1.5f, 2.0f));
@@ -1228,7 +1230,7 @@ void ACharacterBase::ShootGrappleHook()
 
 	Stamina -= 0.4f;
 	//Delay
-	GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &ACharacterBase::GrappleVisibility, 0.3f, false);	
+	GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &ACharacterBase::GrappleVisibility, 0.5f, false);	
 }
 
 

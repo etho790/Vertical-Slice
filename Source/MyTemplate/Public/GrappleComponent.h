@@ -55,7 +55,7 @@ private:
 
 	//MenuOptions
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	//	class UMenuSettingOptions* MenuOption;
+
 
 
 protected:
@@ -91,6 +91,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Grapple();
 
+	FTimerHandle GrappleDelayForVisiblity;
+	void GrappleVisibility();
+
 	UFUNCTION(BlueprintCallable, Category = "GamePlay")
 		void LaunchCharacterTowardsTarget( float tick);
 
@@ -116,3 +119,4 @@ public:
 
 	void DetachFromGrapplingOnceHit();
 };
+
