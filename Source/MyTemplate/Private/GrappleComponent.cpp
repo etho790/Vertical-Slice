@@ -56,7 +56,7 @@ void UGrappleComponent::BeginPlay()
 		GrapplingHook->SetMaterial(0.0f, GrappleColor);
 		//added
 		GrapplingHook->SetAttachEndTo(Player, "Mesh", "R_palm");
-		GrapplingHook->CableWidth = 7.0f;
+		GrapplingHook->CableWidth = 6.5f;
 	}
 
 	
@@ -352,7 +352,7 @@ void UGrappleComponent::LaunchCharacterTowardsTarget(float tick)
 					Player->PlayAnimMontage(Player->GrappleAnim, 2.f, NAME_None);
 
 					//Delay
-					GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &UGrappleComponent::GrappleVisibility, 0.2f, false);	
+					GetWorld()->GetTimerManager().SetTimer(GrappleDelayForVisiblity, this, &UGrappleComponent::GrappleVisibility, 0.3f, false);	
 					
 					//play sound
 					UWorld* WorldContextObject = GetWorld();
