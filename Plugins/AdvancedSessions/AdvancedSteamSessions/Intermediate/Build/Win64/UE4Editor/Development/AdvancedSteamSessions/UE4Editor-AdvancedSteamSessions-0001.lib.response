@@ -6,9 +6,9 @@
 /NAME:"UE4Editor-AdvancedSteamSessions-0001.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.obj"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Default.rc2.res"
-/OUT:"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\UE4Editor-AdvancedSteamSessions-0001.lib"
+"F:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.obj"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Default.rc2.res"
+/OUT:"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\UE4Editor-AdvancedSteamSessions-0001.lib"
 /INCLUDE:IMPLEMENT_MODULE_AdvancedSteamSessions

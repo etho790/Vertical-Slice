@@ -6,9 +6,9 @@
 /NAME:"UE4Editor-AdvancedSessions-0001.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.obj"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Module.AdvancedSessions.cpp.obj"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Module.AdvancedSessions.gen.cpp.obj"
-"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Default.rc2.res"
-/OUT:"C:\Users\Tunec\Documents\GitHub\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\UE4Editor-AdvancedSessions-0001.lib"
+"F:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.obj"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Module.AdvancedSessions.cpp.obj"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Module.AdvancedSessions.gen.cpp.obj"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\Default.rc2.res"
+/OUT:"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSessions\UE4Editor-AdvancedSessions-0001.lib"
 /INCLUDE:IMPLEMENT_MODULE_AdvancedSessions
