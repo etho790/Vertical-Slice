@@ -34,7 +34,7 @@
 #define WITH_CEF3 1
 #define WITH_LIVE_CODING 1
 #define UE_LIVE_CODING_ENGINE_DIR "D:\\Program Files (x86)\\UE_4.23\\Engine"
-#define UE_LIVE_CODING_PROJECT "D:\\Vertical-Slice\\MyTemplate.uproject"
+#define UE_LIVE_CODING_PROJECT "F:\\Vertical-Slice\\MyTemplate.uproject"
 #define WITH_XGE_CONTROLLER 0
 #define UBT_MODULE_MANIFEST "UE4.modules"
 #define UBT_MODULE_MANIFEST_DEBUGGAME "UE4-Win64-DebugGame.modules"
@@ -49,7 +49,7 @@
 #define OVERRIDE_PLATFORM_HEADER_NAME Windows
 #define NDEBUG 1
 #define UE_BUILD_DEVELOPMENT 1
-#define UE_ENGINE_DIRECTORY "../../../Program Files (x86)/UE_4.23/Engine/"
+#define UE_ENGINE_DIRECTORY "D:/Program Files (x86)/UE_4.23/Engine/"
 #define UE_IS_ENGINE_MODULE 0
 #define UE_PROJECT_NAME MyTemplate
 #define WITH_ADVANCED_SESSIONS 1
