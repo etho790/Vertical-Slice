@@ -28,7 +28,7 @@
 /wd4838
 /we4668
 /I .
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Private
 /I ..\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem\Source
@@ -515,15 +515,15 @@
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\ClothingSystemRuntimeInterface
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I Runtime\ClothingSystemRuntimeInterface
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSteamSessions
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSteamSessions
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source
 /I ..\Plugins\Online\OnlineSubsystemSteam\Source\Private
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
-/I D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions\Classes
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Source\AdvancedSteamSessions
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Intermediate\Build\Win64\UE4Editor\Inc\AdvancedSessions
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions\Classes
+/I F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSessions\Source\AdvancedSessions
 /I ThirdParty\Steamworks\Steamv142\sdk\public
 /I ..\Plugins\Online\OnlineSubsystemSteam\Intermediate\Build\Win64\UE4Editor\Inc\OnlineSubsystemSteam
 /I ..\Plugins\Online\OnlineSubsystemSteam
@@ -558,12 +558,12 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.16299.0\winrt"
-/FI"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
-/Yu"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
-/Fp"D:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.pch"
-"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp"
-/FI"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
-/Fo"D:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
+/FI"F:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
+/Yu"F:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h"
+/Fp"F:\Vertical-Slice\Intermediate\Build\Win64\MyTemplateEditor\Development\Engine\SharedPCH.Engine.h.pch"
+"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp"
+/FI"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Definitions.AdvancedSteamSessions.h"
+/Fo"F:\Vertical-Slice\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
 /TP
 /GR-
 /W4
